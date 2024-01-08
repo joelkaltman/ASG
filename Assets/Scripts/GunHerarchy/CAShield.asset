@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee941d03f5463d745b25605cd5cc2d3a, type: 3}
+  m_Name: CAShield
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 1658031343128850, guid: 9bb3942db64854845a9df06576565a6e, type: 2}
+  weapon: {fileID: 1595282773903486, guid: 6ea060cd8cfa7af4abd87cabe89a56b2, type: 2}
+  shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}
+  equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
+  frecuency: 2
+  initialCount: 1
+  damage: 15
+  price: 50
+  sprite: {fileID: 21300000, guid: c916f8ed0cf828a44ad63372acf7128f, type: 3}
+  gunName: Cap's Shield
+  description: An old piece of stark technology. Made entirely of Vibranium. Bounces
+    around 3 times and comes back.
+  showTarget: 0
+  animateThrow: 0
+  comesBack: 1

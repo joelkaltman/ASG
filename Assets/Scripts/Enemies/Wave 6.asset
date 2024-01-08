@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a02ae512760de498c77e8404dacb5a, type: 3}
+  m_Name: Wave 6
+  m_EditorClassIdentifier: 
+  durationSeconds: 70
+  bosses:
+  - {fileID: 1224127478856044, guid: a74b8142f61144d368e5dde7c70fe020, type: 2}
+  bossesToKill: 1
+  enemies:
+  - {fileID: 1930683322331160, guid: 8ea341b92894c6e42982801ef2906c82, type: 2}
+  - {fileID: 1219622573321358, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 2}
+  - {fileID: 1731084914382620, guid: cfb49456c5cf833429fbf77c710dfbc6, type: 2}
+  - {fileID: 1902493045695490, guid: 2fdebfb81e9836846a76fbb4e9fba906, type: 2}
+  frecuencySpawn: 4

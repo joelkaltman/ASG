@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89404c21a8c476f4ba71881fe24e662d, type: 3}
+  m_Name: Pokeball
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 1080341093803870, guid: c04e3671d33e220439ad5dbb5e84d144, type: 2}
+  weapon: {fileID: 1757070037718264, guid: 6f796409f198f4b408d6cd7b1db63382, type: 2}
+  shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}
+  equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
+  frecuency: 1.5
+  initialCount: 10
+  damage: -1
+  price: 40
+  sprite: {fileID: 21300000, guid: 33c3fa4067d357e4485b5330a71e7510, type: 3}
+  gunName: Pokeball
+  description: 'Throw it to the monsters and see if you can catch em all! (you have
+    about 70% chance of catching ANYTHING). '
+  showTarget: 0
+  animateThrow: 1

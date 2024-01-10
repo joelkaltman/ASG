@@ -30,7 +30,7 @@ public class StateJump : State {
 			GameObject dustInstance = Instantiate (dust, new Vector3(character.transform.position.x, 5, character.transform.position.z), Quaternion.identity);
 			Destroy (dustInstance, 2);
 
-			CameraShake scriptShake = Camera.main.GetComponent<CameraShake> ();
+			CameraController scriptShake = Camera.main.GetComponent<CameraController> ();
 			if (scriptShake != null) {
 				float distance = Vector3.Distance (character.transform.position, target.transform.position);
 				scriptShake.Shake (0.5f, 2/distance);

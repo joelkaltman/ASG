@@ -9619,6 +9619,30 @@ PrefabInstance:
     - {fileID: 65642307067150140, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
     - {fileID: 143664142380758780, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
+--- !u!114 &1090124598 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114984566860391662, guid: b77a44ac5b795bb46aa338611e75aeae,
+    type: 3}
+  m_PrefabInstance: {fileID: 1090124597}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602411364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce2eee3324f827459ccf92a16a84363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1090124599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114379789010233920, guid: b77a44ac5b795bb46aa338611e75aeae,
+    type: 3}
+  m_PrefabInstance: {fileID: 1090124597}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602411364}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e5075c6e3c5ac45ab7cd34ebe1b06e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1097129123
 GameObject:
   m_ObjectHideFlags: 0
@@ -15543,7 +15567,6 @@ GameObject:
   - component: {fileID: 1586133942}
   - component: {fileID: 1586133941}
   - component: {fileID: 1586133945}
-  - component: {fileID: 1586133946}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -15640,20 +15663,8 @@ MonoBehaviour:
   player: {fileID: 1602411364}
   speedMove: 10
   speedRotate: 2
---- !u!114 &1586133946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1586133940}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ae63cd479e2e6b41a89bbd56210c11b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 5
-  amount: 0.2
+  shakeDuration: 5
+  shakeAmount: 0.2
 --- !u!1 &1591073687
 GameObject:
   m_ObjectHideFlags: 0
@@ -19876,6 +19887,12 @@ MonoBehaviour:
   - {fileID: 916449855}
   rankInputName: {fileID: 592072519}
   watchAdButton: {fileID: 1605736898}
+  cameraController: {fileID: 1586133945}
+  playerMovement: {fileID: 1090124599}
+  playerStats: {fileID: 1090124598}
+  playerGuns: {fileID: 1602411367}
+  enemiesManager: {fileID: 1824392758}
+  powerUpsManager: {fileID: 1824392760}
 --- !u!4 &2051715109
 Transform:
   m_ObjectHideFlags: 0

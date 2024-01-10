@@ -54,6 +54,14 @@ public class UIManager : MonoBehaviour {
 	public Text rankInputName;
 	public GameObject watchAdButton;
 
+	[Header("Gameplay Scripts")] 
+	public CameraController cameraController;
+	public PlayerMovement playerMovement;
+	public PlayerStats playerStats;
+	public PlayerGuns playerGuns;
+	public EnemiesManager enemiesManager;
+	public PowerUpsManager powerUpsManager;
+
 	private float objetiveFade;
 	private float currentFade;
 	private float speedFade;
@@ -67,16 +75,16 @@ public class UIManager : MonoBehaviour {
 	private int remainMinutes;
 
 	void Awake(){
-		PlayerStats.Instance.onScoreAdd.AddListener (RefreshScore);
-		PlayerStats.Instance.onCapCountChange.AddListener (RefreshCaps);
-		PlayerStats.Instance.onLifeChange.AddListener (RefreshLife);
-		PlayerStats.Instance.onDie.AddListener (RefreshGameOver);
-		PlayerGuns.Instance.onGunChange.AddListener (RefreshGun);
-		PlayerGuns.Instance.onGunChange.AddListener (RefreshGunCount);
-		PlayerGuns.Instance.onShoot.AddListener (RefreshGunCount);
-		PlayerGuns.Instance.onShoot.AddListener (ResetFrecueny);
-		EnemiesManager.Instance.onWaveChange.AddListener (ShowWave);
-		EnemiesManager.Instance.onWaveChange.AddListener (RefreshWaveTime);
+		playerStats.onScoreAdd.AddListener (RefreshScore);
+		playerStats.onCapCountChange.AddListener (RefreshCaps);
+		playerStats.onLifeChange.AddListener (RefreshLife);
+		playerStats.onDie.AddListener (RefreshGameOver);
+		playerGuns.onGunChange.AddListener (RefreshGun);
+		playerGuns.onGunChange.AddListener (RefreshGunCount);
+		playerGuns.onShoot.AddListener (RefreshGunCount);
+		playerGuns.onShoot.AddListener (ResetFrecueny);
+		enemiesManager.onWaveChange.AddListener (ShowWave);
+		enemiesManager.onWaveChange.AddListener (RefreshWaveTime);
 
 		for (int i = 0; i < qualityButtons.Count; i++) {
 			qualityButtons [i].onClick.AddListener (ChangeQuality);
@@ -125,7 +133,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Update () {
-		float frecuency = PlayerGuns.Instance.GetCurrentGun ().Frecuency;
+		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
 		this.imageFrecuency.fillAmount += Time.deltaTime / frecuency;
 
 		this.FadeWave ();
@@ -229,20 +237,22 @@ public class UIManager : MonoBehaviour {
 	public void StartGame()
 	{
 		// Enables all scripts
-		Object[] scripts = GameObject.FindObjectsOfType (typeof(MonoBehaviour));
-		for (int j = 0; j < scripts.Length; j++) {
-			((MonoBehaviour)scripts [j]).enabled = true;
-		}
-
+		cameraController.enabled = true;
+		playerMovement.enabled = true;
+		playerGuns.enabled = true;
+		playerStats.enabled = true;
+		enemiesManager.enabled = true;
+		powerUpsManager.enabled = true;
+		
 		this.transform.parent.gameObject.SetActive (true);
 
 		this.showCanvas (PanelType.GAME);
 
-		EnemiesManager.Instance.onWaveChange.AddListener (ShowWave);
+		enemiesManager.onWaveChange.AddListener (ShowWave);
 
 		this.elapsedTime = 0;
 
-		int durationWaveSeconds = EnemiesManager.Instance.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.getWaveDuration ();
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
@@ -363,7 +373,7 @@ public class UIManager : MonoBehaviour {
 
 		#if UNITY_STANDALONE
 		this.usedContinue = true;
-		PlayerStats.Instance.Revive ();
+		playerStats.Revive ();
 		this.joystickMovement.GetComponentInChildren<Joystick> ().Reset ();
 		this.joystickRotation.GetComponentInChildren<Joystick> ().Reset ();
 		this.showCanvas (PanelType.GAME);
@@ -377,7 +387,7 @@ public class UIManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			this.usedContinue = true;
-			PlayerStats.Instance.Revive ();
+			playerStats.Revive ();
 			this.joystickMovement.GetComponentInChildren<Joystick> ().Reset ();
 			this.joystickRotation.GetComponentInChildren<Joystick> ().Reset ();
 			this.showCanvas (PanelType.GAME);
@@ -394,7 +404,7 @@ public class UIManager : MonoBehaviour {
 
 	public void RefreshScore()
 	{
-		textScore.text = PlayerStats.Instance.score.ToString();
+		textScore.text = playerStats.score.ToString();
 		BounceText bounce = textScore.GetComponent<BounceText> ();
 		if (bounce != null) {
 			bounce.Bounce (0.65f);
@@ -403,18 +413,18 @@ public class UIManager : MonoBehaviour {
 
 	public void RefreshLife()
 	{
-		imageLife.fillAmount = (float)PlayerStats.Instance.life / 100;
+		imageLife.fillAmount = (float)playerStats.life / 100;
 	}
 
 	public void RefreshGun()
 	{
-		imageGun.GetComponent<Image> ().sprite = PlayerGuns.Instance.GetCurrentGun().Sprite;
+		imageGun.GetComponent<Image> ().sprite = playerGuns.GetCurrentGun().Sprite;
 		//imageGun.GetComponent<Image> ().SetNativeSize ();
 	}
 
 	public void RefreshGunCount()
 	{
-		int count = PlayerGuns.Instance.GetCurrentGun ().CurrentCount;
+		int count = playerGuns.GetCurrentGun ().CurrentCount;
 		if (count >= 0) {
 			textGunCount.text = "x" + count.ToString();
 		} else {
@@ -430,7 +440,7 @@ public class UIManager : MonoBehaviour {
 	public void RefreshCaps()
 	{
 		for (int i = 0; i < textCapCount.Count; i++) {
-			textCapCount[i].text = "x" + PlayerStats.Instance.caps;
+			textCapCount[i].text = "x" + playerStats.caps;
 			BounceText bounce = textCapCount[i].GetComponent<BounceText> ();
 			if (bounce != null) {
 				bounce.Bounce (0.65f);
@@ -441,8 +451,8 @@ public class UIManager : MonoBehaviour {
 	public void RefreshGameOver()
 	{
 		this.showCanvas (PanelType.GAMEOVER);
-		textGiantScore.text = "You killed " + PlayerStats.Instance.score + " enemies!";
-		if (DataBase.Instance.isMaxScore (PlayerStats.Instance.score)) {
+		textGiantScore.text = "You killed " + playerStats.score + " enemies!";
+		if (DataBase.Instance.isMaxScore (playerStats.score)) {
 			this.panelNewRank.SetActive (true);
 		} else {
 			this.panelNewRank.SetActive (false);
@@ -461,7 +471,7 @@ public class UIManager : MonoBehaviour {
 			return;
 		}
 
-		int result = DataBase.Instance.SaveNewMaxScore (PlayerStats.Instance.score, this.rankInputName.text.ToUpper());
+		int result = DataBase.Instance.SaveNewMaxScore (playerStats.score, this.rankInputName.text.ToUpper());
 		this.LoadRanking(result);
 		this.showCanvas (PanelType.RANKING);
 	}
@@ -485,7 +495,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void ShowWave(){
-		int wave = EnemiesManager.Instance.wave;
+		int wave = enemiesManager.wave;
 		this.textWave.text = "Wave " + wave.ToString ();
 		//this.textWave.enabled = true;
 		this.objetiveFade = 1;
@@ -527,7 +537,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void RefreshWaveTime(){
-		int durationWaveSeconds = EnemiesManager.Instance.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.getWaveDuration ();
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}

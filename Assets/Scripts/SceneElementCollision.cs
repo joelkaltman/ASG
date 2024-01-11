@@ -15,6 +15,8 @@ public class SceneElementCollision : MonoBehaviour {
 	private float currentDir;
 	private float first;
 	private bool shaking;
+
+	private Vector3 originalPos;
 	private Quaternion originalRotXY;
 
 	public void Shake()
@@ -23,6 +25,7 @@ public class SceneElementCollision : MonoBehaviour {
 			return;
 		}
 
+		originalPos = transform.position;
 		this.originalRotXY = this.transform.rotation;
 		this.rot = 0;
 		this.limit = this.initialLimit;
@@ -47,27 +50,24 @@ public class SceneElementCollision : MonoBehaviour {
 
 			if (limit < 0.5f) {
 				shaking = false;
-				this.transform.rotation = this.originalRotXY;
+				transform.SetPositionAndRotation(originalPos, originalRotXY);
 			}
 		}
 	}
 		
-	void OnCollisionEnter(Collision col)
+	public void OnBulletCollision(Vector3 position)
 	{
-		if (col.gameObject.layer == LayerMask.NameToLayer("Bullet")) {
-			Shake ();
-			GameObject instancePart = Instantiate (this.particles, col.gameObject.transform.position, Quaternion.identity);
+		Shake ();
+		GameObject instancePart = Instantiate (this.particles, position, Quaternion.identity);
 
-			Vector3 dif = col.gameObject.transform.position - this.transform.position;
-			dif.Normalize ();
-			dif.y = 2;
+		Vector3 dif = position - this.transform.position;
+		dif.Normalize ();
+		dif.y = 2;
 
-			instancePart.transform.position += dif * 0.1f;
-			instancePart.transform.rotation = Quaternion.LookRotation (dif);
+		instancePart.transform.rotation = Quaternion.LookRotation (dif);
 
-			ParticleSystem.MainModule particles = instancePart.GetComponent<ParticleSystem> ().main;
-			particles.startColor = new Color(this.color.r, this.color.g, this.color.b);
-			Destroy (instancePart, 1);
-		}
+		ParticleSystem.MainModule particles = instancePart.GetComponent<ParticleSystem> ().main;
+		particles.startColor = new Color(this.color.r, this.color.g, this.color.b);
+		Destroy (instancePart, 1);
 	}
 }

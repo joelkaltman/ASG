@@ -8,11 +8,14 @@ public class BulletCollision : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col)
 	{
-		EnemyStats scriptEnemyStats = col.gameObject.GetComponent<EnemyStats> ();
-		if (scriptEnemyStats != null) {
+		var scriptEnemyStats = col.gameObject.GetComponent<EnemyStats> ();
+		if (scriptEnemyStats != null)
 			scriptEnemyStats.RecieveDamage (damage, true, true);
-		}
 
+		var sceneElement = col.gameObject.GetComponent<SceneElementCollision>();
+		if(sceneElement != null)
+			sceneElement.OnBulletCollision(transform.position);
+		
 		if (col.gameObject.GetComponent<PlayerMovement>() != null)
 			return;
 		

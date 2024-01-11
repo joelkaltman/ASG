@@ -11,6 +11,8 @@ public class EnemyStats : MonoBehaviour {
 	public int speedMin;
 	public int speedMax;
 	public bool hasAnimation;
+	public GameObject vfxShoot;
+	public Color vfxShootColor;
 	public GameObject particlesOnDie;
 	public AudioClip soundOnDie;
 
@@ -30,6 +32,7 @@ public class EnemyStats : MonoBehaviour {
 	public void RecieveDamage(int damage, bool animateDying, bool addPoint)
 	{
 		life -= damage;
+		ShowBlood();
 
 		if (life <= 0) {
 			if (addPoint) {
@@ -77,5 +80,15 @@ public class EnemyStats : MonoBehaviour {
 		EnemiesManager.Instance.DestroyEnemy (this.gameObject);
 	}
 
-
+	public void ShowBlood()
+	{
+		if (vfxShoot == null)
+			return;
+		
+		GameObject blood = Instantiate (vfxShoot, transform);
+		blood.transform.position += Vector3.up * 0.5f;
+		var vfx = blood.GetComponent<ParticleSystem> ().main;
+		vfx.startColor = new Color(vfxShootColor.r, vfxShootColor.g, vfxShootColor.b);
+		Destroy (blood, 1);
+	}
 }

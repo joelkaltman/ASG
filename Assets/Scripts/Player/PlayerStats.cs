@@ -46,8 +46,6 @@ public class PlayerStats : MonoBehaviour {
 
 		shooter = GameObject.FindGameObjectWithTag ("Shooter");
 		hand = GameObject.FindGameObjectWithTag ("Hand");
-		
-		ResetEvents();
 	}
 
 	private void Start()

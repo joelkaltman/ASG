@@ -114,6 +114,8 @@ public class UIManager : MonoBehaviour {
 
 		joystickMovement.SetActive (GameData.Instance.isMobile);
 		joystickRotation.SetActive (GameData.Instance.isMobile);
+		
+		playerGuns.InitializeGuns();
 
 		this.RefreshLife ();
 		this.RefreshScore ();

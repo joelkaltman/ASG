@@ -30,11 +30,9 @@ public class PlayerGuns : MonoBehaviour {
 
 		instanceGroundTarget = GameObject.Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
 		instanceGroundTarget.SetActive (false);
-		
-		ResetEvents();
 	}
 
-	void Start()
+	public void InitializeGuns()
 	{		
 		this.gunsIndices = DataBase.Instance.LoadGunIndices ();
 		for (int i = 0; i < gunsIndices.Count; i++) {

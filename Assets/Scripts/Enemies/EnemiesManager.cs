@@ -38,8 +38,6 @@ public class EnemiesManager : MonoBehaviour {
 		index = -1;
 		wave = 0;
 		spawnTime = 6;
-		
-		ResetEvents();
 	}
 
 	void OnEnable(){

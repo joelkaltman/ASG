@@ -1,17 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats Instance;
-	[HideInInspector]public UnityEvent onScoreAdd;
-	[HideInInspector]public UnityEvent onLifeChange;
-	[HideInInspector]public UnityEvent onDie;
-	[HideInInspector]public UnityEvent onGranadesThrow;
-	[HideInInspector]public UnityEvent onCapCountChange;
+	public event Action onScoreAdd;
+	public event Action onLifeChange;
+	public event Action onDie;
+	public event Action onGranadesThrow;
+	public event Action onCapCountChange;
 
 	private GameObject shooter;
 	private GameObject hand;
@@ -29,17 +31,23 @@ public class PlayerStats : MonoBehaviour {
 	bool inmuneToFire;
 	bool dead;
 
+	public void ResetEvents()
+	{
+		onScoreAdd = null;
+		onLifeChange = null;
+		onDie = null;
+		onGranadesThrow = null;
+		onCapCountChange = null;
+	}
+	
 	private void Awake()
 	{
 		Instance = this;
-		onScoreAdd = new UnityEvent ();
-		onLifeChange = new UnityEvent ();
-		onDie = new UnityEvent ();
-		onGranadesThrow = new UnityEvent ();
-		onCapCountChange = new UnityEvent ();
 
 		shooter = GameObject.FindGameObjectWithTag ("Shooter");
 		hand = GameObject.FindGameObjectWithTag ("Hand");
+		
+		ResetEvents();
 	}
 
 	private void Start()
@@ -50,7 +58,7 @@ public class PlayerStats : MonoBehaviour {
 		dead = false;
 
 		this.caps = DataBase.Instance.LoadCaps();
-		onCapCountChange.Invoke ();
+		onCapCountChange?.Invoke ();
 	}
 
 	public GameObject getPlayer(){
@@ -75,7 +83,7 @@ public class PlayerStats : MonoBehaviour {
 			this.Dead ();
 			if (!dead) {
 				dead = true;
-				onDie.Invoke ();
+				onDie?.Invoke ();
 			}
 		}
 		this.GetComponent<Animator> ().SetInteger ("Life", life);
@@ -86,7 +94,7 @@ public class PlayerStats : MonoBehaviour {
 			audio.Play ();
 		}
 
-		onLifeChange.Invoke();
+		onLifeChange?.Invoke();
 	}
 
 	public void RecieveDamageByFire(int damage)
@@ -109,7 +117,7 @@ public class PlayerStats : MonoBehaviour {
 		if (life > initialLife) {
 			life = initialLife;
 		}
-		onLifeChange.Invoke();
+		onLifeChange?.Invoke();
 	}
 
 	public void setSpeed(int amount, int time)
@@ -130,21 +138,21 @@ public class PlayerStats : MonoBehaviour {
 	{
 		score += points;
 
-		onScoreAdd.Invoke ();
+		onScoreAdd?.Invoke ();
 	}
 
 	public void AddCap()
 	{
 		this.caps++;
 		DataBase.Instance.SaveCaps (this.caps);
-		onCapCountChange.Invoke ();
+		onCapCountChange?.Invoke ();
 	}
 
 	public void useCaps(int used)
 	{
 		this.caps -= used;
 		DataBase.Instance.SaveCaps (this.caps);
-		onCapCountChange.Invoke ();
+		onCapCountChange?.Invoke ();
 	}
 
 	void Dead()
@@ -155,7 +163,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public void ThrowGranade()
 	{
-		onGranadesThrow.Invoke ();
+		onGranadesThrow?.Invoke ();
 	}
 
 	public void Revive()
@@ -178,7 +186,7 @@ public class PlayerStats : MonoBehaviour {
 
 		//Camera.main.GetComponent<CameraFollow> ().CurrentMoveSpeed = 2;
 
-		onLifeChange.Invoke ();
-		onScoreAdd.Invoke ();
+		onLifeChange?.Invoke ();
+		onScoreAdd?.Invoke ();
 	}
 }

@@ -75,16 +75,23 @@ public class UIManager : MonoBehaviour {
 	private int remainMinutes;
 
 	void Awake(){
-		playerStats.onScoreAdd.AddListener (RefreshScore);
-		playerStats.onCapCountChange.AddListener (RefreshCaps);
-		playerStats.onLifeChange.AddListener (RefreshLife);
-		playerStats.onDie.AddListener (RefreshGameOver);
-		playerGuns.onGunChange.AddListener (RefreshGun);
-		playerGuns.onGunChange.AddListener (RefreshGunCount);
-		playerGuns.onShoot.AddListener (RefreshGunCount);
-		playerGuns.onShoot.AddListener (ResetFrecueny);
-		enemiesManager.onWaveChange.AddListener (ShowWave);
-		enemiesManager.onWaveChange.AddListener (RefreshWaveTime);
+		playerStats.ResetEvents();
+		playerGuns.ResetEvents();
+		enemiesManager.ResetEvents();
+		
+		playerStats.onScoreAdd += RefreshScore;
+		playerStats.onCapCountChange += RefreshCaps;
+		playerStats.onLifeChange += RefreshLife;
+		playerStats.onDie += RefreshGameOver;
+		
+		playerGuns.onGunChange += RefreshGun;
+		playerGuns.onGunChange += RefreshGunCount;
+		
+		playerGuns.onShoot += RefreshGunCount;
+		playerGuns.onShoot += ResetFrecueny;
+		
+		enemiesManager.onWaveChange += ShowWave;
+		enemiesManager.onWaveChange += RefreshWaveTime;
 
 		for (int i = 0; i < qualityButtons.Count; i++) {
 			qualityButtons [i].onClick.AddListener (ChangeQuality);
@@ -247,8 +254,6 @@ public class UIManager : MonoBehaviour {
 		this.transform.parent.gameObject.SetActive (true);
 
 		this.showCanvas (PanelType.GAME);
-
-		enemiesManager.onWaveChange.AddListener (ShowWave);
 
 		this.elapsedTime = 0;
 

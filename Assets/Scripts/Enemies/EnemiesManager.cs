@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class EnemiesManager : MonoBehaviour {
 
 	[HideInInspector]public static EnemiesManager Instance;
-	[HideInInspector]public UnityEvent onWaveChange;
+	public event Action onWaveChange;
 
 	public List<Wave> waves;
 
@@ -20,9 +22,13 @@ public class EnemiesManager : MonoBehaviour {
 
 	public int waveDuration;
 
+	public void ResetEvents()
+	{
+		onWaveChange = null;
+	}
+
 	void Awake(){
 		Instance = this;
-		onWaveChange = new UnityEvent ();
 
 		Transform[] transforms = this.GetComponentsInChildren<Transform> ();
 		spawnPoints = new List<Transform> ();
@@ -32,6 +38,8 @@ public class EnemiesManager : MonoBehaviour {
 		index = -1;
 		wave = 0;
 		spawnTime = 6;
+		
+		ResetEvents();
 	}
 
 	void OnEnable(){
@@ -148,6 +156,6 @@ public class EnemiesManager : MonoBehaviour {
 			this.SpawnBoss ();
 		}
 
-		onWaveChange.Invoke ();
+		onWaveChange?.Invoke ();
 	}
 }

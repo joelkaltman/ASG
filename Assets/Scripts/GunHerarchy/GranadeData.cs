@@ -55,13 +55,13 @@ public class GranadeData : GunData {
 		if (this.currentCount > 0) {
 			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		PlayerStats.Instance.onGranadesThrow.AddListener (throwGranade);
+		PlayerStats.Instance.onGranadesThrow += throwGranade;
 	}
 
 	public override void Discard ()
 	{
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
-		PlayerStats.Instance.onGranadesThrow.RemoveListener (throwGranade);
+		PlayerStats.Instance.onGranadesThrow -= throwGranade;
 	}
 
 	public override GunType GetGunType ()

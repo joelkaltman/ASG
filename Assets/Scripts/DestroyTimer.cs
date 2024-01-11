@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class DestroyTimer : MonoBehaviour {
@@ -8,11 +9,12 @@ public class DestroyTimer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Invoke ("DestroyObject", destroySeconds);
+		StartCoroutine(DestroyObject());
 	}
 
-	void DestroyObject()
+	IEnumerator DestroyObject()
 	{
+		yield return new WaitForSeconds(destroySeconds);
 		Destroy (this.gameObject);
 	}
 }

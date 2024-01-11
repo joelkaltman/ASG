@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,8 +9,8 @@ public class PlayerGuns : MonoBehaviour {
 
 	public static PlayerGuns Instance;
 
-	[HideInInspector] public UnityEvent onGunChange;
-	[HideInInspector] public UnityEvent onShoot;
+	public event Action onGunChange;
+	public event Action onShoot;
 
 	[HideInInspector] public List<int> gunsIndices;
 	[HideInInspector] public int currentIndex;
@@ -17,14 +18,20 @@ public class PlayerGuns : MonoBehaviour {
 	public GameObject groundTarget;
 	GameObject instanceGroundTarget;
 
+	public void ResetEvents()
+	{
+		onGunChange = null;
+		onShoot = null;
+	}
+	
 	void Awake()
 	{
 		Instance = this;
-		onGunChange = new UnityEvent ();
-		onShoot = new UnityEvent ();
 
 		instanceGroundTarget = GameObject.Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
 		instanceGroundTarget.SetActive (false);
+		
+		ResetEvents();
 	}
 
 	void Start()
@@ -62,7 +69,7 @@ public class PlayerGuns : MonoBehaviour {
 			audio.clip = this.GetCurrentGun ().ShootAudio;
 			audio.Play ();
 
-			onShoot.Invoke ();
+			onShoot?.Invoke ();
 		}
 	}
 
@@ -76,7 +83,7 @@ public class PlayerGuns : MonoBehaviour {
 					currentIndex = 0;
 				}
 				this.EquipGun ();
-				onGunChange.Invoke ();
+				onGunChange?.Invoke ();
 			} else if (Input.GetAxis ("Mouse ScrollWheel") < 0f) {
 				this.DiscardGun ();
 				currentIndex--;
@@ -84,7 +91,7 @@ public class PlayerGuns : MonoBehaviour {
 					currentIndex = this.gunsIndices.Count - 1;
 				}
 				this.EquipGun ();
-				onGunChange.Invoke ();
+				onGunChange?.Invoke ();
 			}
 		}
 	}
@@ -97,7 +104,7 @@ public class PlayerGuns : MonoBehaviour {
 				currentIndex = 0;
 			}
 			this.EquipGun ();
-			onGunChange.Invoke ();
+			onGunChange?.Invoke ();
 		}
 	}
 
@@ -174,6 +181,6 @@ public class PlayerGuns : MonoBehaviour {
 				boomerang.bumerangReturned (addCount);
 			}
 		}
-		onGunChange.Invoke ();
+		onGunChange?.Invoke ();
 	}
 }

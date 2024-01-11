@@ -27,7 +27,8 @@ public class UIJoystickManager : MonoBehaviour {
 
 	void Start () {
 		if (GameData.Instance.isMobile) {
-			PlayerGuns.Instance.onGunChange.AddListener (RefreshRotationJoystick);
+			PlayerGuns.Instance.onGunChange -= RefreshRotationJoystick;
+			PlayerGuns.Instance.onGunChange += RefreshRotationJoystick;
 		}
 
 		this.changeJoystick (JoystickType.SHOOTER);

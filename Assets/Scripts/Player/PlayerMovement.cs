@@ -103,20 +103,18 @@ public class PlayerMovement : MonoBehaviour {
 				case UIJoystickManager.JoystickType.SHOOTER:
 				case UIJoystickManager.JoystickType.GRANADE:
 					if (joystickVal.x != 0 && joystickVal.y != 0) {
-						Vector3 look_pos = this.transform.position + new Vector3 (joystickVal.x, 0, joystickVal.y) * 10;
-						look_pos.y = 5;
-
-						transform.LookAt (look_pos);
+						Vector3 dir = new Vector3 (joystickVal.x, 0, joystickVal.y) * 10;
+						transform.rotation = Quaternion.LookRotation(dir);
 					}
 					break;
 				
 				case UIJoystickManager.JoystickType.BOOMERANG:
 					GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (this.transform.position);
-					if (enemy != null && Vector3.Distance(enemy.transform.position, this.transform.position) > 2) {
-						Vector3 look = enemy.transform.position;
-						look.y = 5;
-
-						transform.LookAt (look);
+					if (enemy != null && Vector3.Distance(enemy.transform.position, this.transform.position) > 2)
+					{
+						var dir = enemy.transform.position - this.transform.position;
+						dir.y = 0;
+						transform.rotation = Quaternion.LookRotation(dir);
 					}
 					break;
 				}
@@ -139,9 +137,9 @@ public class PlayerMovement : MonoBehaviour {
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast (ray, out hit)) {
 
-					Vector3 look_pos = hit.point - this.transform.position;
-					look_pos.y = 0;
-					transform.rotation = Quaternion.LookRotation (look_pos);
+					Vector3 dir = hit.point - this.transform.position;
+					dir.y = 0;
+					transform.rotation = Quaternion.LookRotation (dir);
 				}
 			}
 		}

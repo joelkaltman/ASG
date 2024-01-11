@@ -67,13 +67,13 @@ public class BoomerangData : GunData {
 		if (this.currentCount > 0) {
 			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		PlayerStats.Instance.onGranadesThrow.AddListener (throwBoomerang);
+		PlayerStats.Instance.onGranadesThrow += throwBoomerang;
 	}
 
 	public override void Discard ()
 	{
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
-		PlayerStats.Instance.onGranadesThrow.RemoveListener (throwBoomerang);
+		PlayerStats.Instance.onGranadesThrow -= throwBoomerang;
 	}
 
 	public override GunType GetGunType ()

@@ -9,25 +9,31 @@ public class GranadeFireCollision : MonoBehaviour {
 
 	GameObject fireInstance;
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
+		if (col.gameObject.GetComponent<PlayerMovement>() != null)
+			return;
+		
 		this.GetComponent<AudioSource>().Play ();
 
 		fireInstance = Instantiate (fire, new Vector3(this.transform.position.x, 5, this.transform.position.z), Quaternion.Euler(-90,0,0));
-		Invoke ("EndFire", duration);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;
+		
+		StartCoroutine(EndFire());
 	}
 
-	void EndFire()
+	IEnumerator EndFire()
 	{
+		yield return new WaitForSeconds(duration);
 		fireInstance.GetComponent<ParticleSystem> ().Stop();
-		Invoke ("DestroyFire", 1);
+		StartCoroutine(DestroyFire());
 	}
 
-	void DestroyFire()
+	IEnumerator DestroyFire()
 	{
+		yield return new WaitForSeconds(1);
 		Destroy (fireInstance);
 		Destroy (this.gameObject);
 	}

@@ -16,15 +16,18 @@ public class PokeballCollision : MonoBehaviour {
 
 	AudioSource audio;
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
+		if (col.gameObject.GetComponent<PlayerMovement>() != null)
+			return;
+		
 		audio = this.GetComponent<AudioSource> ();
 
 		CatchEnemy ();
 
-
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
+		
 		this.transform.position = new Vector3 (this.transform.position.x, 5.1f, this.transform.position.z);
 	}
 
@@ -53,31 +56,35 @@ public class PokeballCollision : MonoBehaviour {
 			audio.Play ();
 		}
 
-		Invoke ("DecideCatch", 4f);
+		StartCoroutine(DecideCatch());
 	}
 
-	void DecideCatch(){
-		if (capturedEnemy == null) {
-			Destroy (this.gameObject);
-			return;
-		}
+	IEnumerator DecideCatch()
+	{
+		yield return new WaitForSeconds(4);
 
-		int rnd = Random.Range (0, 100);
-		if (rnd < chanceCatch) {
-			// captured
-			EnemyStats stats = this.capturedEnemy.GetComponent<EnemyStats> ();
-			if (stats != null) {
-				stats.RecieveDamage (99999, false, true);
+		if (capturedEnemy != null)
+		{
+			int rnd = Random.Range(0, 100);
+			if (rnd < chanceCatch)
+			{
+				// captured
+				EnemyStats stats = this.capturedEnemy.GetComponent<EnemyStats>();
+				if (stats != null)
+				{
+					stats.RecieveDamage(99999, false, true);
+				}
 			}
-		} else {
-			this.capturedEnemy.SetActive(true);
-			explosionInstance = Instantiate (explosionParticles, this.transform.position, Quaternion.identity);
-			Destroy (explosionInstance, 1);
+			else
+			{
+				this.capturedEnemy.SetActive(true);
+				explosionInstance = Instantiate(explosionParticles, this.transform.position, Quaternion.identity);
+				Destroy(explosionInstance, 1);
 
-			audio.clip = soundOut;
-			audio.Play ();
+				audio.clip = soundOut;
+				audio.Play();
+			}
 		}
-
 
 		Destroy (this.gameObject);
 	}

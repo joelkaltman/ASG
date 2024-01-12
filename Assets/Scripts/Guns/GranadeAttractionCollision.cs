@@ -9,19 +9,24 @@ public class GranadeAttractionCollision : MonoBehaviour {
 
 	GameObject attractionObjectInstance;
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
+		if (col.gameObject.GetComponent<PlayerMovement>() != null)
+			return;
+		
 		this.GetComponent<AudioSource>().Play ();
 
 		attractionObjectInstance = Instantiate (attractionObject, new Vector3(this.transform.position.x, 6, this.transform.position.z), Quaternion.identity);
-		Invoke ("Destroy", duration);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;
+		
+		StartCoroutine(Destroy());
 	}
 
-	void Destroy()
+	IEnumerator Destroy()
 	{
+		yield return new WaitForSeconds(duration);
 		Destroy (attractionObjectInstance);
 		Destroy (this.gameObject);
 	}

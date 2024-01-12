@@ -10,21 +10,26 @@ public class GranadeCollision : MonoBehaviour {
 
 	GameObject explosionInstance;
 
-	void OnCollisionEnter(Collision col)
+	void OnTriggerEnter(Collider col)
 	{
+		if (col.gameObject.GetComponent<PlayerMovement>() != null)
+			return;
+		
 		this.GetComponent<AudioSource>().Play ();
 
 		DamageEnemies ();
 
 		explosionInstance = Instantiate (explosionParticles, this.transform.position, Quaternion.identity);
-		Invoke ("DestroyExplosion", 3);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;
+		
+		StartCoroutine(DestroyExplosion());
 	}
 
-	void DestroyExplosion()
+	IEnumerator DestroyExplosion()
 	{
+		yield return new WaitForSeconds(3);
 		Destroy (explosionInstance);
 		Destroy (this.gameObject);
 	}

@@ -3,25 +3,26 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89404c21a8c476f4ba71881fe24e662d, type: 3}
   m_Name: Granade
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1183605371980540, guid: 854835f1bc9bcd746a7510acb84fede7, type: 2}
-  weapon: {fileID: 1626370710820408, guid: 13ccc076426089f4c91573c31fcd9ffe, type: 2}
+  bullet: {fileID: 1183605371980540, guid: 854835f1bc9bcd746a7510acb84fede7, type: 3}
+  weapon: {fileID: 1626370710820408, guid: 13ccc076426089f4c91573c31fcd9ffe, type: 3}
   shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}
   equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
   frecuency: 2
-  initialCount: 10
+  initialCount: 30
   damage: 20
   price: 15
   sprite: {fileID: 21300000, guid: cef6812f2c9407e48aaba6f891253e48, type: 3}
   gunName: Granade
-  description: Oh, so you are looking for a boring but effective weapon? we have what
-    you are looking for. Throw one at a time and damages everything close by.
+  description: Oh, so you are looking for a boring but effective weapon? we have
+    what you are looking for. Throw one at a time and damages everything close by.
   showTarget: 1
   animateThrow: 1

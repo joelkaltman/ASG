@@ -37,7 +37,7 @@ public class DataBase : MonoBehaviour {
 	void loadEntry(){
 		string json = PlayerPrefs.GetString ("DataBaseJSON2", "");
 		if (json == "") {
-			currentEntry.caps = 10;
+			currentEntry.caps = 200;
 			currentEntry.lights = false;
 			currentEntry.maxScores.Clear ();
 			currentEntry.maxScoresNames.Clear ();

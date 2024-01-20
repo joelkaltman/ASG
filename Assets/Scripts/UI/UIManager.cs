@@ -465,11 +465,11 @@ public class UIManager : MonoBehaviour {
 			this.panelNewRank.SetActive (false);
 		}
 
-		if (usedContinue) {
+		/*if (usedContinue) {
 			watchAdButton.SetActive (false);
 		} else {
 			watchAdButton.SetActive (true);
-		}
+		}*/
 	}
 
 	public void SaveNewRank()

@@ -6882,6 +6882,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2051715108}
+    - target: {fileID: 406086303929256557, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 406086303929256557, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 406086304496196212, guid: 678b1cf830eb228489ea2d38d7056853,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7011,6 +7021,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Panel GameOver
+      objectReference: {fileID: 0}
+    - target: {fileID: 406086305783062378, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045457573322004211, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2051715108}
+    - target: {fileID: 6045457573322004211, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045457573322004211, guid: 678b1cf830eb228489ea2d38d7056853,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 678b1cf830eb228489ea2d38d7056853, type: 3}

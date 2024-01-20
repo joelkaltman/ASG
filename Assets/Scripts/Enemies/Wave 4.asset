@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -15,7 +16,7 @@ MonoBehaviour:
   bosses: []
   bossesToKill: 0
   enemies:
-  - {fileID: 1731084914382620, guid: cfb49456c5cf833429fbf77c710dfbc6, type: 2}
-  - {fileID: 1930683322331160, guid: 8ea341b92894c6e42982801ef2906c82, type: 2}
-  - {fileID: 1219622573321358, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 2}
-  frecuencySpawn: 2
+  - {fileID: 1731084914382620, guid: cfb49456c5cf833429fbf77c710dfbc6, type: 3}
+  - {fileID: 1930683322331160, guid: 8ea341b92894c6e42982801ef2906c82, type: 3}
+  - {fileID: 1219622573321358, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
+  frecuencySpawn: 0.6

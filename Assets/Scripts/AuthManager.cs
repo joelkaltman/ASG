@@ -1,7 +1,10 @@
 ﻿using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using TMPro;
 
 public class AuthManager : MonoBehaviour
@@ -11,6 +14,7 @@ public class AuthManager : MonoBehaviour
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;    
     public FirebaseUser User;
+    public DatabaseReference dbReference;
 
     void Awake()
     {
@@ -35,6 +39,7 @@ public class AuthManager : MonoBehaviour
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
     
     //Function for the login button
@@ -42,14 +47,23 @@ public class AuthManager : MonoBehaviour
     {
         //Call the login coroutine passing the email and password
         //StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
-        StartCoroutine(Login("joelkaltman@gmail.com", "asdasd"));
+        StartCoroutine(Login("tami@gmail.com", "asdasd"));
     }
     //Function for the register button
-    public void RegisterButton()
+    public async void RegisterButton()
     {
         //Call the register coroutine passing the email, password, and username
         //StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
-        StartCoroutine(Register("joelkaltman@gmail.com", "asdasd", "joelkalt"));
+        //StartCoroutine(Register("tami@gmail.com", "asdasd", "tami"));
+        
+        await UpdateUserData(76);
+        //GetUserData();
+        await GetScoreboard();
+    }
+
+    public void Logout()
+    {
+        auth.SignOut();
     }
 
     private IEnumerator Login(string _email, string _password)
@@ -172,6 +186,63 @@ public class AuthManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private async Task UpdateUserData(int kills)
+    {
+        await WriteToDb("username", User.DisplayName);
+        await WriteToDb("kills", kills);
+    }
+
+    private async Task WriteToDb(string field, object value)
+    {
+        var userEntry = dbReference.Child("users").Child(User.UserId);
+        
+        var dbTask = userEntry.Child(field).SetValueAsync(value);
+        
+        await Task.Run(() => dbTask);
+
+        if (dbTask.Exception != null)
+            Debug.Log($"Exception: {dbTask.Exception}");
+    }
+
+    private async Task GetUserData()
+    {
+        var username = await ReadDb("username");
+        var kills = await ReadDb("kills");
+    }
+
+    private async Task<object> ReadDb(string field)
+    {
+        var userEntry = dbReference.Child("users").Child(User.UserId);
+        
+        var dbTask = userEntry.Child(field).GetValueAsync();
+        
+        await Task.Run(() => dbTask);
+        
+        if (dbTask.Exception != null)
+            Debug.Log($"Exception: {dbTask.Exception}");
+
+        return dbTask.Result;
+    }
+
+    private async Task GetScoreboard()
+    {
+        var dbTask = dbReference.Child("users").OrderByChild("kills").GetValueAsync();
+        
+        await Task.Run(() => dbTask);
+        
+        if (dbTask.Exception != null)
+            Debug.Log($"Exception: {dbTask.Exception}");
+
+        DataSnapshot dataSnapshot = dbTask.Result;
+
+        foreach (var data in dataSnapshot.Children.Reverse())
+        {
+            var username = data.Child("username");
+            var kills = data.Child("kills");
+            Debug.Log($"User: {username} - Kills: {kills}");
         }
     }
 }

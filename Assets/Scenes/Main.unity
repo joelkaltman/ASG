@@ -5212,7 +5212,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2051715112}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
         m_MethodName: RegisterButton
         m_Mode: 1
@@ -6587,7 +6587,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2051715112}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
         m_MethodName: LoginButton
         m_Mode: 1
@@ -7144,7 +7144,6 @@ GameObject:
   - component: {fileID: 2051715109}
   - component: {fileID: 2051715111}
   - component: {fileID: 2051715108}
-  - component: {fileID: 2051715112}
   m_Layer: 0
   m_Name: GUIScripts
   m_TagString: Untagged
@@ -7258,19 +7257,6 @@ MonoBehaviour:
   joystickRotationShooter: {fileID: 84840150}
   joystickRotationGranade: {fileID: 464589370}
   joystickRotationBoomerang: {fileID: 1520686373}
---- !u!114 &2051715112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2051715107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af24bd38790c6b2409a51d552adb3c0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dependencyStatus: 0
 --- !u!4 &2057747744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4137883987334170, guid: 0feceaf8fbb18564e972ab3083d05e47,

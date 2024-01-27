@@ -6625,6 +6625,7 @@ MonoBehaviour:
   panelRanking: {fileID: 988342959}
   panelNewRank: {fileID: 603527416}
   directionalLight: {fileID: 1713981401}
+  buttonPlay: {fileID: 1651083027085943926}
   textUsername: {fileID: 560776718}
   textRandomTextMenu: {fileID: 1333102881}
   textCapCount:
@@ -7279,6 +7280,36 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1651083027173023986, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2051715108}
+    - target: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1651083027173023997, guid: 2b0efc84268cab34186359921c0638ab,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7386,6 +7417,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b0efc84268cab34186359921c0638ab, type: 3}
+--- !u!114 &1651083027085943926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1651083027173023996, guid: 2b0efc84268cab34186359921c0638ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 1651083027085943925}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3485518306699997230
 PrefabInstance:
   m_ObjectHideFlags: 0

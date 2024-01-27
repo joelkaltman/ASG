@@ -9,8 +9,6 @@ using Random = UnityEngine.Random;
 public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats Instance;
-
-	public PlayerGuns playerGuns;
 	
 	public event Action onInitialized;
 	public event Action onScoreAdd;
@@ -53,8 +51,6 @@ public class PlayerStats : MonoBehaviour {
 
 		shooter = GameObject.FindGameObjectWithTag ("Shooter");
 		hand = GameObject.FindGameObjectWithTag ("Hand");
-
-		playerGuns = new PlayerGuns();
 	}
 
 	public async void Initialize()
@@ -64,7 +60,7 @@ public class PlayerStats : MonoBehaviour {
 		inmuneToFire = false;
 		dead = false;
 
-		userData = await AuthManager.GetUserData();
+		userData = LoginUI.userDataLogin ?? await AuthManager.GetUserData();
 
 		Initialized = true;
 		onInitialized?.Invoke ();
@@ -83,6 +79,11 @@ public class PlayerStats : MonoBehaviour {
 	private async void SaveCaps()
 	{
 		await AuthManager.WriteToDb("caps", userData.caps);
+	}
+	
+	private async void SaveGuns()
+	{
+		await AuthManager.WriteToDb("guns", userData.guns);
 	}
 
 	public bool CheckMaxScore()
@@ -180,6 +181,17 @@ public class PlayerStats : MonoBehaviour {
 	{
 		userData.caps++;
 		SaveCaps();
+		onCapCountChange?.Invoke ();
+	}
+
+	public void PurchaseGun(GunData gun)
+	{
+		userData.guns.Add(gun.Id);
+		SaveGuns();
+		
+		userData.caps -= gun.Price;
+		SaveCaps();
+		
 		onCapCountChange?.Invoke ();
 	}
 

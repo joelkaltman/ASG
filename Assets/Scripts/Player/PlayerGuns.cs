@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -12,8 +13,8 @@ public class PlayerGuns : MonoBehaviour {
 	public event Action onGunChange;
 	public event Action onShoot;
 
-	[HideInInspector] public List<int> gunsIndices;
-	[HideInInspector] public int currentIndex;
+	private PlayerStats playerStats;
+	private int currentIndex;
 
 	public GameObject groundTarget;
 	GameObject instanceGroundTarget;
@@ -34,13 +35,21 @@ public class PlayerGuns : MonoBehaviour {
 		instanceGroundTarget.SetActive (false);
 	}
 
-	public void InitializeGuns()
-	{		
-		this.gunsIndices = DataBase.Instance.LoadGunIndices ();
+	public void InitializeGuns(PlayerStats playerStats)
+	{
+		this.playerStats = playerStats;
+		var ownedGuns = GameData.Instance.guns.Where(x => playerStats.userData.guns.Contains(x.Id));
+		foreach (var owned in ownedGuns)
+		{
+			owned.Initialize();
+		}
+		ownedGuns.First().Equip();
+		
+		/*this.gunsIndices = DataBase.Instance.LoadGunIndices ();
 		for (int i = 0; i < gunsIndices.Count; i++) {
 			GameData.Instance.guns [gunsIndices[i]].Initialize ();
 		}
-		GameData.Instance.guns [gunsIndices[0]].Equip ();
+		GameData.Instance.guns [gunsIndices[0]].Equip ();*/
 
 		this.enabled = false;
 
@@ -85,7 +94,7 @@ public class PlayerGuns : MonoBehaviour {
 			if (Input.GetAxis ("Mouse ScrollWheel") > 0f) {
 				this.DiscardGun ();
 				currentIndex++;
-				if (currentIndex == this.gunsIndices.Count) {
+				if (currentIndex == playerStats.userData.guns.Count) {
 					currentIndex = 0;
 				}
 				this.EquipGun ();
@@ -94,7 +103,7 @@ public class PlayerGuns : MonoBehaviour {
 				this.DiscardGun ();
 				currentIndex--;
 				if (currentIndex < 0) {
-					currentIndex = this.gunsIndices.Count - 1;
+					currentIndex = playerStats.userData.guns.Count - 1;
 				}
 				this.EquipGun ();
 				onGunChange?.Invoke ();
@@ -106,7 +115,7 @@ public class PlayerGuns : MonoBehaviour {
 		if (GameData.Instance.isMobile) {
 			this.DiscardGun ();
 			currentIndex++;
-			if (currentIndex == this.gunsIndices.Count) {
+			if (currentIndex == playerStats.userData.guns.Count) {
 				currentIndex = 0;
 			}
 			this.EquipGun ();
@@ -130,8 +139,8 @@ public class PlayerGuns : MonoBehaviour {
 
 	public void UpdateTarget()
 	{
-		GunData currentGun = GameData.Instance.guns [this.gunsIndices [currentIndex]];
-		if (currentGun.ShowTarget == true && currentGun.CurrentCount > 0 && Time.timeScale > 0) {
+		GunData currentGun = GetCurrentGun();
+		if (currentGun.ShowTarget && currentGun.CurrentCount > 0 && Time.timeScale > 0) {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast (ray, out hit)) {
@@ -143,31 +152,39 @@ public class PlayerGuns : MonoBehaviour {
 		}
 	}
 
+	private GunData GetGunFromId(int id)
+	{
+		return GameData.Instance.guns.First(x => x.Id == id);
+	}
+	
 	public GunData GetCurrentGun()
 	{
-		return GameData.Instance.guns[this.gunsIndices [currentIndex]];
+		int currentId = playerStats.userData.guns[currentIndex];
+		return GetGunFromId(currentId);
 	}
 	
 	public void ChangeShootingType(GunData.ShootingType newType, int duration)
 	{
-		for (int i = 0; i < this.gunsIndices.Count; i++) {
-			GameData.Instance.guns[this.gunsIndices[i]].ChangeShootingType (newType);
+		foreach (var gunId in playerStats.userData.guns)
+		{
+			GetGunFromId(gunId).ChangeShootingType (newType);
 		}
 		Invoke ("ChangeShootingTypeToNormal", duration);
 	}
 
 	public void ChangeShootingTypeToNormal()
 	{
-		for (int i = 0; i < this.gunsIndices.Count; i++) {
-			GameData.Instance.guns[this.gunsIndices[i]].ChangeShootingType (GunData.ShootingType.NORMAL);
+		foreach (var gunId in playerStats.userData.guns)
+		{
+			GetGunFromId(gunId).ChangeShootingType (GunData.ShootingType.NORMAL);
 		}
 	}
 
 	public void BoomerangReturned(string weaponName, bool addCount){
-		for (int i = 0; i < this.gunsIndices.Count; i++) {
-			GunData gun = GameData.Instance.guns [this.gunsIndices [i]];
+		foreach (var gun in GameData.Instance.guns)
+		{
 			if (gun.CurrentCount < gun.InitialCount && gun.GetGunType() == GunData.GunType.BOOMERANG && 
-				weaponName.Contains(gun.name)) {
+			    weaponName.Contains(gun.name)) {
 				BoomerangData boomerang = (BoomerangData)gun;
 				boomerang.bumerangReturned (addCount);
 			}

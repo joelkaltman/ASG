@@ -11,6 +11,8 @@ public class LoginUI : MonoBehaviour
 
     public Text usernameText;
     public Text passwordText;
+
+    public static AuthManager.UserData userDataLogin;
     
     void Start()
     {
@@ -37,6 +39,8 @@ public class LoginUI : MonoBehaviour
             Debug.LogError(result.error);
             return;
         }
+
+        userDataLogin = await AuthManager.GetUserData();
         
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }

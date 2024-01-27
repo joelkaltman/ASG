@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour {
 
 	public Light directionalLight;
 
+	public Button buttonPlay;
 	public Text textUsername;
 	public Text textRandomTextMenu;
 	public List<Text> textCapCount;
@@ -213,7 +214,6 @@ public class UIManager : MonoBehaviour {
 	void changeRandomText()
 	{
 		List<string> texts = new List<string> ();
-		texts.Add ("Made by Joel K... awesome guy");
 		texts.Add ("Time to kill some madafakin monsters!");
 		texts.Add ("Buckle up cowboy, you're up for a ride");
 		texts.Add ("Prepare to kill. A lot.");
@@ -229,14 +229,11 @@ public class UIManager : MonoBehaviour {
 		texts.Add ("This game was made with love (and coffe)");
 		texts.Add ("Cocaine is one hell of a drug");
 		texts.Add ("Titanic is overrated. There, i said it.");
-		texts.Add ("So, your a grammar nazi? I doesnt care");
 		texts.Add ("if (noMoreIdeas) { text = this; }");
 		texts.Add ("Thank god this game is free");
 		texts.Add ("Stay tuned for next updates!");
 		texts.Add ("Greatings from Argentina");
 		texts.Add ("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-		texts.Add ("Big Bambu presents:");
-		texts.Add ("Do you know Fernet?");
 		texts.Add ("Random line n°31415");
 
 		int rnd = Random.Range (0, texts.Count);
@@ -447,18 +444,23 @@ public class UIManager : MonoBehaviour {
 	public void OnUserInitialized()
 	{
 		textUsername.text = playerStats.userData.username;
-		playerGuns.InitializeGuns();
+		playerGuns.InitializeGuns(playerStats);
 		
 		this.RefreshLife ();
 		this.RefreshScore ();
 		this.RefreshCaps ();
 		this.RefreshGun ();
 		this.RefreshGunCount ();
+
+		buttonPlay.interactable = true;
 	}
 	
 	public void RefreshCaps()
 	{
 		for (int i = 0; i < textCapCount.Count; i++) {
+			if(textCapCount[i] == null)
+				continue;
+			
 			textCapCount[i].text = "x" + playerStats.userData.caps;
 			BounceText bounce = textCapCount[i].GetComponent<BounceText> ();
 			if (bounce != null) {

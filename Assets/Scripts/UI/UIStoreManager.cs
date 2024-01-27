@@ -1,17 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 public class UIStoreManager : MonoBehaviour {
-
-	enum PurchaseType{
-		PURCHASED,
-		CAN,
-		CANT
-	}
 
 	public Text playerCapsText;
 	public Text gunNameText;
@@ -45,9 +40,9 @@ public class UIStoreManager : MonoBehaviour {
 	int direction;
 	int velocity;
 
-	int playerCaps;
-
 	bool moving;
+
+	private PlayerStats playerStats;
 
 	// Use this for initialization
 	void Start () {
@@ -72,8 +67,9 @@ public class UIStoreManager : MonoBehaviour {
 			img.sprite = guns [i].Sprite;
 			this.instancesButtonItem.Add (instanceButton);
 		}
-			
-		playerCaps = DataBase.Instance.LoadCaps ();
+
+		playerStats = PlayerStats.Instance;
+		//playerCaps = DataBase.Instance.LoadCaps ();
 
 		this.UpdateInfo ();
 	}
@@ -142,7 +138,7 @@ public class UIStoreManager : MonoBehaviour {
 	
 	void UpdateInfo()
 	{
-		playerCapsText.text = "x" + playerCaps;
+		playerCapsText.text = "x" + playerStats.userData.caps;
 		gunNameText.text = GameData.Instance.guns [currentGun].GunName;
 		gunDescriptionText.text = GameData.Instance.guns [currentGun].Description;
 		gunPriceText.text = "Price: x" + GameData.Instance.guns [currentGun].Price.ToString();
@@ -226,14 +222,22 @@ public class UIStoreManager : MonoBehaviour {
 		}
 	}
 
-	PurchaseType GetPurchaseType(int gunIndex){
-		if (DataBase.Instance.EntryHasGun (gunIndex)) {
+	PurchaseType GetPurchaseType(int gunIndex)
+	{
+		var gun = GameData.Instance.guns[gunIndex];
+		
+		if (playerStats.userData.guns.Contains(gun.Id))
 			return PurchaseType.PURCHASED;
-		} else if (GameData.Instance.guns [gunIndex].Price <= playerCaps) {
+
+		return playerStats.userData.caps >= gun.Price ? PurchaseType.CAN : PurchaseType.CANT;
+		
+		/*if (DataBase.Instance.EntryHasGun (gunIndex)) {
+			return PurchaseType.PURCHASED;
+		} else if (GameData.Instance.guns [gunIndex].Price <= playerStats.userData.caps) {
 			return PurchaseType.CAN;
 		} else {
 			return PurchaseType.CANT;
-		}
+		}*/
 	}
 
 	public void GoToMainMenu()
@@ -243,10 +247,11 @@ public class UIStoreManager : MonoBehaviour {
 
 	public void Purchase()
 	{
-		if (playerCaps >= GameData.Instance.guns [currentGun].Price) {
-			this.playerCaps -= GameData.Instance.guns [currentGun].Price;
-			DataBase.Instance.SaveCaps (this.playerCaps);
-			DataBase.Instance.SaveNewGunIndex (currentGun);
+		var gun = GameData.Instance.guns[currentGun];
+		if (playerStats.userData.caps >= gun.Price) {
+			playerStats.PurchaseGun(gun);
+			//DataBase.Instance.SaveCaps (this.playerCaps);
+			//DataBase.Instance.SaveNewGunIndex (currentGun);
 			this.UpdateInfo ();
 		}
 	}

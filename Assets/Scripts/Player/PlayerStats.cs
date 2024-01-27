@@ -21,7 +21,9 @@ public class PlayerStats : MonoBehaviour {
 	public int life;
 	public int speed;
 	[HideInInspector] public int score;
-	[HideInInspector] public int caps;
+	public int caps => userData.caps;
+
+	private AuthManager.UserData userData;
 
 	public AudioClip damageSound;
 
@@ -48,17 +50,44 @@ public class PlayerStats : MonoBehaviour {
 		hand = GameObject.FindGameObjectWithTag ("Hand");
 	}
 
-	private void Start()
+	public async void Initialize()
 	{
 		initialLife = life;
 		initialSpeed = speed;
 		inmuneToFire = false;
 		dead = false;
 
-		this.caps = DataBase.Instance.LoadCaps();
+		userData = await AuthManager.GetUserData();
 		onCapCountChange?.Invoke ();
 	}
 
+	public async void SaveUserData()
+	{
+		await AuthManager.SaveUserData(userData);
+	}
+
+	private async void SaveKills()
+	{
+		await AuthManager.WriteToDb("kills", userData.maxKills);
+	}
+	
+	private async void SaveCaps()
+	{
+		await AuthManager.WriteToDb("caps", userData.caps);
+	}
+
+	public bool CheckMaxScore()
+	{
+		bool newHighScore = score > userData.maxKills;
+		if (newHighScore)
+		{
+			userData.maxKills = score;
+			SaveKills();
+		}
+
+		return newHighScore;
+	}
+	
 	public GameObject getPlayer(){
 		return this.gameObject;
 	}
@@ -135,21 +164,13 @@ public class PlayerStats : MonoBehaviour {
 	public void AddPoints(int points)
 	{
 		score += points;
-
 		onScoreAdd?.Invoke ();
 	}
 
 	public void AddCap()
 	{
-		this.caps++;
-		DataBase.Instance.SaveCaps (this.caps);
-		onCapCountChange?.Invoke ();
-	}
-
-	public void useCaps(int used)
-	{
-		this.caps -= used;
-		DataBase.Instance.SaveCaps (this.caps);
+		userData.caps++;
+		SaveCaps();
 		onCapCountChange?.Invoke ();
 	}
 

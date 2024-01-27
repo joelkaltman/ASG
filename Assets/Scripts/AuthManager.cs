@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Firebase;
@@ -124,7 +126,7 @@ public static class AuthManager
         if (User != null)
         {
             await UpdateUserProfile(username);
-            await UpdateUserData(0, 0);
+            await SaveUserData(UserData.Default(username));
         }
 
         return Result.Valid();
@@ -142,14 +144,33 @@ public static class AuthManager
             Debug.Log($"Exception: {userTask.Exception}");
     }
     
-    public static async Task UpdateUserData(int kills, int caps)
+    public struct UserData
     {
-        await WriteToDb("username", User.DisplayName);
-        await WriteToDb("kills", kills);
-        await WriteToDb("caps", caps);
+        public string username;
+        public int maxKills;
+        public int caps;
+
+        public static UserData Default(string username)
+        {
+            return new UserData()
+            {
+                username = username,
+                maxKills = 0,
+                caps = 200
+            };
+        }
+    }
+    
+    public static async Task<bool> SaveUserData(UserData userData)
+    {
+        bool result = true;
+        result &= await WriteToDb("username", userData.username);
+        result &= await WriteToDb("kills", userData.maxKills);
+        result &= await WriteToDb("caps", userData.caps);
+        return result;
     }
 
-    private static async Task WriteToDb(string field, object value)
+    public static async Task<bool> WriteToDb(string field, object value)
     {
         var userEntry = dbReference.Child("users").Child(User.UserId);
         
@@ -158,16 +179,26 @@ public static class AuthManager
         await Task.Run(() => dbTask);
 
         if (dbTask.Exception != null)
+        {
             Debug.Log($"Exception: {dbTask.Exception}");
+            return false;
+        }
+
+        Debug.Log($"{field} for user {User.DisplayName} has been updated!");
+        return true;
     }
 
-    private static async Task GetUserData()
+    public static async Task<UserData> GetUserData()
     {
-        var username = await ReadDb("username");
-        var kills = await ReadDb("kills");
+        return new UserData()
+        {
+            username = await ReadDb<string>("username"),
+            maxKills = Convert.ToInt32(await ReadDb<long>("kills")),
+            caps = Convert.ToInt32(await ReadDb<long>("caps"))
+        };
     }
 
-    private static async Task<object> ReadDb(string field)
+    private static async Task<T> ReadDb<T>(string field)
     {
         var userEntry = dbReference.Child("users").Child(User.UserId);
         
@@ -178,10 +209,22 @@ public static class AuthManager
         if (dbTask.Exception != null)
             Debug.Log($"Exception: {dbTask.Exception}");
 
-        return dbTask.Result;
+        return dbTask.Result.Value != null ? (T)dbTask.Result.Value : default;
     }
 
-    public static async Task GetScoreboard()
+    public struct UserRank
+    {
+        public string username;
+        public int maxKills;
+
+        public UserRank(object username, object kills)
+        {
+            this.username = username != null ? (string)username : default;
+            this.maxKills = kills != null ? Convert.ToInt32((long)kills) : default;
+        }
+    }
+    
+    public static async Task<List<UserRank>> GetScoreboard()
     {
         var dbTask = dbReference.Child("users").OrderByChild("kills").GetValueAsync();
         
@@ -192,11 +235,15 @@ public static class AuthManager
 
         DataSnapshot dataSnapshot = dbTask.Result;
 
+        List<UserRank> userRanks = new();
         foreach (var data in dataSnapshot.Children.Reverse())
         {
-            var username = data.Child("username");
-            var kills = data.Child("kills");
-            Debug.Log($"User: {username} - Kills: {kills}");
+            var username = data.Child("username").Value;
+            var kills = data.Child("kills").Value;
+            
+            userRanks.Add(new UserRank(username, kills));
         }
+
+        return userRanks;
     }
 }

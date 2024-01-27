@@ -115,6 +115,7 @@ public class UIManager : MonoBehaviour {
 		joystickMovement.SetActive (GameData.Instance.isMobile);
 		joystickRotation.SetActive (GameData.Instance.isMobile);
 		
+		playerStats.Initialize();
 		playerGuns.InitializeGuns();
 
 		this.RefreshLife ();
@@ -459,33 +460,34 @@ public class UIManager : MonoBehaviour {
 	{
 		this.showCanvas (PanelType.GAMEOVER);
 		textGiantScore.text = "You killed " + playerStats.score + " enemies!";
-		if (DataBase.Instance.isMaxScore (playerStats.score)) {
-			this.panelNewRank.SetActive (true);
-		} else {
-			this.panelNewRank.SetActive (false);
-		}
 
-		/*if (usedContinue) {
-			watchAdButton.SetActive (false);
-		} else {
-			watchAdButton.SetActive (true);
-		}*/
+		bool maxScore = playerStats.CheckMaxScore();
+		this.panelNewRank.SetActive (maxScore);
 	}
 
 	public void SaveNewRank()
 	{
-		if (this.rankInputName.text.Length < 3) {
+		/*if (this.rankInputName.text.Length < 3) {
 			return;
 		}
 
-		int result = DataBase.Instance.SaveNewMaxScore (playerStats.score, this.rankInputName.text.ToUpper());
-		this.LoadRanking(result);
+		int result = DataBase.Instance.SaveNewMaxScore (playerStats.score, this.rankInputName.text.ToUpper());*/
+		
+		this.LoadRanking(0);
 		this.showCanvas (PanelType.RANKING);
 	}
 
-	void LoadRanking(int newScoreLine)
+	private async void LoadRanking(int newScoreLine)
 	{
-		List<string> names = DataBase.Instance.LoadMaxScoresNames ();
+		var ranking = await AuthManager.GetScoreboard();
+
+		for (int i = 0; i < 10 && i < ranking.Count; i++)
+		{
+			rankingNames[i].text = ranking[i].username;
+			rankingScores[i].text = ranking[i].maxKills.ToString();
+		}
+		
+		/*List<string> names = DataBase.Instance.LoadMaxScoresNames ();
 		List<int> scores = DataBase.Instance.LoadMaxScores ();
 		for (int i = 0; i < 10; i++) {
 			rankingNames [i].text = names [i];
@@ -498,7 +500,7 @@ public class UIManager : MonoBehaviour {
 				rankingNames [i].color = Color.white;
 				rankingScores [i].color = Color.white;
 			}
-		}
+		}*/
 	}
 
 	void ShowWave(){

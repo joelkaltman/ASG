@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89404c21a8c476f4ba71881fe24e662d, type: 3}
   m_Name: GranadeFire
   m_EditorClassIdentifier: 
+  Id: 5
   bullet: {fileID: 1747902016218568, guid: b0fc952980581294db269b66dbd23f9b, type: 3}
   weapon: {fileID: 1216779940171574, guid: 45b21b7be069a0c438983a4e12ec6d79, type: 3}
   shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}

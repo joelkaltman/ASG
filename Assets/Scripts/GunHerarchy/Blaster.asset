@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d874dc335d2ea14a98fea5a2c8a06de, type: 3}
   m_Name: Blaster
   m_EditorClassIdentifier: 
+  Id: 4
   bullet: {fileID: 1950864758698762, guid: 9782f70f16f65bb4aafc51fd23034c16, type: 3}
   weapon: {fileID: 1987618995695810, guid: d4ddeb2810bb59049a67d4ab110e72bb, type: 3}
   shootAudio: {fileID: 8300000, guid: 1518ae552855f874d8caf08adb149b18, type: 3}

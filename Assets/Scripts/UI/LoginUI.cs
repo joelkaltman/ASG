@@ -46,7 +46,7 @@ public class LoginUI : MonoBehaviour
         string username = usernameText.text;
         string email = usernameText.text + "@gmail.com";
         string password = passwordText.text;
-        var result = await AuthManager.Register(email, password, username);
+        var result = await AuthManager.Register(email, password, username, 200, new List<int> {0});
         
         if (!result.valid)
         {

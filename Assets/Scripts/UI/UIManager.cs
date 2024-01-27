@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 #if UNITY_ANDROID
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour {
 
 	public Light directionalLight;
 
+	public Text textUsername;
 	public Text textRandomTextMenu;
 	public List<Text> textCapCount;
 	public Text textScore;
@@ -78,7 +80,8 @@ public class UIManager : MonoBehaviour {
 		playerStats.ResetEvents();
 		playerGuns.ResetEvents();
 		enemiesManager.ResetEvents();
-		
+
+		playerStats.onInitialized += OnUserInitialized;
 		playerStats.onScoreAdd += RefreshScore;
 		playerStats.onCapCountChange += RefreshCaps;
 		playerStats.onLifeChange += RefreshLife;
@@ -116,14 +119,6 @@ public class UIManager : MonoBehaviour {
 		joystickRotation.SetActive (GameData.Instance.isMobile);
 		
 		playerStats.Initialize();
-		playerGuns.InitializeGuns();
-
-		this.RefreshLife ();
-		this.RefreshScore ();
-		this.RefreshCaps ();
-		this.RefreshGun ();
-		this.RefreshGunCount ();
-		//this.ShowWave ();
 
 		int currentQuality = QualitySettings.GetQualityLevel ();
 		if (currentQuality >= this.qualityButtons.Count) {
@@ -136,13 +131,17 @@ public class UIManager : MonoBehaviour {
 		} else {
 			this.ShadowsOff ();
 		}
-
+		
 		#if UNITY_ANDROID
 		//Advertisement.Initialize ("36ef9efc-7ed1-4509-9e07-134218ad8936", true);
 		#endif
 	}
 
-	void Update () {
+	void Update ()
+	{
+		if (!playerStats.Initialized)
+			return;
+		
 		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
 		this.imageFrecuency.fillAmount += Time.deltaTime / frecuency;
 
@@ -445,10 +444,22 @@ public class UIManager : MonoBehaviour {
 		this.imageFrecuency.fillAmount = 0;
 	}
 
+	public void OnUserInitialized()
+	{
+		textUsername.text = playerStats.userData.username;
+		playerGuns.InitializeGuns();
+		
+		this.RefreshLife ();
+		this.RefreshScore ();
+		this.RefreshCaps ();
+		this.RefreshGun ();
+		this.RefreshGunCount ();
+	}
+	
 	public void RefreshCaps()
 	{
 		for (int i = 0; i < textCapCount.Count; i++) {
-			textCapCount[i].text = "x" + playerStats.caps;
+			textCapCount[i].text = "x" + playerStats.userData.caps;
 			BounceText bounce = textCapCount[i].GetComponent<BounceText> ();
 			if (bounce != null) {
 				bounce.Bounce (0.65f);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public abstract class GunData : ScriptableObject {
 		FAST
 	};
 
+	public int Id;
+	
 	[SerializeField] protected GameObject bullet;
 	public GameObject Bullet{
 		get{ return bullet; }

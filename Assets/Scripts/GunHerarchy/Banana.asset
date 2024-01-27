@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d874dc335d2ea14a98fea5a2c8a06de, type: 3}
   m_Name: Banana
   m_EditorClassIdentifier: 
+  Id: 1
   bullet: {fileID: 1639834419560252, guid: 273793634a7fe8f4ba096e99e87c9b51, type: 3}
   weapon: {fileID: 1247658704104802, guid: 23ce6a3fba423474591da134cec5e374, type: 3}
   shootAudio: {fileID: 8300000, guid: 1a24e4dd22c991c4189ff7e6359bb970, type: 3}

@@ -3,16 +3,18 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee941d03f5463d745b25605cd5cc2d3a, type: 3}
   m_Name: CAShield
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1658031343128850, guid: 9bb3942db64854845a9df06576565a6e, type: 2}
-  weapon: {fileID: 1595282773903486, guid: 6ea060cd8cfa7af4abd87cabe89a56b2, type: 2}
+  Id: 9
+  bullet: {fileID: 1658031343128850, guid: 9bb3942db64854845a9df06576565a6e, type: 3}
+  weapon: {fileID: 1595282773903486, guid: 6ea060cd8cfa7af4abd87cabe89a56b2, type: 3}
   shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}
   equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
   frecuency: 2

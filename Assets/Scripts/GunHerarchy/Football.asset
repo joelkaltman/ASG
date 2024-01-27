@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee941d03f5463d745b25605cd5cc2d3a, type: 3}
   m_Name: Football
   m_EditorClassIdentifier: 
+  Id: 2
   bullet: {fileID: 1891997583507272, guid: e6bb3bcce951fd24493eda6ea40b94fa, type: 3}
   weapon: {fileID: 1212073690314414, guid: 079fd14fcecc2d54aa7817d6d2e13d97, type: 3}
   shootAudio: {fileID: 8300000, guid: 53cc0bb3e1d805e4ea0633c4c0088049, type: 3}

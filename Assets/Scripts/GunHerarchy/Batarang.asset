@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee941d03f5463d745b25605cd5cc2d3a, type: 3}
   m_Name: Batarang
   m_EditorClassIdentifier: 
+  Id: 7
   bullet: {fileID: 1742477089698462, guid: d9531e1726037e245bab7384b097f229, type: 3}
   weapon: {fileID: 1325192264281910, guid: 6536059bca1f0e448b0043c9aa35ca72, type: 3}
   shootAudio: {fileID: 8300000, guid: a0dd160d88dcf9a48b315c251353d926, type: 3}

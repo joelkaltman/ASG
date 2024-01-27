@@ -9,6 +9,10 @@ using Random = UnityEngine.Random;
 public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats Instance;
+
+	public PlayerGuns playerGuns;
+	
+	public event Action onInitialized;
 	public event Action onScoreAdd;
 	public event Action onLifeChange;
 	public event Action onDie;
@@ -21,9 +25,10 @@ public class PlayerStats : MonoBehaviour {
 	public int life;
 	public int speed;
 	[HideInInspector] public int score;
-	public int caps => userData.caps;
 
-	private AuthManager.UserData userData;
+	public AuthManager.UserData userData { get; private set; }
+
+	public bool Initialized { get; private set; }
 
 	public AudioClip damageSound;
 
@@ -48,6 +53,8 @@ public class PlayerStats : MonoBehaviour {
 
 		shooter = GameObject.FindGameObjectWithTag ("Shooter");
 		hand = GameObject.FindGameObjectWithTag ("Hand");
+
+		playerGuns = new PlayerGuns();
 	}
 
 	public async void Initialize()
@@ -58,7 +65,9 @@ public class PlayerStats : MonoBehaviour {
 		dead = false;
 
 		userData = await AuthManager.GetUserData();
-		onCapCountChange?.Invoke ();
+
+		Initialized = true;
+		onInitialized?.Invoke ();
 	}
 
 	public async void SaveUserData()

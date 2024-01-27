@@ -18,6 +18,8 @@ public class PlayerGuns : MonoBehaviour {
 	public GameObject groundTarget;
 	GameObject instanceGroundTarget;
 
+	public bool Initialized;
+
 	public void ResetEvents()
 	{
 		onGunChange = null;
@@ -41,9 +43,15 @@ public class PlayerGuns : MonoBehaviour {
 		GameData.Instance.guns [gunsIndices[0]].Equip ();
 
 		this.enabled = false;
+
+		Initialized = true;
 	}
 
-	void Update () {
+	void Update ()
+	{
+		if (!Initialized)
+			return;
+		
 		this.SelectGunScroll();
 
 		if (!GameData.Instance.isMobile) {
@@ -139,12 +147,7 @@ public class PlayerGuns : MonoBehaviour {
 	{
 		return GameData.Instance.guns[this.gunsIndices [currentIndex]];
 	}
-
-	public void AddGranades(int amount)
-	{
-		//this.guns [1].CurrentCount += amount;
-	}
-
+	
 	public void ChangeShootingType(GunData.ShootingType newType, int duration)
 	{
 		for (int i = 0; i < this.gunsIndices.Count; i++) {
@@ -158,16 +161,6 @@ public class PlayerGuns : MonoBehaviour {
 		for (int i = 0; i < this.gunsIndices.Count; i++) {
 			GameData.Instance.guns[this.gunsIndices[i]].ChangeShootingType (GunData.ShootingType.NORMAL);
 		}
-	}
-
-	public bool HasGun(int gunIndex)
-	{
-		for (int i = 0; i < gunsIndices.Count; i++) {
-			if (gunsIndices [i] == gunIndex) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void BoomerangReturned(string weaponName, bool addCount){

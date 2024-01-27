@@ -127,7 +127,8 @@ public class UIManager : MonoBehaviour {
 		}
 		this.ChangePressedQualityButton (currentQuality);
 
-		if (DataBase.Instance.loadLights ()) {
+		var shadows = PlayerPrefs.GetInt("shadows", 0) == 1;
+		if (shadows) {
 			this.ShadowsOn ();
 		} else {
 			this.ShadowsOff ();
@@ -336,14 +337,14 @@ public class UIManager : MonoBehaviour {
 	{
 		directionalLight.enabled = true;
 		RenderSettings.ambientLight = Color.black;
-		DataBase.Instance.saveLights (true);
+		PlayerPrefs.SetInt("shadows", 1);
 	}
 
 	public void ShadowsOff()
 	{
 		directionalLight.enabled = false;
 		RenderSettings.ambientLight = Color.white;
-		DataBase.Instance.saveLights (false);
+		PlayerPrefs.SetInt("shadows", 0);
 	}
 
 	void ChangePressedQualityButton(int index)
@@ -357,11 +358,6 @@ public class UIManager : MonoBehaviour {
 			}
 			this.qualityButtons [i].colors = cb;
 		}
-	}
-
-	public void DeleteAllData()
-	{
-		DataBase.Instance.deleteAllData ();
 	}
 
 	public void Continue()

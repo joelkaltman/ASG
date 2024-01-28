@@ -30,7 +30,6 @@ public class UIManager : MonoBehaviour {
 	public GameObject panelGameOver;
 	public GameObject panelOptions;
 	public GameObject panelRanking;
-	public GameObject panelNewRank;
 
 	public Button buttonPlay;
 	public Text textUsername;
@@ -50,10 +49,6 @@ public class UIManager : MonoBehaviour {
 	public GameObject joystickMovement;
 	public GameObject joystickRotation;
 	public List<Button> qualityButtons;
-	public List<Text> rankingNames;
-	public List<Text> rankingScores;
-	public Text rankInputName;
-	public GameObject watchAdButton;
 
 	[Header("Gameplay Scripts")] 
 	public CameraController cameraController;
@@ -63,6 +58,12 @@ public class UIManager : MonoBehaviour {
 	public EnemiesManager enemiesManager;
 	public PowerUpsManager powerUpsManager;
 
+	[Header("GameOver")] 
+	public GameObject newHighScoreText;
+	
+	[Header("Ranking")] 
+	public RankingUI rankingUi;
+	
 	private float objetiveFade;
 	private float currentFade;
 	private float speedFade;
@@ -296,8 +297,8 @@ public class UIManager : MonoBehaviour {
 
 	public void GoToRanking()
 	{
-		this.LoadRanking (-1);
 		this.showCanvas (PanelType.RANKING);
+		rankingUi.LoadRanking();
 	}
 
 	public void GoToLastPanel()
@@ -454,46 +455,8 @@ public class UIManager : MonoBehaviour {
 		this.showCanvas (PanelType.GAMEOVER);
 		textGiantScore.text = "You killed " + playerStats.score + " enemies!";
 
-		bool maxScore = playerStats.CheckMaxScore();
-		this.panelNewRank.SetActive (maxScore);
-	}
-
-	public void SaveNewRank()
-	{
-		/*if (this.rankInputName.text.Length < 3) {
-			return;
-		}
-
-		int result = DataBase.Instance.SaveNewMaxScore (playerStats.score, this.rankInputName.text.ToUpper());*/
-		
-		this.LoadRanking(0);
-		this.showCanvas (PanelType.RANKING);
-	}
-
-	private async void LoadRanking(int newScoreLine)
-	{
-		var ranking = await AuthManager.GetScoreboard();
-
-		for (int i = 0; i < 10 && i < ranking.Count; i++)
-		{
-			rankingNames[i].text = ranking[i].username;
-			rankingScores[i].text = ranking[i].maxKills.ToString();
-		}
-		
-		/*List<string> names = DataBase.Instance.LoadMaxScoresNames ();
-		List<int> scores = DataBase.Instance.LoadMaxScores ();
-		for (int i = 0; i < 10; i++) {
-			rankingNames [i].text = names [i];
-			rankingScores [i].text = scores [i].ToString ();
-
-			if (i == newScoreLine) {
-				rankingNames [i].color = Color.yellow;
-				rankingScores [i].color = Color.yellow;
-			} else {
-				rankingNames [i].color = Color.white;
-				rankingScores [i].color = Color.white;
-			}
-		}*/
+		bool newMaxScore = playerStats.CheckNewHighScore();
+		newHighScoreText.SetActive(newMaxScore);
 	}
 
 	void ShowWave(){

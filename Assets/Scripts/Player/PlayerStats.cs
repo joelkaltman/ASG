@@ -86,7 +86,7 @@ public class PlayerStats : MonoBehaviour {
 		await AuthManager.WriteToDb("guns", userData.guns);
 	}
 
-	public bool CheckMaxScore()
+	public bool CheckNewHighScore()
 	{
 		bool newHighScore = score > userData.maxKills;
 		if (newHighScore)

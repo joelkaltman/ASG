@@ -27,6 +27,7 @@ public class LoginUI : MonoBehaviour
     private async void TryAutomaticLogic()
     {
         inputPanel.SetActive(false);
+        loadingText.SetActive(true);
         
         if (!usedAutomaticLogin && GetPlayerPrefs(out string email, out string password))
         {

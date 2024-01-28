@@ -266,6 +266,12 @@ public class UIManager : MonoBehaviour {
 	{
 		Application.Quit ();
 	}
+	
+	public void LogOut()
+	{
+		AuthManager.Logout();
+		SceneManager.LoadScene ("Login");
+	}
 
 	public void PauseGame()
 	{

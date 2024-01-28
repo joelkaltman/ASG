@@ -32,16 +32,26 @@ public static class AuthManager
 
     public static async Task<Result> Initialize()
     {
-        var initTask = FirebaseApp.CheckAndFixDependenciesAsync();
-        
-        await Task.Run(() => initTask);
-        
-        if (dependencyStatus == DependencyStatus.Available)
+        try
         {
-            auth = FirebaseAuth.DefaultInstance;
-            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-            return Result.Valid();
+            var checkDep = FirebaseApp.CheckDependenciesAsync();
+            var check = await checkDep;
+                
+            var initTask = FirebaseApp.CheckAndFixDependenciesAsync();
+            var initResult = await initTask;
+            
+            if (dependencyStatus == initResult)
+            {
+                auth = FirebaseAuth.DefaultInstance;
+                dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+                return Result.Valid();
+            }
         }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        
 
         return Result.Error("Service Unreachable");
     }
@@ -49,19 +59,23 @@ public static class AuthManager
     public static void Logout()
     {
         auth.SignOut();
+        auth = null;
+        User = null;
+        dbReference = null;
     }
 
     public static async Task<Result> Login(string email, string password)
     {
         //Call the Firebase auth signin function passing the email and password
         var loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
+        var loginResult = await loginTask;
         //Wait until the task completes
-        await Task.Run(() => loginTask);
+        //await Task.Run(() => loginTask);
 
         if (loginTask.Exception != null)
         {
             //If there are errors handle them
-            Debug.LogWarning(message: $"Failed to register task with {loginTask.Exception}");
+            Debug.LogWarning(message: $"Failed to register task with {loginTask}");
             FirebaseException firebaseEx = loginTask.Exception.GetBaseException() as FirebaseException;
             AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
 
@@ -88,7 +102,7 @@ public static class AuthManager
             return Result.Error(message);
         }
 
-        User = loginTask.Result.User;
+        User = loginResult.User;
         return Result.Valid();
     }
 

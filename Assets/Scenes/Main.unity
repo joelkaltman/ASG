@@ -7370,6 +7370,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4570373337085253446, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2051715108}
+    - target: {fileID: 4570373337085253446, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LogOut
+      objectReference: {fileID: 0}
+    - target: {fileID: 4570373337085253446, guid: 2b0efc84268cab34186359921c0638ab,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4880479927079323828, guid: 2b0efc84268cab34186359921c0638ab,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

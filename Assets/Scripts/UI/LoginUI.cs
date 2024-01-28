@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,23 +14,31 @@ public class LoginUI : MonoBehaviour
     public Text passwordText;
 
     public static AuthManager.UserData userDataLogin;
+
+    private bool initialized;
     
     void Start()
     {
-        AuthManager.Initialize().ContinueWith((task) =>
-        {
-            if (!task.Result.valid)
-            {
-                Debug.LogError(task.Result.error);
-            }
-        });
-        
-        loginButton.onClick.AddListener(Login);
-        registerButton.onClick.AddListener(Register);
+        userDataLogin = null;
     }
 
-    private async void Login()
+    private async Task InitializeAuth()
     {
+        if (initialized)
+            return;
+        
+        var result = await AuthManager.Initialize();
+        initialized = result.valid;
+        if (!initialized)
+        {
+            Debug.LogError(result.error);
+        }
+    }
+
+    public async void Login()
+    {
+        await InitializeAuth();
+        
         string email = usernameText.text + "@gmail.com";
         string password = passwordText.text;
         var result = await AuthManager.Login(email, password);
@@ -45,8 +54,10 @@ public class LoginUI : MonoBehaviour
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
     
-    private async void Register()
+    public async void Register()
     {
+        await InitializeAuth();
+        
         string username = usernameText.text;
         string email = usernameText.text + "@gmail.com";
         string password = passwordText.text;

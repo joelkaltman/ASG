@@ -32,8 +32,6 @@ public class UIManager : MonoBehaviour {
 	public GameObject panelRanking;
 	public GameObject panelNewRank;
 
-	public Light directionalLight;
-
 	public Button buttonPlay;
 	public Text textUsername;
 	public Text textRandomTextMenu;
@@ -127,12 +125,6 @@ public class UIManager : MonoBehaviour {
 		}
 		this.ChangePressedQualityButton (currentQuality);
 
-		var shadows = PlayerPrefs.GetInt("shadows", 0) == 1;
-		if (shadows) {
-			this.ShadowsOn ();
-		} else {
-			this.ShadowsOff ();
-		}
 		
 		#if UNITY_ANDROID
 		//Advertisement.Initialize ("36ef9efc-7ed1-4509-9e07-134218ad8936", true);
@@ -337,20 +329,6 @@ public class UIManager : MonoBehaviour {
 		}
 
 		QualitySettings.SetQualityLevel (quality, false);
-	}
-
-	public void ShadowsOn()
-	{
-		directionalLight.enabled = true;
-		RenderSettings.ambientLight = Color.black;
-		PlayerPrefs.SetInt("shadows", 1);
-	}
-
-	public void ShadowsOff()
-	{
-		directionalLight.enabled = false;
-		RenderSettings.ambientLight = Color.white;
-		PlayerPrefs.SetInt("shadows", 0);
 	}
 
 	void ChangePressedQualityButton(int index)

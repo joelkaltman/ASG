@@ -529,11 +529,11 @@ RectTransform:
   - {fileID: 88884396}
   - {fileID: 1233059535}
   m_Father: {fileID: 1639592022}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 143.7}
+  m_AnchoredPosition: {x: 0, y: 187}
   m_SizeDelta: {x: 280, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &771230679
@@ -688,13 +688,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1639592022}
+  m_Father: {fileID: 1482466093}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 84.03497}
-  m_SizeDelta: {x: 384.6, y: -168.07}
+  m_AnchoredPosition: {x: 0.00001049, y: 102.6}
+  m_SizeDelta: {x: 284.104, y: -271.5612}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &847899334
 MonoBehaviour:
@@ -1649,6 +1649,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 847899333}
   - {fileID: 1639592022}
   m_Father: {fileID: 1460304764}
   m_RootOrder: 1
@@ -1693,7 +1694,7 @@ RectTransform:
   m_Children:
   - {fileID: 867956359}
   m_Father: {fileID: 1639592022}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1776,7 +1777,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2051715110}
         m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
-        m_MethodName: Register
+        m_MethodName: RegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1859,11 +1860,11 @@ RectTransform:
   - {fileID: 739548118}
   - {fileID: 726730118}
   m_Father: {fileID: 1639592022}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 95.6}
+  m_AnchoredPosition: {x: 0, y: 124.2}
   m_SizeDelta: {x: 280, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1529685972
@@ -2128,13 +2129,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 847899333}
   - {fileID: 1499098554}
   - {fileID: 1849485225}
   - {fileID: 771230678}
   - {fileID: 1529685971}
   m_Father: {fileID: 1482466093}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2189,6 +2189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1713981402}
   - component: {fileID: 1713981401}
+  - component: {fileID: 1713981403}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2273,6 +2274,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 55, y: -80, z: -80}
+--- !u!114 &1713981403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713981400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e71d3ddd8f5a8c64986c5718ef81c19a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directionalLight: {fileID: 1713981401}
 --- !u!1 &1849485224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2308,7 +2322,7 @@ RectTransform:
   m_Children:
   - {fileID: 1293722401}
   m_Father: {fileID: 1639592022}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -2391,7 +2405,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2051715110}
         m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
-        m_MethodName: Login
+        m_MethodName: LoginButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2515,10 +2529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0abd6f86b7d58b438d192eafe9d4ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginButton: {fileID: 1849485228}
-  registerButton: {fileID: 1499098557}
   usernameText: {fileID: 1233059536}
   passwordText: {fileID: 726730119}
+  inputPanel: {fileID: 1639592021}
 --- !u!1 &1804444653143875
 GameObject:
   m_ObjectHideFlags: 0

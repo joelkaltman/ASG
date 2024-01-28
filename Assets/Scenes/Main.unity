@@ -5673,6 +5673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1713981402}
   - component: {fileID: 1713981401}
+  - component: {fileID: 1713981403}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -5757,6 +5758,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 55, y: -80, z: -80}
+--- !u!114 &1713981403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713981400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e71d3ddd8f5a8c64986c5718ef81c19a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directionalLight: {fileID: 1713981401}
 --- !u!1001 &1722971853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8707,7 +8721,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2051715108}
+      objectReference: {fileID: 1713981403}
+    - target: {fileID: 8987633083019834652, guid: 7f837989935dd384d805f1d7f4c8e92b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShadowsOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987633083019834652, guid: 7f837989935dd384d805f1d7f4c8e92b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8987633083161327072, guid: 7f837989935dd384d805f1d7f4c8e92b,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -8787,7 +8811,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2051715108}
+      objectReference: {fileID: 1713981403}
+    - target: {fileID: 8987633083414070168, guid: 7f837989935dd384d805f1d7f4c8e92b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShadowsOn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987633083414070168, guid: 7f837989935dd384d805f1d7f4c8e92b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8987633083414070173, guid: 7f837989935dd384d805f1d7f4c8e92b,
         type: 3}
       propertyPath: m_AnchorMax.y

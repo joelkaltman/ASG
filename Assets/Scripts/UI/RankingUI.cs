@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RankingUI : MonoBehaviour
 {
     public int maxEntries;
+    public Transform rankingContainer;
     public GameObject userRankObject;
+
+    public UserRankUI mainUserRank;
     
     private List<GameObject> instances = new ();
 
@@ -21,11 +25,18 @@ public class RankingUI : MonoBehaviour
         
         for (int i = 0; i < maxEntries && i < ranking.Count; i++)
         {
-            var rankObject = Instantiate(userRankObject, transform);
+            var rankObject = Instantiate(userRankObject, rankingContainer);
             var rankUi = rankObject.GetComponent<UserRankUI>();
-            rankUi.SetUser(ranking[i]);
+            var pos = i + 1;
+            rankUi.SetUser(pos, ranking[i]);
             instances.Add(rankObject);
         }
+
+        var username = PlayerStats.Instance.userData.username;
+        var userIndex = ranking.FindIndex(x => x.username == username);
+        var userRank = userIndex < 0 ? new AuthManager.UserRank(username, 0) : ranking[userIndex];
+        var mainPos = userIndex < 0 ? -1 : userIndex + 1;
+        mainUserRank.SetUser(mainPos, userRank);
     }
 
     public void DestroyRanking()

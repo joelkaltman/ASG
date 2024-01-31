@@ -34,13 +34,8 @@ public static class AuthManager
     {
         try
         {
-            var checkDep = FirebaseApp.CheckDependenciesAsync();
-            var check = await checkDep;
-                
-            var initTask = FirebaseApp.CheckAndFixDependenciesAsync();
-            var initResult = await initTask;
-            
-            if (dependencyStatus == initResult)
+            var init = await FirebaseApp.CheckAndFixDependenciesAsync();
+            if (dependencyStatus == init)
             {
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -49,10 +44,9 @@ public static class AuthManager
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            return Result.Error(e.Message);
         }
         
-
         return Result.Error("Service Unreachable");
     }
 
@@ -66,11 +60,9 @@ public static class AuthManager
 
     public static async Task<Result> Login(string email, string password)
     {
-        var loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
-
         try
         {
-            var loginResult = await loginTask;
+            var loginResult = await auth.SignInWithEmailAndPasswordAsync(email, password);
             User = loginResult.User;
         }
         catch (Exception exception)
@@ -83,10 +75,9 @@ public static class AuthManager
 
     public static async Task<Result> Register(string email, string password, string username, int caps, List<int> guns)
     {
-        var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
         try
         {
-            var register = await registerTask;
+            var register = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
             User = register.User;
         }
         catch (Exception exception)
@@ -103,16 +94,20 @@ public static class AuthManager
         return Result.Valid();
     }
 
-    private static async Task UpdateUserProfile(string username)
+    private static async Task<Result> UpdateUserProfile(string username)
     {
         UserProfile profile = new UserProfile() { DisplayName = username};
 
-        var userTask = User.UpdateUserProfileAsync(profile);
-        
-        await Task.Run(() => userTask);
-        
-        if (userTask.Exception != null)
-            Debug.Log($"Exception: {userTask.Exception}");
+        try
+        {
+            await User.UpdateUserProfileAsync(profile);
+        }
+        catch (Exception exception)
+        {
+            return Result.Error(exception.Message);
+        }
+
+        return Result.Valid();
     }
     
     public class UserData
@@ -136,14 +131,14 @@ public static class AuthManager
     public static async Task<bool> WriteToDb(string field, object value)
     {
         var userEntry = dbReference.Child("users").Child(User.UserId);
-        
-        var dbTask = userEntry.Child(field).SetValueAsync(value);
-        
-        await Task.Run(() => dbTask);
 
-        if (dbTask.Exception != null)
+        try
         {
-            Debug.Log($"Exception: {dbTask.Exception}");
+            await userEntry.Child(field).SetValueAsync(value);
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError($"Exception: {exception}");
             return false;
         }
 
@@ -170,15 +165,18 @@ public static class AuthManager
     private static async Task<T> ReadDb<T>(string field)
     {
         var userEntry = dbReference.Child("users").Child(User.UserId);
-        
-        var dbTask = userEntry.Child(field).GetValueAsync();
-        
-        await Task.Run(() => dbTask);
-        
-        if (dbTask.Exception != null)
-            Debug.Log($"Exception: {dbTask.Exception}");
 
-        return dbTask.Result.Value != null ? (T)dbTask.Result.Value : default;
+        try
+        {
+            var result = await userEntry.Child(field).GetValueAsync();
+            return result.Value != null ? (T)result.Value : default;
+        }
+        catch (Exception exception)
+        {
+            Debug.Log($"Exception: {exception}");
+        }
+
+        return default;
     }
 
     public struct UserRank
@@ -195,22 +193,21 @@ public static class AuthManager
     
     public static async Task<List<UserRank>> GetScoreboard()
     {
-        var dbTask = dbReference.Child("users").OrderByChild("kills").GetValueAsync();
-        
-        await Task.Run(() => dbTask);
-        
-        if (dbTask.Exception != null)
-            Debug.Log($"Exception: {dbTask.Exception}");
-
-        DataSnapshot dataSnapshot = dbTask.Result;
-
         List<UserRank> userRanks = new();
-        foreach (var data in dataSnapshot.Children.Reverse())
+        try
         {
-            var username = data.Child("username").Value;
-            var kills = data.Child("kills").Value;
+            var dataSnapshot = await dbReference.Child("users").OrderByChild("kills").GetValueAsync();
+            foreach (var data in dataSnapshot.Children.Reverse())
+            {
+                var username = data.Child("username").Value;
+                var kills = data.Child("kills").Value;
             
-            userRanks.Add(new UserRank(username, kills));
+                userRanks.Add(new UserRank(username, kills));
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError($"Exception: {exception}");
         }
 
         return userRanks;

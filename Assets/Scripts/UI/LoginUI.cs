@@ -21,6 +21,14 @@ public class LoginUI : MonoBehaviour
     void Start()
     {
         userDataLogin = null;
+        
+        if (usedAutomaticLogin)
+        {
+            // loged out
+            SavePlayerPrefs("", "");
+            return;
+        }
+        
         TryAutomaticLogic();
     }
 
@@ -51,7 +59,7 @@ public class LoginUI : MonoBehaviour
 
         email = PlayerPrefs.GetString("email");
         password = PlayerPrefs.GetString("password");
-        return true;
+        return !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
     }
     
     private void SavePlayerPrefs(string email, string password)

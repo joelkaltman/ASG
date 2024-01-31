@@ -66,76 +66,33 @@ public static class AuthManager
 
     public static async Task<Result> Login(string email, string password)
     {
-        //Call the Firebase auth signin function passing the email and password
         var loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
-        var loginResult = await loginTask;
-        //Wait until the task completes
-        //await Task.Run(() => loginTask);
 
-        if (loginTask.Exception != null)
+        try
         {
-            //If there are errors handle them
-            Debug.LogWarning(message: $"Failed to register task with {loginTask}");
-            FirebaseException firebaseEx = loginTask.Exception.GetBaseException() as FirebaseException;
-            AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-
-            string message = "Login Failed!";
-            switch (errorCode)
-            {
-                case AuthError.MissingEmail:
-                    message = "Missing Email";
-                    break;
-                case AuthError.MissingPassword:
-                    message = "Missing Password";
-                    break;
-                case AuthError.WrongPassword:
-                    message = "Wrong Password";
-                    break;
-                case AuthError.InvalidEmail:
-                    message = "Invalid Email";
-                    break;
-                case AuthError.UserNotFound:
-                    message = "Account does not exist";
-                    break;
-            }
-            Debug.Log($"Warning: {message}");
-            return Result.Error(message);
+            var loginResult = await loginTask;
+            User = loginResult.User;
+        }
+        catch (Exception exception)
+        {
+            return Result.Error(exception.Message);
         }
 
-        User = loginResult.User;
         return Result.Valid();
     }
 
     public static async Task<Result> Register(string email, string password, string username, int caps, List<int> guns)
     {
         var registerTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
-        await Task.Run(() => registerTask);
-
-        if (registerTask.Exception != null)
+        try
         {
-            Debug.LogWarning(message: $"Failed to register task with {registerTask.Exception}");
-            FirebaseException firebaseEx = registerTask.Exception.GetBaseException() as FirebaseException;
-            AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-
-            string message = "Register Failed!";
-            switch (errorCode)
-            {
-                case AuthError.MissingEmail:
-                    message = "Missing Email";
-                    break;
-                case AuthError.MissingPassword:
-                    message = "Missing Password";
-                    break;
-                case AuthError.WeakPassword:
-                    message = "Weak Password";
-                    break;
-                case AuthError.EmailAlreadyInUse:
-                    message = "Email Already In Use";
-                    break;
-            }
-            return Result.Error(message);
+            var register = await registerTask;
+            User = register.User;
         }
-        User = registerTask.Result.User;
+        catch (Exception exception)
+        {
+            return Result.Error(exception.Message);
+        }
 
         if (User != null)
         {

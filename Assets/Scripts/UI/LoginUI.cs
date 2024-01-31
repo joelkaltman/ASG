@@ -75,6 +75,9 @@ public class LoginUI : MonoBehaviour
 
     public void LoginButton()
     {
+        if (!ValidateFields())
+            return;
+        
         string email = usernameText.text + "@gmail.com";
         string password = passwordText.text;
         
@@ -89,7 +92,7 @@ public class LoginUI : MonoBehaviour
 
         if (!result.valid)
         {
-            Debug.LogError(result.error);
+            PopupUI.Instance.ShowPopUp("Error", result.error, "Ok");
             return false;
         }
 
@@ -100,6 +103,9 @@ public class LoginUI : MonoBehaviour
 
     public void RegisterButton()
     {
+        if (!ValidateFields())
+            return;
+        
         string username = usernameText.text;
         string email = usernameText.text + "@gmail.com";
         string password = passwordText.text;
@@ -115,7 +121,7 @@ public class LoginUI : MonoBehaviour
         
         if (!result.valid)
         {
-            Debug.LogError(result.error);
+            PopupUI.Instance.ShowPopUp("Error", result.error, "Ok");
             return;
         }
         
@@ -127,5 +133,22 @@ public class LoginUI : MonoBehaviour
     {
         userDataLogin = await AuthManager.GetUserData();
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
+    }
+
+    private bool ValidateFields()
+    {
+        if (usernameText.text.Length < 6)
+        {
+            PopupUI.Instance.ShowPopUp("Error", "Username is too short!", "Ok");
+            return false;
+        }
+
+        if(passwordText.text.Length < 6)
+        {
+            PopupUI.Instance.ShowPopUp("Error", "Password is too short!", "Ok");
+            return false;
+        }
+
+        return true;
     }
 }

@@ -25,6 +25,9 @@ public class RankingUI : MonoBehaviour
         
         for (int i = 0; i < maxEntries && i < ranking.Count; i++)
         {
+            if(ranking[i].maxKills <= 0)
+                continue;
+            
             var rankObject = Instantiate(userRankObject, rankingContainer);
             var rankUi = rankObject.GetComponent<UserRankUI>();
             var pos = i + 1;

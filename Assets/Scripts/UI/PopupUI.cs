@@ -30,6 +30,7 @@ public class PopupUI : MonoBehaviour
     
     void Start()
     {
+        this.GetComponent<Canvas>().enabled = true;
         this.gameObject.SetActive(false);
     }
 

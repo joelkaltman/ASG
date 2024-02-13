@@ -9,6 +9,8 @@ TagManager:
   - Target
   - Hand
   - Shooter
+  - Projectile
+  - Gun
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 114517682872090106}
   m_Layer: 10
   m_Name: BlasterBeam
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

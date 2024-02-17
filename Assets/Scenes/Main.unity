@@ -5851,7 +5851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd3904fb173c644e9fd152cd221b279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 1
+  spawnTime: 10
 --- !u!114 &1874993717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3485518306402325019, guid: 80c58e04d3e7a394fbee53c74df35f81,
@@ -7442,12 +7442,12 @@ PrefabInstance:
     - target: {fileID: 3796055429411626195, guid: fb8e2f57ee08ea641af18b37e95ff19e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -71.633514
+      value: -71.633545
       objectReference: {fileID: 0}
     - target: {fileID: 3796055429411626195, guid: fb8e2f57ee08ea641af18b37e95ff19e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -49.633484
+      value: -49.633545
       objectReference: {fileID: 0}
     - target: {fileID: 3796055429411626198, guid: fb8e2f57ee08ea641af18b37e95ff19e,
         type: 3}
@@ -7463,6 +7463,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4107255008924312305, guid: fb8e2f57ee08ea641af18b37e95ff19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 7047077876268472266, guid: fb8e2f57ee08ea641af18b37e95ff19e,
         type: 3}
@@ -7488,6 +7493,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7431004877975547477, guid: fb8e2f57ee08ea641af18b37e95ff19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00012207031
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8e2f57ee08ea641af18b37e95ff19e, type: 3}

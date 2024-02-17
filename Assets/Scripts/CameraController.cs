@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        initialPosition = new Vector3 (0, 8, -5);
+        initialPosition = new Vector3 (0, 14, -8);
         initialRotation = new Vector3 (60, 0, 0);
 
         currentMoveSpeed = 0;

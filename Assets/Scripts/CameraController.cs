@@ -10,8 +10,6 @@ public class CameraController : MonoBehaviour {
     public float speedMove;
     public float speedRotate;
 
-    private Vector3 distancia;
-
     private Vector3 initialPosition;
     private Vector3 initialRotation;
 

@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 96066245691336948}
   - component: {fileID: 114846885359261434}
   - component: {fileID: 114518635330630060}
+  - component: {fileID: 2391131258854461610}
   m_Layer: 16
   m_Name: Batarang
   m_TagString: Projectile
@@ -369,3 +370,21 @@ MonoBehaviour:
   imagesPow:
   - {fileID: 1122093458278606, guid: 67cd6e335fbb5214bb4b2d69ea4540eb, type: 3}
   - {fileID: 1034265805830324, guid: ffebe6bb2ece702489dd0585128266d3, type: 3}
+--- !u!114 &2391131258854461610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742477089698462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

@@ -9,6 +9,7 @@ public class RankingUI : MonoBehaviour
     public int maxEntries;
     public Transform rankingContainer;
     public GameObject userRankObject;
+    public GameObject loadingText;
 
     public UserRankUI mainUserRank;
     
@@ -21,6 +22,8 @@ public class RankingUI : MonoBehaviour
 
     public async void LoadRanking()
     {
+        loadingText.SetActive(true);
+        
         var ranking = await AuthManager.GetScoreboard();
         
         for (int i = 0; i < maxEntries && i < ranking.Count; i++)
@@ -40,6 +43,8 @@ public class RankingUI : MonoBehaviour
         var userRank = userIndex < 0 ? new AuthManager.UserRank(username, 0) : ranking[userIndex];
         var mainPos = userIndex < 0 ? -1 : userIndex + 1;
         mainUserRank.SetUser(mainPos, userRank);
+        
+        loadingText.SetActive(false);
     }
 
     public void DestroyRanking()

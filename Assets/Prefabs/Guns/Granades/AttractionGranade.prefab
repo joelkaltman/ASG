@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 82363676538708878}
   - component: {fileID: 114745569912978540}
   - component: {fileID: 114820240565778012}
+  - component: {fileID: -539983124705983639}
   m_Layer: 13
   m_Name: AttractionGranade
   m_TagString: Projectile
@@ -241,3 +242,21 @@ MonoBehaviour:
   duration: 15
   attractionObject: {fileID: 1557026946567146, guid: 163200bdf42665649bc39dd880bfce78,
     type: 3}
+--- !u!114 &-539983124705983639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143495780143040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

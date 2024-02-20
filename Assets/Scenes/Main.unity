@@ -476,6 +476,104 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1298123608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &208206954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208206957}
+  - component: {fileID: 208206956}
+  - component: {fileID: 208206955}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &208206955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208206954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProtocolType: 0
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
+  m_HeartbeatTimeoutMS: 500
+  m_ConnectTimeoutMS: 1000
+  m_MaxConnectAttempts: 60
+  m_DisconnectTimeoutMS: 30000
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
+    ServerListenAddress: 127.0.0.1
+  DebugSimulator:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0
+--- !u!114 &208206956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208206954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: 208206955}
+    PlayerPrefab: {fileID: 1468178588305064, guid: b77a44ac5b795bb46aa338611e75aeae,
+      type: 3}
+    Prefabs:
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: e900894cf1968aa49858c8e01c129751, type: 2}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 1
+    EnableNetworkLogs: 1
+    OldPrefabList: []
+  RunInBackground: 1
+  LogLevel: 1
+--- !u!4 &208206957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208206954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &315222636 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5983988043871094419, guid: bfbb619b98bd654489e25b644ce0460d,
@@ -3001,6 +3099,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1468178588305064, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4686096014626862, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -3060,15 +3162,10 @@ PrefabInstance:
       propertyPath: joystickRotation
       value: 
       objectReference: {fileID: 84840150}
-    - target: {fileID: 8191500137561635887, guid: b77a44ac5b795bb46aa338611e75aeae,
+    - target: {fileID: 6807442012342447700, guid: b77a44ac5b795bb46aa338611e75aeae,
         type: 3}
-      propertyPath: outlineMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8191500137561635887, guid: b77a44ac5b795bb46aa338611e75aeae,
-        type: 3}
-      propertyPath: outlineWidth
-      value: 3
+      propertyPath: GlobalObjectIdHash
+      value: 2897390770
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
@@ -7260,6 +7357,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 4107255008924312305, guid: fb8e2f57ee08ea641af18b37e95ff19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7047077876268472266, guid: fb8e2f57ee08ea641af18b37e95ff19e,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -7284,6 +7386,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7753597984685624394, guid: fb8e2f57ee08ea641af18b37e95ff19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0007324219
+      objectReference: {fileID: 0}
+    - target: {fileID: 7753597984685624394, guid: fb8e2f57ee08ea641af18b37e95ff19e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 61.691406
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8e2f57ee08ea641af18b37e95ff19e, type: 3}
@@ -7453,7 +7565,7 @@ PrefabInstance:
     - target: {fileID: 8987633082402802587, guid: 7f837989935dd384d805f1d7f4c8e92b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -58.366882
+      value: -58.366943
       objectReference: {fileID: 0}
     - target: {fileID: 8987633082402802587, guid: 7f837989935dd384d805f1d7f4c8e92b,
         type: 3}

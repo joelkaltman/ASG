@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : NetworkBehaviour {
 	
 	public float gravity;
 	public GameObject particlesDust;
@@ -19,18 +20,33 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if(!IsOwner)
+			return;
+		
 		isMoving = false;
 		this.rb = this.GetComponent< Rigidbody > ();
 		this.rb.maxAngularVelocity = 0;
 		this.animator = this.GetComponent < Animator > ();
 		this.initialY = this.transform.position.y;
 
-		arrowCap.SetActive (true);
+		if (joystickMovement == null)
+		{
+			joystickMovement = GameObject.Find("MovementJoystick");
+		}
+
+		var camera = Camera.main;
+		var cameraController = camera.GetComponent<CameraController>();
+		cameraController.player = this.gameObject;
+
+		//arrowCap.SetActive (true);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		if(!IsOwner)
+			return;
+		
 		this.FallAndMove ();
 
 		this.RotateArrowCap ();
@@ -78,6 +94,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void RotateArrowCap()
 	{
+		return;
 		Vector3 capPos = PowerUpsManager.Instance.getCapPosition ();
 		if (capPos == null) {
 			this.arrowCap.SetActive (false);
@@ -93,6 +110,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Rotation()
 	{
+		return;
 		if (Time.deltaTime > 0) {
 			if (GameData.Instance.isMobile) {
 				// Rotate by stick

@@ -15,7 +15,6 @@ public class TransparentOnOverlap : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		player = PlayerStats.Instance.getPlayer();
 		rend = this.GetComponent<Renderer> ();
 		normalMaterial = rend.material;
 		isTransparent = false;
@@ -23,6 +22,11 @@ public class TransparentOnOverlap : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		player = PlayerStats.Instance.getPlayer();
+
+		if (!player)
+			return;
+		
 		Vector3 directionRay = player.transform.position - Camera.main.transform.position;
 
 		RaycastHit hit;

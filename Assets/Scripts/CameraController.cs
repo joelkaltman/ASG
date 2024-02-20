@@ -50,7 +50,11 @@ public class CameraController : MonoBehaviour {
     }
 	
     // Update is called once per frame
-    void LateUpdate () {
+    void LateUpdate ()
+    {
+        if (player == null)
+            return;
+        
         if (currentMoveSpeed < speedMove) {
             currentMoveSpeed += 0.1f;
         }

@@ -165,7 +165,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Dust()
 	{
-		if (PlayerStats.Instance.speed > 5 && isMoving) {
+		if (PlayerStats.Instance.speed > 5 && isMoving && particlesDust) {
 			GameObject dust = Instantiate (particlesDust, this.transform.position, Quaternion.identity);
 			Destroy (dust, 3);
 		}

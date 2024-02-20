@@ -693,8 +693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 1
-  particlesDust: {fileID: 1520154253265960, guid: a30e1b07d8ee3604582a0b92c116ed5d,
-    type: 3}
+  particlesDust: {fileID: 0}
   arrowCap: {fileID: 0}
   joystickMovement: {fileID: 0}
   joystickRotation: {fileID: 0}

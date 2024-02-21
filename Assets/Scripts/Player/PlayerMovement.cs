@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour {
 	
-	public float gravity;
 	public GameObject particlesDust;
 	public GameObject arrowCap;
 	public GameObject joystickMovement;
-	public GameObject joystickRotation;
 
 	bool isMoving;
 	float fallSpeed;
@@ -18,9 +16,11 @@ public class PlayerMovement : NetworkBehaviour {
 
 	float initialY;
 
+    private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
+
 	// Use this for initialization
 	void Start () {
-		if(!IsOwner)
+		if(!shouldMove)
 			return;
 		
 		isMoving = false;
@@ -44,7 +44,7 @@ public class PlayerMovement : NetworkBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if(!IsOwner)
+		if(!shouldMove)
 			return;
 		
 		this.FallAndMove ();
@@ -94,7 +94,6 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void RotateArrowCap()
 	{
-		return;
 		Vector3 capPos = PowerUpsManager.Instance.getCapPosition ();
 		if (capPos == null) {
 			this.arrowCap.SetActive (false);
@@ -110,7 +109,6 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Rotation()
 	{
-		return;
 		if (Time.deltaTime > 0) {
 			if (GameData.Instance.isMobile) {
 				// Rotate by stick

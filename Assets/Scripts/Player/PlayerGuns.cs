@@ -44,14 +44,6 @@ public class PlayerGuns : MonoBehaviour {
 			owned.Initialize();
 		}
 		ownedGuns.First().Equip();
-		
-		/*this.gunsIndices = DataBase.Instance.LoadGunIndices ();
-		for (int i = 0; i < gunsIndices.Count; i++) {
-			GameData.Instance.guns [gunsIndices[i]].Initialize ();
-		}
-		GameData.Instance.guns [gunsIndices[0]].Equip ();*/
-
-		this.enabled = false;
 
 		Initialized = true;
 	}

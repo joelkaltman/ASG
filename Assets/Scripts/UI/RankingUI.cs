@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,11 @@ public class RankingUI : MonoBehaviour
     public UserRankUI mainUserRank;
     
     private List<GameObject> instances = new ();
+
+    private void Start()
+    {
+        LoadRanking();
+    }
 
     private void OnDestroy()
     {

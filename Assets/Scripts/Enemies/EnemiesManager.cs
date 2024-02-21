@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class EnemiesManager : MonoBehaviour {
 
-	[HideInInspector]public static EnemiesManager Instance;
+	public static EnemiesManager Instance;
 	public event Action onWaveChange;
 
 	public List<Wave> waves;

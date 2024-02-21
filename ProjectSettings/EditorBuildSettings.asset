@@ -15,9 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Store.unity
     guid: 1e20d8f427361c5419d49120a950ae3f
   - enabled: 1
-    path: Assets/Scenes/NetworkTest.unity
-    guid: adcf8a6a7078a7b45bd59ff620851c75
-  - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 17ab305a5755d5c4ab1642dd5bd4f32f
+  - enabled: 1
+    path: Assets/Scenes/Ranking.unity
+    guid: d9680759677c520479aa4de9e325a200
+  - enabled: 1
+    path: Assets/Scenes/NetworkTest.unity
+    guid: adcf8a6a7078a7b45bd59ff620851c75
   m_configObjects: {}

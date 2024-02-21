@@ -11,6 +11,8 @@ public class GameData : MonoBehaviour
     
     public bool isMobile => gameDataScriptable.isMobile;
 
+    public bool isOnline;
+
     public GameObject cap => gameDataScriptable.cap;
     public List<GunData> guns => gameDataScriptable.guns;
     public List<GameObject> powerUps => gameDataScriptable.powerUps;

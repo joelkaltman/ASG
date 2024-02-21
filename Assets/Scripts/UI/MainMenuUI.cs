@@ -31,35 +31,16 @@ public class MainMenuUI : MonoBehaviour {
 	public Sprite soundOff;
 	public List<Button> qualityButtons;
 	
-	[Header("Ranking")] 
-	public RankingUI rankingUi;
-	
-	private float objetiveFade;
-	private float currentFade;
-	private float speedFade;
-	private bool usedContinue;
-
 	private PanelType currentPanel;
 	private PanelType lastPanel;
-
-	private float elapsedTime;
-	private int remainSeconds;
-	private int remainMinutes;
 
 	void Awake(){
 		for (int i = 0; i < qualityButtons.Count; i++) {
 			qualityButtons [i].onClick.AddListener (ChangeQuality);
 		}
 
-		objetiveFade = 0;
-		currentFade = 0;
-		speedFade = 0.01f;
-		usedContinue = false;
 		currentPanel = 0;
 		lastPanel = 0;
-		elapsedTime = 0;
-		remainSeconds = 0;
-		remainMinutes = 0;
 	}
 
 	// Use this for initialization
@@ -211,10 +192,9 @@ public class MainMenuUI : MonoBehaviour {
 	}
 
 	public void GoToRanking()
-	{
-        ShowCanvas (PanelType.RANKING);
-		rankingUi.LoadRanking();
-	}
+    {
+        SceneManager.LoadScene("Ranking");
+    }
 
 	public void GoToLastPanel()
 	{

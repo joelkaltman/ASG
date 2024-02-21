@@ -28,6 +28,7 @@ public class GameplayUI : MonoBehaviour {
 	public GameObject panelPauseMenu;
 	public GameObject panelGame;
 	public GameObject panelGameOver;
+    public GameObject panelOptions;
 
 	public List<Text> textCapCount;
 	public Text textScore;
@@ -129,18 +130,27 @@ public class GameplayUI : MonoBehaviour {
 		    case PanelType.PAUSEMENU:
 			    panelPauseMenu.SetActive (true);
 			    panelGame.SetActive (false);
-			    panelGameOver.SetActive (false);
+                panelGameOver.SetActive (false);
+                panelOptions.SetActive (false);
 			    break;
 		    case PanelType.GAME:
 			    panelPauseMenu.SetActive (false);
 			    panelGame.SetActive (true);
 			    panelGameOver.SetActive (false);
+                panelOptions.SetActive (false);
 			    break;
-		    case PanelType.GAMEOVER:
-			    panelPauseMenu.SetActive (false);
-			    panelGame.SetActive (false);
-			    panelGameOver.SetActive (true);
-			    break;
+            case PanelType.GAMEOVER:
+                panelPauseMenu.SetActive (false);
+                panelGame.SetActive (false);
+                panelGameOver.SetActive (true);
+                panelOptions.SetActive (false);
+                break;
+            case PanelType.OPTIONS:
+                panelPauseMenu.SetActive (false);
+                panelGame.SetActive (false);
+                panelGameOver.SetActive (false);
+                panelOptions.SetActive (true);
+                break;
 		}
 
 		lastPanel = currentPanel;
@@ -185,6 +195,11 @@ public class GameplayUI : MonoBehaviour {
 	{
         ShowCanvas (lastPanel);
 	}
+    
+    public void GoToOptions()
+    {
+        ShowCanvas (PanelType.OPTIONS);
+    }
 
 	public void MuteGame(){
 		bool isMute = MusicManager.Instance.Mute ();

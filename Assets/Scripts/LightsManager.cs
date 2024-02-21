@@ -6,10 +6,14 @@ using RenderSettings = UnityEngine.RenderSettings;
 
 public class LightsManager : MonoBehaviour
 {
+    public static LightsManager Instance;
+    
     public Light directionalLight;
     
     void Start()
     {
+        Instance = this;
+        
         var shadows = PlayerPrefs.GetInt("shadows", 0) == 1;
         if (shadows) {
             this.ShadowsOn ();

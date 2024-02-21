@@ -3165,7 +3165,7 @@ PrefabInstance:
     - target: {fileID: 6807442012342447700, guid: b77a44ac5b795bb46aa338611e75aeae,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2897390770
+      value: 3468183952
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
@@ -3358,7 +3358,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1142820928}
-  - component: {fileID: 1142820927}
   - component: {fileID: 1142820931}
   - component: {fileID: 1142820930}
   m_Layer: 0
@@ -3368,39 +3367,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1142820927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142820926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2a90403e989dd46b9be14461de1d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMobile: 1
-  cap: {fileID: 1835289421287908, guid: a174305d909c17e4681eb34ff77ede93, type: 3}
-  guns:
-  - {fileID: 11400000, guid: 9bf4fd122bac2b84e9a4b2518be52275, type: 2}
-  - {fileID: 11400000, guid: 18c958996abc02f46b7d27e6675df692, type: 2}
-  - {fileID: 11400000, guid: 58488cc1fa85e3542b26025a7218e49c, type: 2}
-  - {fileID: 11400000, guid: f2f71c5475f631a45b6e28ffc768ab23, type: 2}
-  - {fileID: 11400000, guid: 8831532f83816254d91b5eb984d8c676, type: 2}
-  - {fileID: 11400000, guid: 4102dad137cebad4182405983fe90087, type: 2}
-  - {fileID: 11400000, guid: 62a8da9a5dfc1554587f2b74b9a5e562, type: 2}
-  - {fileID: 11400000, guid: af6096cd300b9d04d8a6b179d911fe26, type: 2}
-  - {fileID: 11400000, guid: 29873ae89dc53fe4c806d03a2369c2b4, type: 2}
-  - {fileID: 11400000, guid: d8b61cbe3a5c2d846a8331911838936f, type: 2}
-  - {fileID: 11400000, guid: cff51dc66adc1b940bcf80cff4aa4a9a, type: 2}
-  enemies:
-  - {fileID: 1731084914382620, guid: cfb49456c5cf833429fbf77c710dfbc6, type: 3}
-  - {fileID: 1930683322331160, guid: 8ea341b92894c6e42982801ef2906c82, type: 3}
-  powerUps:
-  - {fileID: 1086103694319778, guid: 1a3cb5d72156b88419c784e2201ad889, type: 3}
-  - {fileID: 1824854647180254, guid: 48f3c44c8752bc44287b761abaf56ae5, type: 3}
-  - {fileID: 1802510494018256, guid: dae9943d4a4346744aac4780b96919a4, type: 3}
 --- !u!4 &1142820928
 Transform:
   m_ObjectHideFlags: 0

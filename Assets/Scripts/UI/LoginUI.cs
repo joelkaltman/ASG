@@ -15,8 +15,6 @@ public class LoginUI : MonoBehaviour
     public GameObject loadingText;
     public GameObject inputPanel;
 
-    public static AuthManager.UserData userDataLogin;
-
     private bool initialized;
     private static bool usedAutomaticLogin;
 
@@ -24,7 +22,7 @@ public class LoginUI : MonoBehaviour
     
     void Start()
     {
-        userDataLogin = null;
+        UserManager.Instance().Clean();
         
         if (usedAutomaticLogin)
         {
@@ -203,8 +201,8 @@ public class LoginUI : MonoBehaviour
 
     private async void EnterGame()
     {
-        userDataLogin = await AuthManager.GetUserData();
-        SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        await UserManager.Instance().Initialize();
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     private bool ValidateFields()

@@ -15,7 +15,6 @@ public class PlayerStats : MonoBehaviour {
 	public event Action onLifeChange;
 	public event Action onDie;
 	public event Action onGranadesThrow;
-	public event Action onCapCountChange;
 
 	private GameObject shooter;
 	private GameObject hand;
@@ -24,7 +23,8 @@ public class PlayerStats : MonoBehaviour {
 	public int speed;
 	[HideInInspector] public int score;
 
-	public AuthManager.UserData userData { get; private set; }
+    private UserManager user;
+    public AuthManager.UserData userData => user.UserData;
 
 	public bool Initialized { get; private set; }
 
@@ -42,7 +42,6 @@ public class PlayerStats : MonoBehaviour {
 		onLifeChange = null;
 		onDie = null;
 		onGranadesThrow = null;
-		onCapCountChange = null;
 	}
 	
 	private void Awake()
@@ -60,30 +59,10 @@ public class PlayerStats : MonoBehaviour {
 		inmuneToFire = false;
 		dead = false;
 
-		userData = LoginUI.userDataLogin ?? await AuthManager.GetUserData();
+        user = UserManager.Instance();
 
 		Initialized = true;
 		onInitialized?.Invoke ();
-	}
-
-	public async void SaveUserData()
-	{
-		await AuthManager.SaveUserData(userData);
-	}
-
-	private async void SaveKills()
-	{
-		await AuthManager.WriteToDb("kills", userData.maxKills);
-	}
-	
-	private async void SaveCaps()
-	{
-		await AuthManager.WriteToDb("caps", userData.caps);
-	}
-	
-	private async void SaveGuns()
-	{
-		await AuthManager.WriteToDb("guns", userData.guns);
 	}
 
 	public bool CheckNewHighScore()
@@ -92,7 +71,7 @@ public class PlayerStats : MonoBehaviour {
 		if (newHighScore)
 		{
 			userData.maxKills = score;
-			SaveKills();
+            user.SaveKills();
 		}
 
 		return newHighScore;
@@ -179,20 +158,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public void AddCap()
 	{
-		userData.caps++;
-		SaveCaps();
-		onCapCountChange?.Invoke ();
-	}
-
-	public void PurchaseGun(GunData gun)
-	{
-		userData.guns.Add(gun.Id);
-		SaveGuns();
-		
-		userData.caps -= gun.Price;
-		SaveCaps();
-		
-		onCapCountChange?.Invoke ();
+        user.AddCap();
 	}
 
 	void Dead()

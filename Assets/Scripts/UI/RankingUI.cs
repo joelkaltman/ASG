@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class RankingUI : MonoBehaviour
@@ -38,7 +35,7 @@ public class RankingUI : MonoBehaviour
             instances.Add(rankObject);
         }
 
-        var username = PlayerStats.Instance.userData.username;
+        var username = UserManager.Instance().UserData.username;
         var userIndex = ranking.FindIndex(x => x.username == username);
         var userRank = userIndex < 0 ? new AuthManager.UserRank(username, 0) : ranking[userIndex];
         var mainPos = userIndex < 0 ? -1 : userIndex + 1;

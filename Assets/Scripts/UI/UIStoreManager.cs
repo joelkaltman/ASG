@@ -6,8 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
-public class UIStoreManager : MonoBehaviour {
-
+public class UIStoreManager : MonoBehaviour
+{
 	public Text playerCapsText;
 	public Text gunNameText;
 	public Text gunDescriptionText;
@@ -42,8 +42,6 @@ public class UIStoreManager : MonoBehaviour {
 
 	bool moving;
 
-	private PlayerStats playerStats;
-
 	// Use this for initialization
 	void Start () {
 		elements = new List<GameObject> ();
@@ -52,7 +50,6 @@ public class UIStoreManager : MonoBehaviour {
 		currentGun = 0;
 		velocity = 2;
 		moving = false;
-
 
 		List<GunData> guns = GameData.Instance.guns;
 		for (int i = 0; i < guns.Count; i++) {
@@ -67,9 +64,6 @@ public class UIStoreManager : MonoBehaviour {
 			img.sprite = guns [i].Sprite;
 			this.instancesButtonItem.Add (instanceButton);
 		}
-
-		playerStats = PlayerStats.Instance;
-		//playerCaps = DataBase.Instance.LoadCaps ();
 
 		this.UpdateInfo ();
 	}
@@ -138,7 +132,7 @@ public class UIStoreManager : MonoBehaviour {
 	
 	void UpdateInfo()
 	{
-		playerCapsText.text = "x" + playerStats.userData.caps;
+		playerCapsText.text = "x" + UserManager.Instance().UserData.caps;
 		gunNameText.text = GameData.Instance.guns [currentGun].GunName;
 		gunDescriptionText.text = GameData.Instance.guns [currentGun].Description;
 		gunPriceText.text = "Price: x" + GameData.Instance.guns [currentGun].Price.ToString();
@@ -226,10 +220,10 @@ public class UIStoreManager : MonoBehaviour {
 	{
 		var gun = GameData.Instance.guns[gunIndex];
 		
-		if (playerStats.userData.guns.Contains(gun.Id))
+		if (UserManager.Instance().UserData.guns.Contains(gun.Id))
 			return PurchaseType.PURCHASED;
 
-		return playerStats.userData.caps >= gun.Price ? PurchaseType.CAN : PurchaseType.CANT;
+		return UserManager.Instance().UserData.caps >= gun.Price ? PurchaseType.CAN : PurchaseType.CANT;
 		
 		/*if (DataBase.Instance.EntryHasGun (gunIndex)) {
 			return PurchaseType.PURCHASED;
@@ -242,16 +236,15 @@ public class UIStoreManager : MonoBehaviour {
 
 	public void GoToMainMenu()
 	{
-		SceneManager.LoadScene ("Main");
+		SceneManager.LoadScene ("MainMenu");
 	}
 
 	public void Purchase()
 	{
 		var gun = GameData.Instance.guns[currentGun];
-		if (playerStats.userData.caps >= gun.Price) {
-			playerStats.PurchaseGun(gun);
-			//DataBase.Instance.SaveCaps (this.playerCaps);
-			//DataBase.Instance.SaveNewGunIndex (currentGun);
+        var user = UserManager.Instance();
+		if (user.UserData.caps >= gun.Price) {
+            user.PurchaseGun(gun);
 			this.UpdateInfo ();
 		}
 	}

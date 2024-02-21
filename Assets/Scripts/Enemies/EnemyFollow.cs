@@ -31,7 +31,7 @@ public class EnemyFollow : MonoBehaviour {
 		}
 
 		if (this.transform.position.y < 3) {
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
 		}
 
 		if (navAgent.isOnNavMesh) {
@@ -39,7 +39,7 @@ public class EnemyFollow : MonoBehaviour {
 				navAgent.SetDestination (player.transform.position);
 			} 
 		} else {
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
 		}
 	}
 }

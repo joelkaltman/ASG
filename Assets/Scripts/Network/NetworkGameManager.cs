@@ -16,16 +16,16 @@ public class NetworkGameManager : MonoBehaviour
     
     public void ButtonHost()
     {
-        unityTransport.ConnectionData.Address = textIp.text;
-        unityTransport.ConnectionData.Port = (ushort)Int32.Parse(textPort.text);
+        //unityTransport.ConnectionData.Address = textIp.text;
+        //unityTransport.ConnectionData.Port = (ushort)Int32.Parse(textPort.text);
         
         NetworkManager.Singleton.StartHost();
     }
     
     public void ButtonClient()
     {
-        unityTransport.ConnectionData.Address = textIp.text;
-        unityTransport.ConnectionData.Port = (ushort)Int32.Parse(textPort.text);
+        //unityTransport.ConnectionData.Address = textIp.text;
+        //unityTransport.ConnectionData.Port = (ushort)Int32.Parse(textPort.text);
         
         NetworkManager.Singleton.StartClient();
     }

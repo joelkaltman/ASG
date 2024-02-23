@@ -12,18 +12,21 @@ public class MusicManager : MonoBehaviour {
 
 	float lastVolume;
 
-	void Awake() {
-		if (Instance != null && Instance != this) {
-			Destroy (this.gameObject);
+	void Awake()
+	{
+		if (Instance != null)
+		{
+			Destroy(this);
 			return;
-		}else{
-			Instance = this;
-			DontDestroyOnLoad (this.gameObject);
 		}
+
+		Instance = this;
+		DontDestroyOnLoad (this.gameObject);
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		if (!isPlaying) {
 			mainMusic.Play ();
 			isPlaying = true;

@@ -17,8 +17,14 @@ public class GameData : MonoBehaviour
     public List<GunData> guns => gameDataScriptable.guns;
     public List<GameObject> powerUps => gameDataScriptable.powerUps;
     
-    public void Start()
+    public void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(this);
     }

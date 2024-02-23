@@ -20,9 +20,9 @@ public class MainMenuUI : MonoBehaviour {
 
 	public GameObject panelMainMenu;
 	public GameObject panelOptions;
-	public GameObject panelRanking;
 
-	public Button buttonPlay;
+	public Button buttonSinglePlayer;
+	public Button buttonMultiPlayer;
 	public Text textUsername;
 	public Text textRandomTextMenu;
 	public List<Text> textCapCount;
@@ -35,10 +35,6 @@ public class MainMenuUI : MonoBehaviour {
 	private PanelType lastPanel;
 
 	void Awake(){
-		for (int i = 0; i < qualityButtons.Count; i++) {
-			qualityButtons [i].onClick.AddListener (ChangeQuality);
-		}
-
 		currentPanel = 0;
 		lastPanel = 0;
 	}
@@ -50,12 +46,6 @@ public class MainMenuUI : MonoBehaviour {
             await DefaultUserFallback();
         
         ShowCanvas (PanelType.MAINMENU);
-        
-		int currentQuality = QualitySettings.GetQualityLevel ();
-		if (currentQuality >= qualityButtons.Count) {
-			currentQuality = qualityButtons.Count - 1;
-		}
-		ChangePressedQualityButton (currentQuality);
         
         OnUserInitialized();
     }
@@ -71,7 +61,8 @@ public class MainMenuUI : MonoBehaviour {
     {
         textUsername.text = UserManager.Instance().UserData.username;
         RefreshCaps();
-        buttonPlay.interactable = true;
+        buttonSinglePlayer.interactable = true;
+        buttonMultiPlayer.interactable = true;
     }
     
     private void RefreshCaps()
@@ -94,33 +85,27 @@ public class MainMenuUI : MonoBehaviour {
 		case PanelType.MAINMENU:
 			panelMainMenu.SetActive (true);
 			panelOptions.SetActive (false);
-			panelRanking.SetActive (false);
 			ChangeRandomText ();
 			break;
 		case PanelType.PAUSEMENU:
 			panelMainMenu.SetActive (false);
 			panelOptions.SetActive (false);
-			panelRanking.SetActive (false);
 			break;
 		case PanelType.GAME:
 			panelMainMenu.SetActive (false);
 			panelOptions.SetActive (false);
-			panelRanking.SetActive (false);
 			break;
 		case PanelType.GAMEOVER:
 			panelMainMenu.SetActive (false);
 			panelOptions.SetActive (false);
-			panelRanking.SetActive (false);
 			break;
 		case PanelType.OPTIONS:
 			panelMainMenu.SetActive (false);
 			panelOptions.SetActive (true);
-			panelRanking.SetActive (false);
 			break;
 		case PanelType.RANKING:
 			panelMainMenu.SetActive (false);
 			panelOptions.SetActive (false);
-			panelRanking.SetActive (true);
 			break;
 		}
 
@@ -161,12 +146,8 @@ public class MainMenuUI : MonoBehaviour {
 
 	public void StartGame()
 	{
-        SceneManager.LoadScene("Game", LoadSceneMode.Single);
-	}
-
-	public void ExitGame()
-	{
-		Application.Quit ();
+		GameData.Instance.isOnline = false;
+        SceneManager.LoadScene("Game");
 	}
 	
 	public void LogOut()
@@ -196,6 +177,11 @@ public class MainMenuUI : MonoBehaviour {
         SceneManager.LoadScene("Ranking");
     }
 
+	public void GoToMultiplayer()
+	{
+		SceneManager.LoadScene("MultiplayerMenu");
+	}
+	
 	public void GoToLastPanel()
 	{
         ShowCanvas (lastPanel);
@@ -209,34 +195,6 @@ public class MainMenuUI : MonoBehaviour {
 			} else {
 				buttonsSound [i].sprite = soundOn;
 			}
-		}
-	}
-		
-	void ChangeQuality()
-	{
-		GameObject selected = EventSystem.current.currentSelectedGameObject;
-
-		int quality = 1;
-		for (int i = 0; i < qualityButtons.Count; i++) {
-			if (qualityButtons[i].name == selected.name) {
-				ChangePressedQualityButton (i);
-				quality = i;
-			}
-		}
-
-		QualitySettings.SetQualityLevel (quality, false);
-	}
-
-	void ChangePressedQualityButton(int index)
-	{
-		for (int i = 0; i < qualityButtons.Count; i++) {
-			ColorBlock cb = qualityButtons [i].colors;
-			if (i == index) {
-				cb.normalColor = Color.gray;
-			} else {
-				cb.normalColor = Color.white;
-			}
-			qualityButtons [i].colors = cb;
 		}
 	}
 }

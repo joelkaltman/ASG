@@ -1693,6 +1693,7 @@ MonoBehaviour:
   textJoinCodeOut: {fileID: 7341442818479224243}
   clientPanel: {fileID: 1731945542708310948}
   textJoinCodeIn: {fileID: 3179091487719965141}
+  orText: {fileID: 646734117215778520}
 --- !u!1 &7338507977662209119
 GameObject:
   m_ObjectHideFlags: 0

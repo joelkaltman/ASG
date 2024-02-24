@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
@@ -46,12 +47,14 @@ public class GameplayUI : MonoBehaviour {
 	public GameObject joystickRotation;
 
 	[Header("Gameplay Scripts")] 
-	public PlayerStats playerStats;
-	public PlayerGuns playerGuns;
 	public EnemiesManager enemiesManager;
 
 	[Header("GameOver")] 
 	public GameObject newHighScoreText;
+	
+	private PlayerMovement playerMovement;
+	private PlayerStats playerStats;
+	private PlayerGuns playerGuns;
 	
 	private float objetiveFade;
 	private float currentFade;
@@ -65,24 +68,10 @@ public class GameplayUI : MonoBehaviour {
 	private int remainSeconds;
 	private int remainMinutes;
 
-	void Awake(){
-		playerStats.ResetEvents();
-		playerGuns.ResetEvents();
-		enemiesManager.ResetEvents();
-        
+	void Awake()
+	{
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
-		playerStats.onInitialized += OnUserInitialized;
-		playerStats.onScoreAdd += RefreshScore;
-		playerStats.onLifeChange += RefreshLife;
-		playerStats.onDie += RefreshGameOver;
-		
-		playerGuns.onGunChange += RefreshGun;
-		playerGuns.onGunChange += RefreshGunCount;
-		
-		playerGuns.onShoot += RefreshGunCount;
-		playerGuns.onShoot += ResetFrecueny;
-		
 		enemiesManager.onWaveChange += ShowWave;
 		enemiesManager.onWaveChange += RefreshWaveTime;
         
@@ -99,19 +88,17 @@ public class GameplayUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
+		
 		ShowCanvas (PanelType.GAME);
 
 		joystickMovement.SetActive (GameData.Instance.isMobile);
 		joystickRotation.SetActive (GameData.Instance.isMobile);
-		
-		playerStats.Initialize();
-        
-        StartGame();
     }
 
 	void Update ()
 	{
-		if (!playerStats.Initialized)
+		if (!playerStats || !playerStats.Initialized)
 			return;
 		
 		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
@@ -121,6 +108,38 @@ public class GameplayUI : MonoBehaviour {
 
 		if (currentPanel == PanelType.GAME) {
 			TakeTime (Time.deltaTime);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
+	}
+
+	private void OnPlayerSpawn(GameObject spawned)
+	{
+		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
+		{
+			playerMovement = spawned.GetComponent<PlayerMovement>();
+			playerStats = spawned.GetComponent<PlayerStats>();
+			playerGuns = spawned.GetComponent<PlayerGuns>();
+			
+			playerMovement.joystickMovement = joystickMovement;
+			
+			playerStats.onInitialized += OnUserInitialized;
+			playerStats.onScoreAdd += RefreshScore;
+			playerStats.onLifeChange += RefreshLife;
+			playerStats.onDie += RefreshGameOver;
+		
+			playerGuns.onGunChange += RefreshGun;
+			playerGuns.onGunChange += RefreshGunCount;
+		
+			playerGuns.onShoot += RefreshGunCount;
+			playerGuns.onShoot += ResetFrecueny;
+		
+			playerStats.Initialize();
+        
+			StartGame();
 		}
 	}
 

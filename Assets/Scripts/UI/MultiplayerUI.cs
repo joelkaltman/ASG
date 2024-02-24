@@ -19,6 +19,9 @@ public class MultiplayerUI : MonoBehaviour
     public GameObject clientPanel;
     public Text textJoinCodeIn;
 
+    [Header("Other")] 
+    public GameObject orText;
+    
     private NetworkManager networkManager;
     private UnityTransport unityTransport;
     
@@ -34,6 +37,7 @@ public class MultiplayerUI : MonoBehaviour
     public async void StartHost()
     {
         clientPanel.SetActive(false);
+        orText.SetActive(false);
         try
         {
             var allocation = await RelayService.Instance.CreateAllocationAsync(1);
@@ -50,12 +54,14 @@ public class MultiplayerUI : MonoBehaviour
         {
             PopupUI.Instance.ShowPopUp("Error", e.Message, "Close");
             clientPanel.SetActive(true);
+            orText.SetActive(true);
         }
     }
 
     public async void JoinClient()
     {
         hostPanel.SetActive(false);
+        orText.SetActive(false);
         try
         {
             string joinCode = textJoinCodeIn.text;
@@ -71,6 +77,7 @@ public class MultiplayerUI : MonoBehaviour
         {
             PopupUI.Instance.ShowPopUp("Error", e.Message, "Close");
             hostPanel.SetActive(true);
+            orText.SetActive(true);
         }
     }
 

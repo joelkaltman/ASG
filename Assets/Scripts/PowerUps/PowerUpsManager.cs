@@ -106,7 +106,7 @@ public class PowerUpsManager : MonoBehaviour {
 		}
 	}
 
-	public Vector3 getCapPosition()
+	public Vector3 GetCapPosition()
 	{
 		if (this.currentCap != null) {
 			return this.currentCap.transform.position;

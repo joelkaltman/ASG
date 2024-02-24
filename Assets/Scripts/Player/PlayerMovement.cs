@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour {
 	
 	public GameObject particlesDust;
-	public GameObject arrowCap;
 	public GameObject joystickMovement;
 
 	bool isMoving;
@@ -29,11 +28,6 @@ public class PlayerMovement : NetworkBehaviour {
 		this.animator = this.GetComponent < Animator > ();
 		this.initialY = this.transform.position.y;
 
-		if (joystickMovement == null)
-		{
-			joystickMovement = GameObject.Find("MovementJoystick");
-		}
-
 		var camera = Camera.main;
 		var cameraController = camera.GetComponent<CameraController>();
 		cameraController.player = this.gameObject;
@@ -46,14 +40,14 @@ public class PlayerMovement : NetworkBehaviour {
 
 		if(!shouldMove)
 			return;
+
+		if (!joystickMovement)
+			return;
 		
 		this.FallAndMove ();
 
-		this.RotateArrowCap ();
-
-		if (PlayerStats.Instance.life == 0) {
+		if (PlayerStats.Instance.life == 0)
 			return;
-		}
 
 		this.animator.SetBool("Run", isMoving);
 
@@ -89,21 +83,6 @@ public class PlayerMovement : NetworkBehaviour {
 		isMoving = true;
 		if (direction.x == 0 && direction.z == 0) {
 			isMoving = false;
-		}
-	}
-
-	void RotateArrowCap()
-	{
-		Vector3 capPos = PowerUpsManager.Instance.getCapPosition ();
-		if (capPos == null) {
-			this.arrowCap.SetActive (false);
-		}else{
-			this.arrowCap.SetActive (true);
-			Vector3 dirCap = capPos - this.transform.position;
-			dirCap.Normalize ();
-
-			this.arrowCap.transform.LookAt (capPos, new Vector3(0,1,0));
-			this.arrowCap.transform.position = new Vector3(this.transform.position.x + dirCap.x * 2, 5, this.transform.position.z + dirCap.z * 2);
 		}
 	}
 

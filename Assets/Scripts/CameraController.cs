@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraController : MonoBehaviour {
 
@@ -35,6 +38,19 @@ public class CameraController : MonoBehaviour {
         initialRotation = new Vector3 (60, 0, 0);
 
         currentMoveSpeed = 0;
+
+        PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
+    }
+
+    private void OnPlayerSpawn(GameObject spawned)
+    {
+        if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
+            player = spawned;
     }
 
     void Update () {

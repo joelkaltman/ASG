@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PowerUpsManager : MonoBehaviour {
@@ -19,13 +20,17 @@ public class PowerUpsManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start(){
+	void Start()
+	{
+		enabled = NetworkManager.Singleton.IsHost;
+		
 		Transform[] transforms = this.GetComponentsInChildren<Transform> ();
 		spawnPoints = new List<Transform> ();
 		spawnPoints.AddRange (transforms);
 	}
 
-	void Update () {
+	void Update () 
+	{
 		elapsedTimeSpawn += Time.deltaTime;
 
 		if (elapsedTimeSpawn >= spawnTime) {

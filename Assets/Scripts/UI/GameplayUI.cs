@@ -26,11 +26,13 @@ public class GameplayUI : MonoBehaviour {
 		RANKING
 	};
 
+	[Header("Panels")] 
 	public GameObject panelPauseMenu;
 	public GameObject panelGame;
 	public GameObject panelGameOver;
     public GameObject panelOptions;
 
+    [Header("UI")] 
 	public List<Text> textCapCount;
 	public Text textScore;
 	public Text textTime;
@@ -45,6 +47,7 @@ public class GameplayUI : MonoBehaviour {
 	public Sprite soundOff;
 	public GameObject joystickMovement;
 	public GameObject joystickRotation;
+	public Button gunButton;
 
 	[Header("Gameplay Scripts")] 
 	public EnemiesManager enemiesManager;
@@ -118,7 +121,7 @@ public class GameplayUI : MonoBehaviour {
 
 	private void OnPlayerSpawn(GameObject spawned)
 	{
-		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
+		if (spawned.GetComponent<NetworkObject>().IsOwner)
 		{
 			playerMovement = spawned.GetComponent<PlayerMovement>();
 			playerStats = spawned.GetComponent<PlayerStats>();
@@ -138,6 +141,8 @@ public class GameplayUI : MonoBehaviour {
 			playerGuns.onShoot += ResetFrecueny;
 		
 			playerStats.Initialize();
+			
+			gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
         
 			StartGame();
 		}
@@ -187,11 +192,6 @@ public class GameplayUI : MonoBehaviour {
 		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
 
-	public void ExitGame()
-	{
-		Application.Quit ();
-	}
-
 	public void PauseGame()
 	{
 		Time.timeScale = 0;
@@ -207,6 +207,13 @@ public class GameplayUI : MonoBehaviour {
 	public void GoToMainMenu()
 	{
 		Time.timeScale = 1;
+		
+		if (NetworkManager.Singleton != null)
+		{
+			NetworkManager.Singleton.Shutdown();
+			Destroy(NetworkManager.Singleton);
+		}
+
 		SceneManager.LoadScene ("MainMenu");
 	}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [CreateAssetMenu(menuName="Gun/Shotgun")]
@@ -29,12 +30,17 @@ public class ShotgunData : GunData {
 			case ShootingType.NONE:
 				break;
 			case ShootingType.NORMAL:
-				Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
+				var spawnedBullet = Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
+				spawnedBullet.GetComponent<NetworkObject>().Spawn();
 				break;
 			case ShootingType.MULTPLE:
-				Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation * Quaternion.Euler (0, 0, 30));
-				Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
-				Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation * Quaternion.Euler (0, 0, -30));
+				var spawnedBullet1 = Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation * Quaternion.Euler (0, 0, 30));
+				var spawnedBullet2 = Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
+				var spawnedBullet3 = Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation * Quaternion.Euler (0, 0, -30));
+				
+				spawnedBullet1.GetComponent<NetworkObject>().Spawn();
+				spawnedBullet2.GetComponent<NetworkObject>().Spawn();
+				spawnedBullet3.GetComponent<NetworkObject>().Spawn();
 				break;
 			}
 			return true;

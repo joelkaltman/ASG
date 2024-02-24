@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -41,13 +42,14 @@ public class EnemiesManager : MonoBehaviour {
 		index = -1;
 		wave = 0;
 		spawnTime = 6;
+
 	}
 
 	private void Start()
 	{
+		enabled = NetworkManager.Singleton.IsHost;
 		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
 	}
-
 
 	private void OnDestroy()
 	{
@@ -111,6 +113,7 @@ public class EnemiesManager : MonoBehaviour {
 		int r = Random.Range (0, listEnemies.Count);
 
 		GameObject enemyInstance = Instantiate(listEnemies[r], pos, Quaternion.identity);
+		enemyInstance.GetComponent<NetworkObject>().Spawn();
 		enemiesInstances.Add(enemyInstance);
 	}
 

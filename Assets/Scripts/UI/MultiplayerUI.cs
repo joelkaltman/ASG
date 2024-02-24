@@ -75,6 +75,8 @@ public class MultiplayerUI : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
+            Debug.LogError(e.Message);
+            
             PopupUI.Instance.ShowPopUp("Error", e.Message, "Close");
             hostPanel.SetActive(true);
             orText.SetActive(true);

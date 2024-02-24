@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -34,7 +35,7 @@ public class PlayerStats : MonoBehaviour {
 	int initialSpeed;
 
 	bool inmuneToFire;
-	bool dead;
+	public bool IsDead => life <= 0;
 
 	public void ResetEvents()
 	{
@@ -57,7 +58,6 @@ public class PlayerStats : MonoBehaviour {
 		initialLife = life;
 		initialSpeed = speed;
 		inmuneToFire = false;
-		dead = false;
 
         user = UserManager.Instance();
 
@@ -91,17 +91,13 @@ public class PlayerStats : MonoBehaviour {
 
 	public void RecieveDamage(int damage)
 	{
+		bool wasDead = IsDead;
 		life -= damage;
-		if (life < 0) {
-			life = 0;
-		}
-		if (life == 0) {
-			this.Dead ();
-			if (!dead) {
-				dead = true;
-				onDie?.Invoke ();
-			}
-		}
+		life = math.max(life, 0);
+		
+		if (IsDead && !wasDead)
+			Die();
+		
 		this.GetComponent<Animator> ().SetInteger ("Life", life);
 
 		AudioSource audio = this.GetComponent<AudioSource> ();
@@ -161,10 +157,11 @@ public class PlayerStats : MonoBehaviour {
         user.AddCap();
 	}
 
-	void Dead()
+	void Die()
 	{
 		this.GetComponentInChildren<PlayerGuns> ().enabled = false;
 		this.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
+		onDie?.Invoke ();
 	}
 
 	public void ThrowGranade()
@@ -179,7 +176,6 @@ public class PlayerStats : MonoBehaviour {
 			this.score = 0;
 		}
 		this.life = 100;
-		this.dead = false;
 		this.GetComponent<Animator> ().SetInteger ("Life", life);
 
 		this.GetComponentInChildren<PlayerGuns> ().enabled = true;

@@ -1276,7 +1276,7 @@ GameObject:
   - component: {fileID: 8183690968207853832}
   - component: {fileID: 8129481580394827506}
   - component: {fileID: 8077887301970197960}
-  - component: {fileID: 8179357611170527586}
+  - component: {fileID: 2572288382480545472}
   - component: {fileID: 8076275361303737190}
   - component: {fileID: 8076929814997280556}
   - component: {fileID: 8076480513791108770}
@@ -1350,7 +1350,7 @@ MonoBehaviour:
   speed: 10
   score: 0
   damageSound: {fileID: 8300000, guid: 39d6da8e7fdafd146aafbd81c71e9bba, type: 3}
---- !u!114 &8179357611170527586
+--- !u!114 &2572288382480545472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1362,7 +1362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 723055482
+  GlobalObjectIdHash: 1241703734
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0

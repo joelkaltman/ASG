@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour {
 	
 	public GameObject particlesDust;
-	public GameObject joystickMovement;
+	[HideInInspector] public Joystick joystickMovement;
 
 	bool isMoving;
 	float fallSpeed;
@@ -27,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour {
 		this.rb.maxAngularVelocity = 0;
 		this.animator = this.GetComponent < Animator > ();
 		this.initialY = this.transform.position.y;
-
+		
 		var camera = Camera.main;
 		var cameraController = camera.GetComponent<CameraController>();
 		cameraController.player = this.gameObject;
@@ -66,7 +66,7 @@ public class PlayerMovement : NetworkBehaviour {
 		if (PlayerStats.Instance.life > 0) {
 
 			if (GameData.Instance.isMobile) {
-				Vector2 joystickVal = joystickMovement.GetComponent<Joystick>().getJoystickCurrentValues();
+				Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
 				direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
 			} else {
 				direction = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
@@ -142,7 +142,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Dust()
 	{
-		if (PlayerStats.Instance.speed > 5 && isMoving && particlesDust) {
+		if (PlayerStats.Instance.speed > 10 && isMoving && particlesDust) {
 			GameObject dust = Instantiate (particlesDust, this.transform.position, Quaternion.identity);
 			Destroy (dust, 3);
 		}

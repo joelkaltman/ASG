@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class UIJoystickManager : MonoBehaviour {
@@ -25,13 +26,24 @@ public class UIJoystickManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start () {
-		if (GameData.Instance.isMobile) {
+	void Start ()
+	{
+		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
+		this.changeJoystick (JoystickType.SHOOTER);
+	}
+
+	private void OnDestroy()
+	{
+		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
+	}
+
+	private void OnPlayerSpawn(GameObject spawned)
+	{
+		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
+		{
 			PlayerGuns.Instance.onGunChange -= RefreshRotationJoystick;
 			PlayerGuns.Instance.onGunChange += RefreshRotationJoystick;
 		}
-
-		this.changeJoystick (JoystickType.SHOOTER);
 	}
 
 	void RefreshRotationJoystick(){

@@ -124,7 +124,7 @@ public class GameplayUI : MonoBehaviour {
 			playerStats = spawned.GetComponent<PlayerStats>();
 			playerGuns = spawned.GetComponent<PlayerGuns>();
 			
-			playerMovement.joystickMovement = joystickMovement;
+			playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
 			
 			playerStats.onInitialized += OnUserInitialized;
 			playerStats.onScoreAdd += RefreshScore;

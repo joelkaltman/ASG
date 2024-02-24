@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -22,6 +23,8 @@ public class EnemiesManager : MonoBehaviour {
 
 	public int waveDuration;
 
+	private List<PlayerStats> playerStats = new ();
+
 	public void ResetEvents()
 	{
 		onWaveChange = null;
@@ -40,27 +43,47 @@ public class EnemiesManager : MonoBehaviour {
 		spawnTime = 6;
 	}
 
+	private void Start()
+	{
+		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
+	}
+
+
+	private void OnDestroy()
+	{
+		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
+	}
+
+	private void OnPlayerSpawn(GameObject spawned)
+	{
+		var stats = spawned.GetComponent<PlayerStats>();
+		playerStats.Add(stats);
+	}
+
 	void OnEnable(){
 		this.changeWave ();
 	}
 
-	void Update(){
-		if (PlayerStats.Instance.life > 0 && enemiesInstances.Count < 250) {
+	void Update()
+	{
+		bool anyPlayerAlive = playerStats.Any(x => !x.IsDead);
+		
+		if (anyPlayerAlive && enemiesInstances.Count < 250) {
 			elapsedTimeSpawn += Time.deltaTime;
 			elapsedTimeWave += Time.deltaTime;
 		}
 
 		if (elapsedTimeSpawn >= spawnTime) {
 			elapsedTimeSpawn = 0;
-			this.SpawnEnemy ();
+			SpawnEnemy (false);
 		}
 
 		if (elapsedTimeWave > waveDuration) {
-			this.changeWave ();
+			changeWave ();
 		}
 	}
 
-	private void killAllEnemies(){
+	private void KillAllEnemies(){
 		for (int i = 0; i < this.enemiesInstances.Count; i++) {
 			EnemyStats stats = this.enemiesInstances [i].GetComponent<EnemyStats> ();
 			if (stats != null) {
@@ -69,41 +92,25 @@ public class EnemiesManager : MonoBehaviour {
 		}
 	}
 
-	public void SpawnEnemy(){
+	private void SpawnEnemy(bool isBoss){
 		Vector3 pos = new Vector3 ();
 
+		var playersPos = playerStats.Select(x => x.getPlayer().transform.position).ToList();
+		
 		bool posFound = false;
 		while(!posFound){
 			int random = Random.Range (0, spawnPoints.Count);
 			pos = spawnPoints [random].position;
 
-			if(Vector3.Distance(pos, PlayerStats.Instance.getPlayer().transform.position) >= 10){
-				posFound = true;
-			}
-		}
-			
-		int r = Random.Range (0, this.waves [index].enemies.Count);
-
-		GameObject enemyInstance = Instantiate(this.waves [index].enemies[r], pos, Quaternion.identity);
-		enemiesInstances.Add(enemyInstance);
-	}
-
-	public void SpawnBoss(){
-		Vector3 pos = new Vector3 ();
-
-		bool posFound = false;
-		while(!posFound){
-			int random = Random.Range (0, spawnPoints.Count);
-			pos = spawnPoints [random].position;
-
-			if(Vector3.Distance(pos, PlayerStats.Instance.getPlayer().transform.position) >= 10){
+			if(playersPos.All(playerPos => Vector3.Distance(pos, playerPos) >= 10)){
 				posFound = true;
 			}
 		}
 
-		int r = Random.Range (0, this.waves [index].bosses.Count);
+		var listEnemies = isBoss ? waves[index].bosses : waves[index].enemies;
+		int r = Random.Range (0, listEnemies.Count);
 
-		GameObject enemyInstance = Instantiate(this.waves [index].bosses[r], pos, Quaternion.identity);
+		GameObject enemyInstance = Instantiate(listEnemies[r], pos, Quaternion.identity);
 		enemiesInstances.Add(enemyInstance);
 	}
 
@@ -151,7 +158,7 @@ public class EnemiesManager : MonoBehaviour {
 		elapsedTimeWave = 0;
 
 		for (int i = 0; i < this.waves [index].bossesToKill; i++) {
-			this.SpawnBoss ();
+			SpawnEnemy(true);
 		}
 
 		onWaveChange?.Invoke ();

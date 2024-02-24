@@ -5761,7 +5761,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abab81e5078a2ba49b5cbefc7e8b4fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 8180750401825857422, guid: b77a44ac5b795bb46aa338611e75aeae, type: 3}
+  playerPrefab: {fileID: 8180750401825857422, guid: b77a44ac5b795bb46aa338611e75aeae,
+    type: 3}
+  networkManager: {fileID: 2462704256770754034, guid: 92f29221360845b4b81a3682e691cee8,
+    type: 3}
 --- !u!114 &1874993717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3485518306402325019, guid: 80c58e04d3e7a394fbee53c74df35f81,

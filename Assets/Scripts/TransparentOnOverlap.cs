@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TransparentOnOverlap : MonoBehaviour {
@@ -14,16 +15,31 @@ public class TransparentOnOverlap : MonoBehaviour {
 	bool isTransparent;
 
 	// Use this for initialization
-	void Start () {
-		rend = this.GetComponent<Renderer> ();
+	void Start()
+	{
+		rend = this.GetComponent<Renderer>();
 		normalMaterial = rend.material;
 		isTransparent = false;
+		
+		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		player = PlayerStats.Instance.getPlayer();
+	private void OnDestroy()
+	{
+		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
+	}
 
+	private void OnPlayerSpawn(GameObject spawned)
+	{
+		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
+		{
+			player = spawned;
+		}
+	}
+
+	// Update is called once per frame
+	void Update () 
+	{
 		if (!player)
 			return;
 		

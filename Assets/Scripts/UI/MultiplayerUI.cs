@@ -21,6 +21,7 @@ public class MultiplayerUI : MonoBehaviour
 
     [Header("Other")] 
     public GameObject orText;
+    public GameObject playerSpawn;
     
     private NetworkManager networkManager;
     private UnityTransport unityTransport;
@@ -85,31 +86,29 @@ public class MultiplayerUI : MonoBehaviour
 
     private void TransportEvent(NetworkEvent eventType, ulong clientId, ArraySegment<byte> payload, float receiveTime)
     {
-        if (networkManager.IsHost)
+        if (eventType == NetworkEvent.Connect)
         {
-            if (eventType == NetworkEvent.Connect)
-            {
-                StartGame();
-            }
-        }
-        else if (networkManager.IsClient)
-        {
-            if (eventType == NetworkEvent.Connect)
-            {
-                StartGame();
-            }
+            StartGame();
         }
     }
     
     public void StartGame()
     {
         GameData.Instance.isOnline = true;
-        SceneManager.LoadScene("Game");
+
+        if (networkManager.IsHost)
+        {
+            var spawner = Instantiate(playerSpawn);
+            spawner.GetComponent<NetworkObject>().Spawn();
+            spawner.GetComponent<PlayerSpawn>().Initialize();
+            networkManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        }
     }
     
     public void GoToMainMenu()
     {
-        unityTransport.DisconnectLocalClient();
+        networkManager.Shutdown();
+        Destroy(networkManager);
         SceneManager.LoadScene("MainMenu");
     }
 }

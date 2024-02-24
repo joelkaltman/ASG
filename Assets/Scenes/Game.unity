@@ -5648,7 +5648,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1824392759}
   - component: {fileID: 1824392761}
-  - component: {fileID: 1824392762}
   - component: {fileID: 1824392758}
   - component: {fileID: 1824392760}
   m_Layer: 0
@@ -5749,22 +5748,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1824392762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824392757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abab81e5078a2ba49b5cbefc7e8b4fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 8180750401825857422, guid: b77a44ac5b795bb46aa338611e75aeae,
-    type: 3}
-  networkManager: {fileID: 2462704256770754034, guid: 92f29221360845b4b81a3682e691cee8,
-    type: 3}
 --- !u!114 &1874993717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3485518306402325019, guid: 80c58e04d3e7a394fbee53c74df35f81,

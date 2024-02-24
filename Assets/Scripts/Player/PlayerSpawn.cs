@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using Unity.Netcode.Components;
@@ -9,11 +10,11 @@ public class PlayerSpawn : NetworkBehaviour
     public static PlayerSpawn Instance;
     
     public GameObject playerPrefab;
-    public GameObject networkManager;
+    public Vector3 spawnPos;
 
     public event Action<GameObject> OnPlayerSpawn;
 
-    private GameObject playerInstance;
+    private Dictionary<ulong, GameObject> playerInstances = new ();
     
     void Awake()
     {
@@ -21,23 +22,57 @@ public class PlayerSpawn : NetworkBehaviour
             Destroy(Instance);
 
         Instance = this;
-
-        if (!GameData.Instance.isOnline)
-        {
-            var netManager = Instantiate(networkManager);
-            netManager.GetComponent<NetworkManager>().StartHost();
-        }
+        DontDestroyOnLoad(this);
         
-        playerInstance = Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
+    }
+    
+    public void OnSceneEvent(SceneEvent sceneEvent)
+    {
+        if (IsHost && sceneEvent.SceneName == "Game")
+        {
+            if (sceneEvent.ClientsThatCompleted == null)
+            {
+                // Host
+                SpawnPlayer(sceneEvent.ClientId);
+            }
+            else
+            {
+                // Remote players
+                foreach (var id in sceneEvent.ClientsThatCompleted)
+                {
+                    if(playerInstances.ContainsKey(id))
+                        continue;
+                    
+                    SpawnPlayer(id);
+                }
+            }
+        }
+    }
+
+    private void SpawnPlayer(ulong id)
+    {
+        var playerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
         var netObj = playerInstance.GetComponent<NetworkObject>();
-        netObj.Spawn(true);
+        netObj.SpawnAsPlayerObject(id, true);
+                
+        playerInstances.Add(id, playerInstance);
+        OnPlayerSpawn?.Invoke(playerInstance);
     }
 
     public void AddListener(Action<GameObject> onSpawnCallback)
     {
         OnPlayerSpawn += onSpawnCallback;
-        if(playerInstance)
+        
+        foreach (var playerInstance in playerInstances.Values)
+        {
             onSpawnCallback?.Invoke(playerInstance);
+        }
     }
 
     public void RemoveListener(Action<GameObject> onSpawnCallback)

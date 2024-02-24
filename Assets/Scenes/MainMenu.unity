@@ -649,6 +649,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelMainMenu: {fileID: 1639592021}
   panelOptions: {fileID: 1000292183}
+  networkManagerSP: {fileID: 2462704256770754034, guid: 92f29221360845b4b81a3682e691cee8,
+    type: 3}
+  playerSpawn: {fileID: 1056320613569382195, guid: 4788a4fd425fd2446adead53a1f85c5f,
+    type: 3}
   buttonSinglePlayer: {fileID: 1651083027085943927}
   buttonMultiPlayer: {fileID: 1651083027085943926}
   textUsername: {fileID: 560776718}

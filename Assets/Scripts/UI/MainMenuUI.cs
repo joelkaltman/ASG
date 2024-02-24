@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,9 @@ public class MainMenuUI : MonoBehaviour {
 
 	public GameObject panelMainMenu;
 	public GameObject panelOptions;
+	
+	public GameObject networkManagerSP;
+	public GameObject playerSpawn;
 
 	public Button buttonSinglePlayer;
 	public Button buttonMultiPlayer;
@@ -147,7 +151,16 @@ public class MainMenuUI : MonoBehaviour {
 	public void StartGame()
 	{
 		GameData.Instance.isOnline = false;
-        SceneManager.LoadScene("Game");
+		
+		var netManagerObject = Instantiate(networkManagerSP);
+		var netManager = netManagerObject.GetComponent<NetworkManager>();
+		netManager.StartHost();
+
+		var spawner = Instantiate(playerSpawn);
+		spawner.GetComponent<NetworkObject>().Spawn();
+		spawner.GetComponent<PlayerSpawn>().Initialize();
+
+		netManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);
 	}
 	
 	public void LogOut()

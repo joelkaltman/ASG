@@ -1729,6 +1729,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1652790027288571919, guid: 911157cd2ac812149a5f0b536f6aba99,
+        type: 3}
+      propertyPath: playerSpawn
+      value: 
+      objectReference: {fileID: 1056320613569382195, guid: 4788a4fd425fd2446adead53a1f85c5f,
+        type: 3}
     - target: {fileID: 1927305947245754398, guid: 911157cd2ac812149a5f0b536f6aba99,
         type: 3}
       propertyPath: m_AnchorMax.y

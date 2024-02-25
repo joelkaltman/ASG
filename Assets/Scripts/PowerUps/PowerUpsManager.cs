@@ -14,16 +14,14 @@ public class PowerUpsManager : MonoBehaviour {
 	private List<Transform> spawnPoints;
 	private GameObject currentCap;
 	private Transform lastCapSpawnPoint;
-
+	
 	void Awake()
 	{
 		Instance = this;
 	}
-
+	
 	void Start()
 	{
-		enabled = NetworkManager.Singleton.IsHost;
-		
 		Transform[] transforms = this.GetComponentsInChildren<Transform> ();
 		spawnPoints = new List<Transform> ();
 		spawnPoints.AddRange (transforms);
@@ -31,6 +29,9 @@ public class PowerUpsManager : MonoBehaviour {
 
 	void Update () 
 	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+			return;
+		
 		elapsedTimeSpawn += Time.deltaTime;
 
 		if (elapsedTimeSpawn >= spawnTime) {

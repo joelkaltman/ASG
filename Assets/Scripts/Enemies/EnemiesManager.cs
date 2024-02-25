@@ -24,7 +24,7 @@ public class EnemiesManager : MonoBehaviour {
 
 	public int waveDuration;
 
-	private List<PlayerStats> playerStats = new ();
+	private List<GameObject> players = new ();
 
 	public void ResetEvents()
 	{
@@ -43,23 +43,12 @@ public class EnemiesManager : MonoBehaviour {
 		wave = 0;
 		spawnTime = 6;
 
+		MultiplayerManager.Instance.OnGameReady += OnGameReady;
 	}
 
-	private void Start()
+	void OnGameReady()
 	{
-		enabled = NetworkManager.Singleton.IsHost;
-		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
-	}
-
-	private void OnDestroy()
-	{
-		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
-	}
-
-	private void OnPlayerSpawn(GameObject spawned)
-	{
-		var stats = spawned.GetComponent<PlayerStats>();
-		playerStats.Add(stats);
+		players = MultiplayerManager.Instance.GetPlayers();
 	}
 
 	void OnEnable(){
@@ -68,7 +57,10 @@ public class EnemiesManager : MonoBehaviour {
 
 	void Update()
 	{
-		bool anyPlayerAlive = playerStats.Any(x => !x.IsDead);
+		if (!MultiplayerManager.Instance.IsHostReady)
+			return;
+		
+		bool anyPlayerAlive = players.Any(x => !x.GetComponent<PlayerStats>().IsDead);
 		
 		if (anyPlayerAlive && enemiesInstances.Count < 250) {
 			elapsedTimeSpawn += Time.deltaTime;
@@ -97,7 +89,7 @@ public class EnemiesManager : MonoBehaviour {
 	private void SpawnEnemy(bool isBoss){
 		Vector3 pos = new Vector3 ();
 
-		var playersPos = playerStats.Select(x => x.getPlayer().transform.position).ToList();
+		var playersPos = players.Select(x => x.transform.position).ToList();
 		
 		bool posFound = false;
 		while(!posFound){

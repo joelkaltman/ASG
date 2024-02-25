@@ -23,14 +23,16 @@ public class GameplayUI : MonoBehaviour {
 		GAME,
 		GAMEOVER,
 		OPTIONS,
-		RANKING
+		RANKING,
+		MULTIPAYER
 	};
 
 	[Header("Panels")] 
 	public GameObject panelPauseMenu;
 	public GameObject panelGame;
 	public GameObject panelGameOver;
-    public GameObject panelOptions;
+	public GameObject panelOptions;
+	public GameObject panelMultiplayer;
 
     [Header("UI")] 
 	public List<Text> textCapCount;
@@ -54,6 +56,10 @@ public class GameplayUI : MonoBehaviour {
 
 	[Header("GameOver")] 
 	public GameObject newHighScoreText;
+
+	[Header("Networking")] 
+	public GameObject networkManagerSP;
+	public GameObject networkManagerMP;
 	
 	private PlayerMovement playerMovement;
 	private PlayerStats playerStats;
@@ -71,8 +77,11 @@ public class GameplayUI : MonoBehaviour {
 	private int remainSeconds;
 	private int remainMinutes;
 
+	private NetworkManager netManager;
+
 	void Awake()
 	{
+		MultiplayerManager.Instance.OnGameReady += OnGameReady;
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
 		enemiesManager.onWaveChange += ShowWave;
@@ -90,10 +99,18 @@ public class GameplayUI : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
-		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
-		
-		ShowCanvas (PanelType.GAME);
+	void Start () 
+	{
+		if (!GameData.Instance.isOnline)
+		{
+			ShowCanvas(PanelType.GAME);
+			MultiplayerManager.Instance.InitializeSinglePlayer();
+		}
+		else
+		{
+			ShowCanvas(PanelType.MULTIPAYER);
+			MultiplayerManager.Instance.InitializeMultiplayer();
+		}
 
 		joystickMovement.SetActive (GameData.Instance.isMobile);
 		joystickRotation.SetActive (GameData.Instance.isMobile);
@@ -114,38 +131,32 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	private void OnDestroy()
+	private void OnGameReady()
 	{
-		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
-	}
-
-	private void OnPlayerSpawn(GameObject spawned)
-	{
-		if (spawned.GetComponent<NetworkObject>().IsOwner)
-		{
-			playerMovement = spawned.GetComponent<PlayerMovement>();
-			playerStats = spawned.GetComponent<PlayerStats>();
-			playerGuns = spawned.GetComponent<PlayerGuns>();
-			
-			playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
-			
-			playerStats.onInitialized += OnUserInitialized;
-			playerStats.onScoreAdd += RefreshScore;
-			playerStats.onLifeChange += RefreshLife;
-			playerStats.onDie += RefreshGameOver;
+		var spawned = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
 		
-			playerGuns.onGunChange += RefreshGun;
-			playerGuns.onGunChange += RefreshGunCount;
+		playerMovement = spawned.GetComponent<PlayerMovement>();
+		playerStats = spawned.GetComponent<PlayerStats>();
+		playerGuns = spawned.GetComponent<PlayerGuns>();
 		
-			playerGuns.onShoot += RefreshGunCount;
-			playerGuns.onShoot += ResetFrecueny;
+		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
 		
-			playerStats.Initialize();
-			
-			gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
-        
-			StartGame();
-		}
+		playerStats.onInitialized += OnUserInitialized;
+		playerStats.onScoreAdd += RefreshScore;
+		playerStats.onLifeChange += RefreshLife;
+		playerStats.onDie += RefreshGameOver;
+	
+		playerGuns.onGunChange += RefreshGun;
+		playerGuns.onGunChange += RefreshGunCount;
+	
+		playerGuns.onShoot += RefreshGunCount;
+		playerGuns.onShoot += ResetFrecueny;
+	
+		playerStats.Initialize();
+		
+		gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
+    
+		StartGame();
 	}
 
 	private void ShowCanvas(PanelType type)
@@ -156,25 +167,36 @@ public class GameplayUI : MonoBehaviour {
 			    panelGame.SetActive (false);
                 panelGameOver.SetActive (false);
                 panelOptions.SetActive (false);
+			    panelMultiplayer.SetActive(false);
 			    break;
 		    case PanelType.GAME:
 			    panelPauseMenu.SetActive (false);
 			    panelGame.SetActive (true);
 			    panelGameOver.SetActive (false);
                 panelOptions.SetActive (false);
+			    panelMultiplayer.SetActive(false);
 			    break;
             case PanelType.GAMEOVER:
                 panelPauseMenu.SetActive (false);
                 panelGame.SetActive (false);
                 panelGameOver.SetActive (true);
                 panelOptions.SetActive (false);
+                panelMultiplayer.SetActive(false);
                 break;
-            case PanelType.OPTIONS:
-                panelPauseMenu.SetActive (false);
-                panelGame.SetActive (false);
-                panelGameOver.SetActive (false);
-                panelOptions.SetActive (true);
-                break;
+		    case PanelType.OPTIONS:
+			    panelPauseMenu.SetActive (false);
+			    panelGame.SetActive (false);
+			    panelGameOver.SetActive (false);
+			    panelOptions.SetActive (true);
+			    panelMultiplayer.SetActive(false);
+			    break;
+		    case PanelType.MULTIPAYER:
+			    panelPauseMenu.SetActive (false);
+			    panelGame.SetActive (false);
+			    panelGameOver.SetActive (false);
+			    panelOptions.SetActive (false);
+			    panelMultiplayer.SetActive(true);
+			    break;
 		}
 
 		lastPanel = currentPanel;

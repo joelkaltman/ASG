@@ -152,7 +152,7 @@ public class MainMenuUI : MonoBehaviour {
 	{
 		GameData.Instance.isOnline = false;
 		
-		var netManagerObject = Instantiate(networkManagerSP);
+		/*var netManagerObject = Instantiate(networkManagerSP);
 		var netManager = netManagerObject.GetComponent<NetworkManager>();
 		netManager.StartHost();
 
@@ -160,7 +160,9 @@ public class MainMenuUI : MonoBehaviour {
 		spawner.GetComponent<NetworkObject>().Spawn();
 		spawner.GetComponent<PlayerSpawn>().Initialize();
 
-		netManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+		netManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);*/
+		
+		SceneManager.LoadScene ("Game");
 	}
 	
 	public void LogOut()
@@ -192,7 +194,8 @@ public class MainMenuUI : MonoBehaviour {
 
 	public void GoToMultiplayer()
 	{
-		SceneManager.LoadScene("MultiplayerMenu");
+		GameData.Instance.isOnline = true;
+		SceneManager.LoadScene("Game");
 	}
 	
 	public void GoToLastPanel()

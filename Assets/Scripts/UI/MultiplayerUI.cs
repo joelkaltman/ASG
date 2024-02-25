@@ -1,10 +1,3 @@
-using System;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,94 +14,49 @@ public class MultiplayerUI : MonoBehaviour
 
     [Header("Other")] 
     public GameObject orText;
-    public GameObject playerSpawn;
     
-    private NetworkManager networkManager;
-    private UnityTransport unityTransport;
-    
-    async void Start()
-    {
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-        networkManager = NetworkManager.Singleton;
-        unityTransport = networkManager.GetComponent<UnityTransport>();
-    }
-
     public async void StartHost()
     {
         clientPanel.SetActive(false);
         orText.SetActive(false);
-        try
-        {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(1);
-            var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+        
+        var result = await MultiplayerManager.Instance.StartHost();
 
-            textJoinCodeOut.text = joinCode;
-
-            var relayServerData = new RelayServerData(allocation, "dtls");
-            unityTransport.SetRelayServerData(relayServerData);
-            unityTransport.OnTransportEvent += TransportEvent;
-            networkManager.StartHost();
-        }
-        catch (RelayServiceException e)
+        if (!result.Result)
         {
-            PopupUI.Instance.ShowPopUp("Error", e.Message, "Close");
-            clientPanel.SetActive(true);
+            Debug.LogError(result.Error);
+            
+            PopupUI.Instance.ShowPopUp("Error", result.Error, "Close");
+            hostPanel.SetActive(true);
             orText.SetActive(true);
+            return;
         }
+        
+        textJoinCodeOut.text = result.JoinCode;
     }
 
     public async void JoinClient()
     {
         hostPanel.SetActive(false);
         orText.SetActive(false);
-        try
+
+        var result = await MultiplayerManager.Instance.JoinClient(textJoinCodeIn.text);
+
+        if (!result.Result)
         {
-            string joinCode = textJoinCodeIn.text;
+            Debug.LogError(result.Error);
             
-            var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
-            
-            var relayServerData = new RelayServerData(allocation, "dtls");
-            unityTransport.SetRelayServerData(relayServerData);
-            unityTransport.OnTransportEvent += TransportEvent;
-            networkManager.StartClient();
-        }
-        catch (RelayServiceException e)
-        {
-            Debug.LogError(e.Message);
-            
-            PopupUI.Instance.ShowPopUp("Error", e.Message, "Close");
+            PopupUI.Instance.ShowPopUp("Error", result.Error, "Close");
             hostPanel.SetActive(true);
             orText.SetActive(true);
+            return;
         }
     }
 
-    private void TransportEvent(NetworkEvent eventType, ulong clientId, ArraySegment<byte> payload, float receiveTime)
-    {
-        if (eventType == NetworkEvent.Connect)
-        {
-            StartGame();
-        }
-    }
-    
-    public void StartGame()
-    {
-        GameData.Instance.isOnline = true;
-
-        if (networkManager.IsHost)
-        {
-            var spawner = Instantiate(playerSpawn);
-            spawner.GetComponent<NetworkObject>().Spawn();
-            spawner.GetComponent<PlayerSpawn>().Initialize();
-            networkManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);
-        }
-    }
     
     public void GoToMainMenu()
     {
-        networkManager.Shutdown();
-        Destroy(networkManager);
+        MultiplayerManager.Instance.Disconnect();
         SceneManager.LoadScene("MainMenu");
     }
 }

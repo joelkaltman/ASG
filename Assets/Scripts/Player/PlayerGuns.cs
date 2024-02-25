@@ -7,9 +7,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class PlayerGuns : MonoBehaviour {
-
-	public static PlayerGuns Instance;
-
 	public event Action onGunChange;
 	public event Action onShoot;
 
@@ -29,8 +26,6 @@ public class PlayerGuns : MonoBehaviour {
 	
 	void Awake()
 	{
-		Instance = this;
-
 		instanceGroundTarget = GameObject.Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
 		instanceGroundTarget.SetActive (false);
 	}
@@ -46,6 +41,7 @@ public class PlayerGuns : MonoBehaviour {
 		ownedGuns.First().Equip();
 
 		Initialized = true;
+		onGunChange?.Invoke ();
 	}
 
 	void Update ()

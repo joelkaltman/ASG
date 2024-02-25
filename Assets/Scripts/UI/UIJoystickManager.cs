@@ -21,34 +21,26 @@ public class UIJoystickManager : MonoBehaviour {
 	private GameObject current;
 	private JoystickType currentType;
 
+	private PlayerGuns localPlayerGuns;
+
 	private void Awake()
 	{
 		Instance = this;
+
+		MultiplayerManager.Instance.OnGameReady += OnGameReady;
 	}
 
-	void Start ()
+	private void OnGameReady()
 	{
-		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
-		this.changeJoystick (JoystickType.SHOOTER);
-	}
-
-	private void OnDestroy()
-	{
-		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
-	}
-
-	private void OnPlayerSpawn(GameObject spawned)
-	{
-		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
-		{
-			PlayerGuns.Instance.onGunChange -= RefreshRotationJoystick;
-			PlayerGuns.Instance.onGunChange += RefreshRotationJoystick;
-		}
+		var player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+		localPlayerGuns = player.GetComponent<PlayerGuns>();
+		localPlayerGuns.onGunChange -= RefreshRotationJoystick;
+		localPlayerGuns.onGunChange += RefreshRotationJoystick;
 	}
 
 	void RefreshRotationJoystick(){
 		if (GameData.Instance.isMobile) {
-			switch (PlayerGuns.Instance.GetCurrentGun ().GetGunType ()) {
+			switch (localPlayerGuns.GetCurrentGun ().GetGunType ()) {
 			case GunData.GunType.SHOTGUN:
 				this.changeJoystick (UIJoystickManager.JoystickType.SHOOTER);
 				break;
@@ -87,7 +79,7 @@ public class UIJoystickManager : MonoBehaviour {
 	}
 
 	public Joystick getCurrentJoystick(){
-		return current.GetComponent<Joystick>();
+		return current.GetComponentInChildren<Joystick>();
 	}
 
 	public JoystickType getCurrentJoystickType(){

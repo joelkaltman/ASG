@@ -17,6 +17,8 @@ public class PlayerMovement : NetworkBehaviour {
 
     private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
 
+    private PlayerStats playerStats;
+
 	// Use this for initialization
 	void Start () {
 		if(!shouldMove)
@@ -27,11 +29,8 @@ public class PlayerMovement : NetworkBehaviour {
 		this.rb.maxAngularVelocity = 0;
 		this.animator = this.GetComponent < Animator > ();
 		this.initialY = this.transform.position.y;
-		
-		var camera = Camera.main;
-		var cameraController = camera.GetComponent<CameraController>();
-		cameraController.player = this.gameObject;
 
+		playerStats = GetComponent<PlayerStats>();
 		//arrowCap.SetActive (true);
 	}
 	
@@ -43,10 +42,13 @@ public class PlayerMovement : NetworkBehaviour {
 
 		if (!joystickMovement)
 			return;
+
+		if (!playerStats.Initialized)
+			return;
 		
 		this.FallAndMove ();
 
-		if (PlayerStats.Instance.life == 0)
+		if (playerStats.life == 0)
 			return;
 
 		this.animator.SetBool("Run", isMoving);
@@ -63,7 +65,7 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 
 		Vector3 direction = new Vector3 ();
-		if (PlayerStats.Instance.life > 0) {
+		if (playerStats.life > 0) {
 
 			if (GameData.Instance.isMobile) {
 				Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
@@ -78,7 +80,7 @@ public class PlayerMovement : NetworkBehaviour {
 			animator.SetFloat ("PosX", posX, 0.1f, Time.deltaTime);
 		}
 
-		this.rb.velocity = new Vector3(direction.x * PlayerStats.Instance.speed, this.rb.velocity.y, direction.z * PlayerStats.Instance.speed) ;
+		this.rb.velocity = new Vector3(direction.x * playerStats.speed, this.rb.velocity.y, direction.z * playerStats.speed) ;
 
 		isMoving = true;
 		if (direction.x == 0 && direction.z == 0) {
@@ -142,7 +144,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Dust()
 	{
-		if (PlayerStats.Instance.speed > 10 && isMoving && particlesDust) {
+		if (playerStats.speed > 10 && isMoving && particlesDust) {
 			GameObject dust = Instantiate (particlesDust, this.transform.position, Quaternion.identity);
 			Destroy (dust, 3);
 		}

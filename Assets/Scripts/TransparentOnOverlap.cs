@@ -7,7 +7,6 @@ public class TransparentOnOverlap : MonoBehaviour {
 
 	public Material Transparent;
 
-	GameObject player;
 	Renderer rend;
 
 	Material normalMaterial;
@@ -20,29 +19,16 @@ public class TransparentOnOverlap : MonoBehaviour {
 		rend = this.GetComponent<Renderer>();
 		normalMaterial = rend.material;
 		isTransparent = false;
-		
-		PlayerSpawn.Instance.AddListener(OnPlayerSpawn);
-	}
-	
-	private void OnDestroy()
-	{
-		PlayerSpawn.Instance.RemoveListener(OnPlayerSpawn);
 	}
 
-	private void OnPlayerSpawn(GameObject spawned)
-	{
-		if (!GameData.Instance.isOnline || spawned.GetComponent<NetworkObject>().IsOwner)
-		{
-			player = spawned;
-		}
-	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		if (!player)
+		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
-		
+
+		var player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
 		Vector3 directionRay = player.transform.position - Camera.main.transform.position;
 
 		RaycastHit hit;

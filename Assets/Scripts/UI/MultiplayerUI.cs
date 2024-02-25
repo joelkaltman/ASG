@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +15,9 @@ public class MultiplayerUI : MonoBehaviour
 
     [Header("Other")] 
     public GameObject orText;
+
+    public Action<string> OnHostStarted;
+    public Action OnClientStarted;
     
     public async void StartHost()
     {
@@ -32,7 +36,10 @@ public class MultiplayerUI : MonoBehaviour
             return;
         }
         
+        Debug.Log("-- JOIN CODE " + result.JoinCode);
+        
         textJoinCodeOut.text = result.JoinCode;
+        OnHostStarted?.Invoke(result.JoinCode);
     }
 
     public async void JoinClient()
@@ -51,6 +58,8 @@ public class MultiplayerUI : MonoBehaviour
             orText.SetActive(true);
             return;
         }
+        
+        OnClientStarted?.Invoke();
     }
 
     

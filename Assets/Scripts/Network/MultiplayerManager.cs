@@ -22,9 +22,12 @@ public class MultiplayerManager : MonoBehaviour
     private UnityTransport unityTransport;
 
     [HideInInspector] public bool IsGameReady;
+    [HideInInspector] public bool IsLocalPlayerReady;
+    
     public event Action OnGameReady;
+    public event Action<GameObject> OnLocalPlayerReady;
 
-    [HideInInspector] public bool IsHostReady => IsGameReady && (networkManager ? networkManager.IsHost : false);
+    public bool IsHostReady => IsGameReady && (networkManager ? networkManager.IsHost : false);
     
     void Awake()
     {
@@ -44,11 +47,11 @@ public class MultiplayerManager : MonoBehaviour
         unityTransport = sp.GetComponent<UnityTransport>();
         networkManager.StartHost();
 
+        IsLocalPlayerReady = true;
         var player = networkManager.SpawnManager.GetLocalPlayerObject();
-        player.transform.position = spawnPos;
-
-        IsGameReady = true;
-        OnGameReady?.Invoke();
+        OnLocalPlayerReady?.Invoke(player.gameObject);
+        
+        StartGame();
     }
     
     public async void InitializeMultiplayer()
@@ -79,7 +82,13 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.SetRelayServerData(relayServerData);
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartHost();
+            
+            var player = networkManager.SpawnManager.GetLocalPlayerObject();
+            player.transform.position = spawnPos;
 
+            IsLocalPlayerReady = true;
+            OnLocalPlayerReady?.Invoke(player.gameObject);
+            
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -99,6 +108,9 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartClient();
             
+            IsLocalPlayerReady = true;
+            OnLocalPlayerReady?.Invoke(null);
+            
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -117,6 +129,14 @@ public class MultiplayerManager : MonoBehaviour
     
     public void StartGame()
     {
+        var players = GetPlayers();
+        foreach (var player in players)
+        {
+            player.transform.position = spawnPos;
+        }
+        
+        IsGameReady = true;
+        OnGameReady?.Invoke();
     }
 
     public void Disconnect()

@@ -4421,6 +4421,9 @@ MonoBehaviour:
     type: 3}
   networkManagerMP: {fileID: 6749781597136248908, guid: adecc0e075522ad44922395814fc0c90,
     type: 3}
+  spawnPos: {x: 0, y: 5, z: 0}
+  IsGameReady: 0
+  IsLocalPlayerReady: 0
 --- !u!4 &1398059677
 Transform:
   m_ObjectHideFlags: 0
@@ -6153,7 +6156,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1b1af8f3e97c2a14bbaac169e5db6b96, type: 2}
   wave: 0
   waveDuration: 0
-  ready: 0
 --- !u!4 &1824392759
 Transform:
   m_ObjectHideFlags: 0
@@ -6203,7 +6205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTime: 10
-  ready: 0
 --- !u!114 &1824392761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6752,6 +6753,7 @@ MonoBehaviour:
   panelGameOver: {fileID: 1788363431}
   panelOptions: {fileID: 1027220084}
   panelMultiplayer: {fileID: 1504853379}
+  topPanel: {fileID: 5983988043581156610}
   textCapCount:
   - {fileID: 573387525}
   - {fileID: 1536007381}
@@ -6760,6 +6762,7 @@ MonoBehaviour:
   textGiantScore: {fileID: 1480664294}
   textGunCount: {fileID: 1328118480}
   textWave: {fileID: 957456006}
+  textJoinCode: {fileID: 5983988043581156609}
   imageLife: {fileID: 315222636}
   imageGun: {fileID: 1334365523}
   imageFrecuency: {fileID: 1782719711}
@@ -6772,8 +6775,6 @@ MonoBehaviour:
   gunButton: {fileID: 5983988043581156608}
   enemiesManager: {fileID: 1824392758}
   newHighScoreText: {fileID: 406086304347053518}
-  networkManagerSP: {fileID: 0}
-  networkManagerMP: {fileID: 0}
 --- !u!4 &2057747744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4137883987334170, guid: 0feceaf8fbb18564e972ab3083d05e47,
@@ -7558,3 +7559,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5983988043581156609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1035542373950240079, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5983988043581156610 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5983988044128801678, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}

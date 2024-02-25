@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour {
         if (!NetworkManager.Singleton)
             return;
 
-        var player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+        var player = NetworkManager.Singleton.SpawnManager?.GetLocalPlayerObject();
         if (!player)
             return;
         

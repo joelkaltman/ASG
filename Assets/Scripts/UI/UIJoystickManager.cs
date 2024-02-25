@@ -27,12 +27,11 @@ public class UIJoystickManager : MonoBehaviour {
 	{
 		Instance = this;
 
-		MultiplayerManager.Instance.OnGameReady += OnGameReady;
+		MultiplayerManager.Instance.OnLocalPlayerReady += OnPlayerReady;
 	}
 
-	private void OnGameReady()
+	private void OnPlayerReady(GameObject player)
 	{
-		var player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
 		localPlayerGuns = player.GetComponent<PlayerGuns>();
 		localPlayerGuns.onGunChange -= RefreshRotationJoystick;
 		localPlayerGuns.onGunChange += RefreshRotationJoystick;

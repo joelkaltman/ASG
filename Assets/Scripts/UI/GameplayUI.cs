@@ -35,12 +35,14 @@ public class GameplayUI : MonoBehaviour {
 	public GameObject panelMultiplayer;
 
     [Header("UI")] 
+    public GameObject topPanel;
 	public List<Text> textCapCount;
 	public Text textScore;
 	public Text textTime;
 	public Text textGiantScore;
 	public Text textGunCount;
 	public Text textWave;
+	public Text textJoinCode;
 	public Image imageLife;
 	public Image imageGun;
 	public Image imageFrecuency;
@@ -56,10 +58,6 @@ public class GameplayUI : MonoBehaviour {
 
 	[Header("GameOver")] 
 	public GameObject newHighScoreText;
-
-	[Header("Networking")] 
-	public GameObject networkManagerSP;
-	public GameObject networkManagerMP;
 	
 	private PlayerMovement playerMovement;
 	private PlayerStats playerStats;
@@ -81,7 +79,6 @@ public class GameplayUI : MonoBehaviour {
 
 	void Awake()
 	{
-		MultiplayerManager.Instance.OnGameReady += OnGameReady;
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
 		enemiesManager.onWaveChange += ShowWave;
@@ -101,6 +98,9 @@ public class GameplayUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		MultiplayerManager.Instance.OnLocalPlayerReady += OnPlayerReady;
+		MultiplayerManager.Instance.OnGameReady += StartGame;
+		
 		if (!GameData.Instance.isOnline)
 		{
 			ShowCanvas(PanelType.GAME);
@@ -109,6 +109,9 @@ public class GameplayUI : MonoBehaviour {
 		else
 		{
 			ShowCanvas(PanelType.MULTIPAYER);
+			var mpUI = panelMultiplayer.GetComponent<MultiplayerUI>();
+			mpUI.OnHostStarted += OnHostStarted;
+			mpUI.OnClientStarted += OnClientStarted;
 			MultiplayerManager.Instance.InitializeMultiplayer();
 		}
 
@@ -118,6 +121,9 @@ public class GameplayUI : MonoBehaviour {
 
 	void Update ()
 	{
+		if (!MultiplayerManager.Instance.IsGameReady)
+			return;
+		
 		if (!playerStats || !playerStats.Initialized)
 			return;
 		
@@ -131,13 +137,24 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	private void OnGameReady()
+	private void OnHostStarted(string code)
 	{
-		var spawned = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-		
-		playerMovement = spawned.GetComponent<PlayerMovement>();
-		playerStats = spawned.GetComponent<PlayerStats>();
-		playerGuns = spawned.GetComponent<PlayerGuns>();
+		ShowCanvas(PanelType.GAME);
+		topPanel.SetActive(false);
+		textJoinCode.gameObject.SetActive(true);
+		textJoinCode.text = code;
+	}
+	
+	private void OnClientStarted()
+	{
+		ShowCanvas(PanelType.GAME);
+	}
+	
+	private void OnPlayerReady(GameObject player)
+	{
+		playerMovement = player.GetComponent<PlayerMovement>();
+		playerStats = player.GetComponent<PlayerStats>();
+		playerGuns = player.GetComponent<PlayerGuns>();
 		
 		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
 		
@@ -155,8 +172,6 @@ public class GameplayUI : MonoBehaviour {
 		playerStats.Initialize();
 		
 		gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
-    
-		StartGame();
 	}
 
 	private void ShowCanvas(PanelType type)
@@ -205,7 +220,8 @@ public class GameplayUI : MonoBehaviour {
 
 	private void StartGame()
 	{
-		transform.parent.gameObject.SetActive (true);
+		topPanel.SetActive(true);
+		textJoinCode.gameObject.SetActive(false);
 
 		elapsedTime = 0;
 

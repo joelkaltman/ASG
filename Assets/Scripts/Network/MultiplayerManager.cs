@@ -75,7 +75,7 @@ public class MultiplayerManager : MonoBehaviour
     {
         try
         {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(1);
+            var allocation = await RelayService.Instance.CreateAllocationAsync(2);
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             
             var relayServerData = new RelayServerData(allocation, "dtls");
@@ -107,10 +107,18 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.SetRelayServerData(relayServerData);
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartClient();
-            
-            IsLocalPlayerReady = true;
-            OnLocalPlayerReady?.Invoke(null);
-            
+
+            var clientId = networkManager.LocalClient.ClientId;
+            var player = networkManager.SpawnManager.GetPlayerNetworkObject(clientId);
+
+            if (player != null)
+            {
+                player.transform.position = spawnPos;
+
+                IsLocalPlayerReady = true;
+                OnLocalPlayerReady?.Invoke(player.gameObject);
+            }
+
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -121,7 +129,7 @@ public class MultiplayerManager : MonoBehaviour
 
     private void TransportEvent(NetworkEvent eventType, ulong clientId, ArraySegment<byte> payload, float receiveTime)
     {
-        if (eventType == NetworkEvent.Connect)
+        if (networkManager.IsHost && eventType == NetworkEvent.Connect)
         {
             StartGame();
         }

@@ -48,7 +48,8 @@ public class EnemiesManager : MonoBehaviour {
 
 	void OnGameReady()
 	{
-		players = MultiplayerManager.Instance.GetPlayers();
+		if(MultiplayerManager.Instance.IsHostReady)
+			players = MultiplayerManager.Instance.GetPlayers();
 	}
 
 	void OnEnable(){

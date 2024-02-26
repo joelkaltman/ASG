@@ -151,4 +151,16 @@ public class PlayerGuns : NetworkBehaviour {
 		}
 		onGunChange?.Invoke ();
 	}
+
+	[ServerRpc]
+	public void ShootServerRpc(int id, Vector3 pos, Quaternion rot)
+	{
+		var gun = GameData.Instance.guns.First(x => x.Id == id);
+
+		if (gun == null)
+			return;
+		
+		var spawnedBullet = Instantiate(gun.Bullet, pos, rot);
+		spawnedBullet.GetComponent<NetworkObject>()?.Spawn();
+	}
 }

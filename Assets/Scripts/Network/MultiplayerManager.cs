@@ -46,10 +46,6 @@ public class MultiplayerManager : MonoBehaviour
         networkManager = sp.GetComponent<NetworkManager>();
         unityTransport = sp.GetComponent<UnityTransport>();
         networkManager.StartHost();
-
-        IsLocalPlayerReady = true;
-        var player = networkManager.SpawnManager.GetLocalPlayerObject();
-        OnLocalPlayerReady?.Invoke(player.gameObject);
         
         StartGame();
     }
@@ -119,7 +115,7 @@ public class MultiplayerManager : MonoBehaviour
 
     private void TransportEvent(NetworkEvent eventType, ulong clientId, ArraySegment<byte> payload, float receiveTime)
     {
-        if (networkManager.IsHost && eventType == NetworkEvent.Connect)
+        if (eventType == NetworkEvent.Connect)
         {
             StartGame();
         }

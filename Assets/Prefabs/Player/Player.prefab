@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1646896436
+  GlobalObjectIdHash: 1241703734
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1634,8 +1634,7 @@ MonoBehaviour:
     TransitionDuration: 0.25
     TriggerNameHash: -1907200461
     TransitionIndex: 0
-  m_Animator: {fileID: 95510201625221076, guid: 138e4bd28fe3b5e4c8fd6c8c0a56e96b,
-    type: 3}
+  m_Animator: {fileID: 8129481580394827506}
 --- !u!1 &8180779116640466526
 GameObject:
   m_ObjectHideFlags: 0

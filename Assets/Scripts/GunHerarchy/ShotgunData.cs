@@ -35,10 +35,7 @@ public class ShotgunData : GunData {
 					var pos = shooter.transform.position;
 					var rot = shooter.transform.rotation;
 					
-					var spawnedBullet = Instantiate(bullet, pos, rot);
-					
-					spawnedBullet.GetComponent<NetworkObject>()?.Spawn();
-					
+					playerGuns.ShootServerRpc(Id, pos, rot);
 					break;
 				}
 				case ShootingType.MULTPLE:

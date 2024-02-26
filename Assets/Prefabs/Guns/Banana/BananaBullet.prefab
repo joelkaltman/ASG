@@ -13,8 +13,7 @@ GameObject:
   - component: {fileID: 136673273626566748}
   - component: {fileID: 23129899427815254}
   - component: {fileID: 54555009076291496}
-  - component: {fileID: 114311770904512430}
-  - component: {fileID: 114879126011118558}
+  - component: {fileID: 5187113046536306321}
   - component: {fileID: 114830239157794806}
   m_Layer: 10
   m_Name: BananaBullet
@@ -118,7 +117,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114311770904512430
+--- !u!114 &5187113046536306321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,23 +126,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1639834419560252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24efefb08f15db9498adac64873b0ab1, type: 3}
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroySeconds: 2
---- !u!114 &114879126011118558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639834419560252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21add77f94483b4a92ff35ce360439a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
+  GlobalObjectIdHash: 157203803
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &114830239157794806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8774f376a0d9ea48a8dbe13b4d5887a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: 15
+  velocity: 15
+  damage: 1
+  destroySeconds: 2

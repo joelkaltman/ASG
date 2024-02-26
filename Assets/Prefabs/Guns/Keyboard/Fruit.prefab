@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 212121226007235362}
   - component: {fileID: 65117638210097844}
   - component: {fileID: 54916062376330910}
-  - component: {fileID: 114107024360717642}
-  - component: {fileID: 114546179541699520}
+  - component: {fileID: 8592460751500197425}
   - component: {fileID: 114131939212570602}
   m_Layer: 10
   m_Name: Fruit
@@ -118,7 +117,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114107024360717642
+--- !u!114 &8592460751500197425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,23 +126,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1040904096075706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24efefb08f15db9498adac64873b0ab1, type: 3}
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroySeconds: 4
---- !u!114 &114546179541699520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040904096075706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21add77f94483b4a92ff35ce360439a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 20
+  GlobalObjectIdHash: 3501703093
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &114131939212570602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8774f376a0d9ea48a8dbe13b4d5887a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: 20
+  velocity: 20
+  damage: 20
+  destroySeconds: 4

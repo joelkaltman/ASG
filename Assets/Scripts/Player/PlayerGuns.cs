@@ -34,8 +34,6 @@ public class PlayerGuns : NetworkBehaviour {
 
 	public void Initialize()
 	{
-		Debug.Log("-- " + this.gameObject.GetInstanceID() + " - " + this.gameObject.GetComponent<NetworkObject>().IsOwner);
-		
 		if (!shouldMove)
 			return;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -63,6 +62,13 @@ public class MultiplayerManager : MonoBehaviour
         var mp = Instantiate(networkManagerMP);
         networkManager = mp.GetComponent<NetworkManager>();
         unityTransport = mp.GetComponent<UnityTransport>();
+    }
+
+    public void Disconnect()
+    {
+        networkManager.Shutdown();
+        Destroy(networkManager.gameObject);
+        AuthenticationService.Instance.SignOut();
     }
 
     public struct ConnectionResult
@@ -133,12 +139,6 @@ public class MultiplayerManager : MonoBehaviour
     {
         IsGameReady = true;
         OnGameReady?.Invoke();
-    }
-
-    public void Disconnect()
-    {
-        networkManager.Shutdown();
-        Destroy(networkManager.gameObject);
     }
 
     public GameObject GetLocalPlayer()

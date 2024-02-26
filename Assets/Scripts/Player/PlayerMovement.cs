@@ -13,8 +13,6 @@ public class PlayerMovement : NetworkBehaviour {
 	Rigidbody rb;
 	Animator animator;
 
-	float initialY;
-
     private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
 
     private PlayerStats playerStats;
@@ -28,7 +26,6 @@ public class PlayerMovement : NetworkBehaviour {
 		this.rb = this.GetComponent< Rigidbody > ();
 		this.rb.maxAngularVelocity = 0;
 		this.animator = this.GetComponent < Animator > ();
-		this.initialY = this.transform.position.y;
 
 		playerStats = GetComponent<PlayerStats>();
 		//arrowCap.SetActive (true);
@@ -62,10 +59,6 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void FallAndMove()
 	{
-		if (this.transform.position.y > this.initialY) {
-			this.transform.position = new Vector3 (this.transform.position.x, this.initialY, this.transform.position.z);
-		}
-
 		Vector3 direction = new Vector3 ();
 		if (playerStats.life > 0) {
 
@@ -82,7 +75,10 @@ public class PlayerMovement : NetworkBehaviour {
 			animator.SetFloat ("PosX", posX, 0.1f, Time.deltaTime);
 		}
 
-		this.rb.velocity = new Vector3(direction.x * playerStats.speed, this.rb.velocity.y, direction.z * playerStats.speed) ;
+		var vel = rb.velocity;
+		vel.x = direction.x * playerStats.speed;
+		vel.z = direction.z * playerStats.speed;
+		rb.velocity = vel;
 
 		isMoving = true;
 		if (direction.x == 0 && direction.z == 0) {

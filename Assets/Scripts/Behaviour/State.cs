@@ -10,7 +10,8 @@ public abstract class State : ScriptableObject {
 	public virtual void Initialize(GameObject character)
 	{
 		this.character = character;
-		this.target = PlayerStats.Instance.getPlayer ();
+
+		this.target = MultiplayerManager.Instance.GetRandomPlayer();
 	}
 		
 	public abstract void Tick (float deltaTime);

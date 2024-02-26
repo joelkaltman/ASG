@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyFollow : MonoBehaviour {
 
 	NavMeshAgent navAgent;
+	private GameObject target;
 
 	public bool follow;
 
@@ -17,14 +18,15 @@ public class EnemyFollow : MonoBehaviour {
 		int speedMax = this.GetComponent<EnemyStats> ().speedMax;
 		navAgent.speed = Random.Range (speedMin, speedMax + 1);
 
+		target = MultiplayerManager.Instance.GetRandomPlayer();
+		
 		this.follow = true;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		var player = PlayerStats.Instance.getPlayer ();
-		if (!player)
+		if (!target)
 			return;
 		
 		if (this.gameObject.GetComponent<EnemyStats> ().life <= 0) {
@@ -38,7 +40,7 @@ public class EnemyFollow : MonoBehaviour {
 
 		if (navAgent.isOnNavMesh) {
 			if (this.follow) {
-				navAgent.SetDestination (player.transform.position);
+				navAgent.SetDestination (target.transform.position);
 			} 
 		} else {
 			//Destroy (this.gameObject);

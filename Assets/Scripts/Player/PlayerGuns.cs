@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
-public class PlayerGuns : MonoBehaviour {
+public class PlayerGuns : NetworkBehaviour {
+	
+	public GameObject shooter;
+	public GameObject hand;
+	
 	public event Action onGunChange;
 	public event Action onShoot;
 
@@ -17,6 +18,7 @@ public class PlayerGuns : MonoBehaviour {
 	GameObject instanceGroundTarget;
 
 	public bool Initialized;
+	private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
 
 	public void ResetEvents()
 	{
@@ -26,17 +28,23 @@ public class PlayerGuns : MonoBehaviour {
 	
 	void Awake()
 	{
-		instanceGroundTarget = GameObject.Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
+		instanceGroundTarget = Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
 		instanceGroundTarget.SetActive (false);
 	}
 
-	public void InitializeGuns(PlayerStats playerStats)
+	public void Initialize()
 	{
-		this.playerStats = playerStats;
-		var ownedGuns = GameData.Instance.guns.Where(x => playerStats.userData.guns.Contains(x.Id));
+		Debug.Log("-- " + this.gameObject.GetInstanceID() + " - " + this.gameObject.GetComponent<NetworkObject>().IsOwner);
+		
+		if (!shouldMove)
+			return;
+
+		playerStats = gameObject.GetComponent<PlayerStats>();
+		
+		var ownedGuns = GameData.Instance.guns.Where(x => playerStats.userData.guns.Contains(x.Id)).ToList();
 		foreach (var owned in ownedGuns)
 		{
-			owned.Initialize();
+			owned.Initialize(gameObject);
 		}
 		ownedGuns.First().Equip();
 
@@ -46,26 +54,17 @@ public class PlayerGuns : MonoBehaviour {
 
 	void Update ()
 	{
+		if (!shouldMove)
+			return;
+		
 		if (!Initialized)
 			return;
 		
-		this.SelectGunScroll();
-
-		if (!GameData.Instance.isMobile) {
-			this.UpdateTarget ();
-		}
-
 		this.GetCurrentGun().AddElapsedTime (Time.deltaTime);
 
 		bool shooted = false;
-		if (GameData.Instance.isMobile) {
-			if (UIJoystickManager.Instance.getCurrentJoystick ().canShoot ()) {
-				shooted = this.GetCurrentGun ().Shoot ();
-			}
-		}else{
-			if (Input.GetMouseButton (0) && !EventSystem.current.IsPointerOverGameObject ()) {
-				shooted = this.GetCurrentGun ().Shoot ();
-			}
+		if (UIJoystickManager.Instance.getCurrentJoystick ().canShoot ()) {
+			shooted = this.GetCurrentGun ().Shoot ();
 		}
 		if (shooted) {
 			AudioSource audio = this.GetComponentInChildren<AudioSource> ();
@@ -76,39 +75,14 @@ public class PlayerGuns : MonoBehaviour {
 		}
 	}
 
-	private void SelectGunScroll()
-	{
-		if (!GameData.Instance.isMobile) {
-			if (Input.GetAxis ("Mouse ScrollWheel") > 0f) {
-				this.DiscardGun ();
-				currentIndex++;
-				if (currentIndex == playerStats.userData.guns.Count) {
-					currentIndex = 0;
-				}
-				this.EquipGun ();
-				onGunChange?.Invoke ();
-			} else if (Input.GetAxis ("Mouse ScrollWheel") < 0f) {
-				this.DiscardGun ();
-				currentIndex--;
-				if (currentIndex < 0) {
-					currentIndex = playerStats.userData.guns.Count - 1;
-				}
-				this.EquipGun ();
-				onGunChange?.Invoke ();
-			}
-		}
-	}
-
 	public void SelectGunMobile(){
-		if (GameData.Instance.isMobile) {
-			this.DiscardGun ();
-			currentIndex++;
-			if (currentIndex == playerStats.userData.guns.Count) {
-				currentIndex = 0;
-			}
-			this.EquipGun ();
-			onGunChange?.Invoke ();
+		this.DiscardGun ();
+		currentIndex++;
+		if (currentIndex == playerStats.userData.guns.Count) {
+			currentIndex = 0;
 		}
+		this.EquipGun ();
+		onGunChange?.Invoke ();
 	}
 
 	private void DiscardGun(){
@@ -174,7 +148,7 @@ public class PlayerGuns : MonoBehaviour {
 			if (gun.CurrentCount < gun.InitialCount && gun.GetGunType() == GunData.GunType.BOOMERANG && 
 			    weaponName.Contains(gun.name)) {
 				BoomerangData boomerang = (BoomerangData)gun;
-				boomerang.bumerangReturned (addCount);
+				boomerang.BumerangReturned(addCount);
 			}
 		}
 		onGunChange?.Invoke ();

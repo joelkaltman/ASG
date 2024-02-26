@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public abstract class GunData : ScriptableObject {
@@ -90,12 +91,25 @@ public abstract class GunData : ScriptableObject {
 	}
 
 	protected float timeElapsed;
-	protected GameObject shooter;
-	protected GameObject hand;
+
+	protected GameObject player;
+	protected PlayerStats playerStats;
+	protected PlayerGuns playerGuns;
+	protected Animator animator;
+
+	protected GameObject shooter => playerGuns.shooter;
+	protected GameObject hand => playerGuns.hand;
+	
 	protected GameObject weaponInstance;
 	protected ShootingType shootingType;
 
-	public abstract void Initialize ();
+	public virtual void Initialize(GameObject player)
+	{
+		this.player = player;
+		playerStats = player.GetComponent<PlayerStats>();
+		playerGuns = player.GetComponent<PlayerGuns>();
+		animator = player.GetComponent<Animator>();
+	}
 
 	public abstract bool Shoot ();
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,7 +37,7 @@ public class EnemyStats : MonoBehaviour {
 
 		if (life <= 0) {
 			if (addPoint) {
-				PlayerStats.Instance.AddPoints (1);
+				MultiplayerManager.Instance.GetLocalPlayerComponent<PlayerStats>()?.AddPoints (1);
 			}
 			this.GetComponent<Collider> ().enabled = false;
 			this.GetComponent<Rigidbody> ().useGravity = false;

@@ -84,9 +84,6 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartHost();
             
-            var player = networkManager.SpawnManager.GetLocalPlayerObject();
-            player.transform.position = spawnPos;
-            
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -141,7 +138,25 @@ public class MultiplayerManager : MonoBehaviour
     public void Disconnect()
     {
         networkManager.Shutdown();
-        Destroy(networkManager);
+        Destroy(networkManager.gameObject);
+    }
+
+    public GameObject GetLocalPlayer()
+    {
+        if (networkManager == null)
+            return null;
+        
+        return networkManager.SpawnManager?.GetLocalPlayerObject()?.gameObject;
+    }
+    
+    public T GetLocalPlayerComponent<T>() where T : MonoBehaviour
+    {
+        var player = GetLocalPlayer();
+        
+        if (player)
+            return player.GetComponent<T>();
+        
+        return null;
     }
 
     public List<GameObject> GetPlayers()
@@ -158,5 +173,12 @@ public class MultiplayerManager : MonoBehaviour
         }
 
         return players;
+    }
+
+    public GameObject GetRandomPlayer()
+    {
+        var players = GetPlayers();
+        var rand = UnityEngine.Random.Range(0, players.Count - 1);
+        return players[rand];
     }
 }

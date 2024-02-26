@@ -8,16 +8,11 @@ public class GranadeData : GunData {
 
 	[SerializeField] private bool animateThrow;
 
-	private GameObject player;
-	private Animator anim;
+	public override void Initialize (GameObject player) 
+	{
+		base.Initialize(player);
 
-	public override void Initialize () {
-		this.shooter = PlayerStats.Instance.getShooter ();
-		this.player = PlayerStats.Instance.getPlayer();
-		this.hand = PlayerStats.Instance.getHand ();
-		this.anim = player.GetComponent<Animator> ();
-
-		this.weaponInstance = Instantiate (weapon, this.hand.transform);
+		this.weaponInstance = Instantiate (weapon, hand.transform);
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
 
 		this.currentCount = this.initialCount;
@@ -35,19 +30,23 @@ public class GranadeData : GunData {
 			}
 
 			if(animateThrow){
-				anim.SetTrigger ("Throw");
+				animator.SetTrigger ("Throw");
 			}
-			this.throwGranade ();
+			ThrowGranade ();
 
 			return true;
-		} else {
-			return false;
-		}
+		} 
+		
+		return false;
 	}
 
-	public void throwGranade()
+	public void ThrowGranade()
 	{
-		Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
+		var bulletInstance = Instantiate (bullet, shooter.transform.position, shooter.transform.rotation);
+		
+		var movement = bulletInstance.GetComponent<GranadeMovement>();
+		if (movement)
+			movement.player = player;
 	}
 
 	public override void Equip ()
@@ -55,13 +54,13 @@ public class GranadeData : GunData {
 		if (this.currentCount > 0) {
 			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		PlayerStats.Instance.onGranadesThrow += throwGranade;
+		playerStats.onGranadesThrow += ThrowGranade;
 	}
 
 	public override void Discard ()
 	{
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
-		PlayerStats.Instance.onGranadesThrow -= throwGranade;
+		playerStats.onGranadesThrow -= ThrowGranade;
 	}
 
 	public override GunType GetGunType ()

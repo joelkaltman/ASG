@@ -117,8 +117,8 @@ public class UIManager : MonoBehaviour {
 	void Start () {
 		this.showCanvas (PanelType.MAINMENU);
 
-		joystickMovement.SetActive (GameData.Instance.isMobile);
-		joystickRotation.SetActive (GameData.Instance.isMobile);
+		joystickMovement.SetActive (true);
+		joystickRotation.SetActive (true);
 		
 		playerStats.Initialize();
 
@@ -427,7 +427,6 @@ public class UIManager : MonoBehaviour {
 	public void OnUserInitialized()
 	{
 		textUsername.text = playerStats.userData.username;
-		playerGuns.InitializeGuns(playerStats);
 		
 		this.RefreshLife ();
 		this.RefreshScore ();

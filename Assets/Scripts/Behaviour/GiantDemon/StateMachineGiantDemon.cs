@@ -35,7 +35,7 @@ public class StateMachineGiantDemon : MonoBehaviour {
 	private void Start()
 	{
 		navAgent = this.GetComponent<NavMeshAgent> ();
-		player = PlayerStats.Instance.getPlayer ();
+		player = MultiplayerManager.Instance.GetRandomPlayer();
 
 		elapsedTime = 0;
 

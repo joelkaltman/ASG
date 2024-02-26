@@ -9,8 +9,6 @@ public class GameData : MonoBehaviour
 
     public GameDataScriptable gameDataScriptable;
     
-    public bool isMobile => gameDataScriptable.isMobile;
-
     public bool isOnline;
 
     public GameObject cap => gameDataScriptable.cap;

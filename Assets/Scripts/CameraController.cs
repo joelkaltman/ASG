@@ -51,18 +51,17 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate ()
     {
-        if (!NetworkManager.Singleton)
-            return;
-
-        var player = NetworkManager.Singleton.SpawnManager?.GetLocalPlayerObject();
+        var player = MultiplayerManager.Instance.GetLocalPlayer();
         if (!player)
             return;
+
+        var playerStats = player.GetComponent<PlayerStats>();
         
         if (currentMoveSpeed < speedMove) {
             currentMoveSpeed += 0.1f;
         }
 
-        this.transform.position = Vector3.MoveTowards (this.transform.position, player.transform.position + initialPosition, Time.deltaTime * PlayerStats.Instance.speed * currentMoveSpeed);
+        this.transform.position = Vector3.MoveTowards (this.transform.position, player.transform.position + initialPosition, Time.deltaTime * playerStats.speed * currentMoveSpeed);
 
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(initialRotation), Time.deltaTime * speedRotate);
     }

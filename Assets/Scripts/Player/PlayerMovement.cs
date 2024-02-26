@@ -18,7 +18,7 @@ public class PlayerMovement : NetworkBehaviour {
     private PlayerStats playerStats;
 
 	// Use this for initialization
-	void Start () {
+	public void Initialize () {
 		if(!shouldMove)
 			return;
 		
@@ -62,12 +62,8 @@ public class PlayerMovement : NetworkBehaviour {
 		Vector3 direction = new Vector3 ();
 		if (playerStats.life > 0) {
 
-			if (GameData.Instance.isMobile) {
-				Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
-				direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
-			} else {
-				direction = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
-			}
+			Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
+			direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
 
 			float posY = Vector3.Dot (this.transform.forward, direction); 
 			float posX = Vector3.Dot (this.transform.right, direction); 
@@ -88,55 +84,44 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Rotation()
 	{
-		if (Time.deltaTime > 0) {
-			if (GameData.Instance.isMobile) {
-				// Rotate by stick
-				Vector2 joystickVal = UIJoystickManager.Instance.getCurrentJoystick().getJoystickCurrentValues ();
+		if (Time.deltaTime > 0) 
+		{
+			// Rotate by stick
+			Vector2 joystickVal = UIJoystickManager.Instance.getCurrentJoystick().getJoystickCurrentValues ();
 
-				UIJoystickManager.JoystickType type = UIJoystickManager.Instance.getCurrentJoystickType();
-				switch (type) {
-				case UIJoystickManager.JoystickType.SHOOTER:
-				case UIJoystickManager.JoystickType.GRANADE:
-					if (joystickVal.x != 0 && joystickVal.y != 0) {
-						Vector3 dir = new Vector3 (joystickVal.x, 0, joystickVal.y) * 10;
-						transform.rotation = Quaternion.LookRotation(dir);
-					}
-					break;
-				
-				case UIJoystickManager.JoystickType.BOOMERANG:
-					GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (this.transform.position);
-					if (enemy != null && Vector3.Distance(enemy.transform.position, this.transform.position) > 2)
-					{
-						var dir = enemy.transform.position - this.transform.position;
-						dir.y = 0;
-						transform.rotation = Quaternion.LookRotation(dir);
-					}
-					break;
+			UIJoystickManager.JoystickType type = UIJoystickManager.Instance.getCurrentJoystickType();
+			switch (type) {
+			case UIJoystickManager.JoystickType.SHOOTER:
+			case UIJoystickManager.JoystickType.GRANADE:
+				if (joystickVal.x != 0 && joystickVal.y != 0) {
+					Vector3 dir = new Vector3 (joystickVal.x, 0, joystickVal.y) * 10;
+					transform.rotation = Quaternion.LookRotation(dir);
 				}
+				break;
+			
+			case UIJoystickManager.JoystickType.BOOMERANG:
+				GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (this.transform.position);
+				if (enemy != null && Vector3.Distance(enemy.transform.position, this.transform.position) > 2)
+				{
+					var dir = enemy.transform.position - this.transform.position;
+					dir.y = 0;
+					transform.rotation = Quaternion.LookRotation(dir);
+				}
+				break;
+			}
 
-				// Rotate when shoot granade
-				/*if (Input.GetMouseButtonDown (0) && 
-					(PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.GRANADE || PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.BOOMERANG)) {
-					RaycastHit hit;
-					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-					if (Physics.Raycast (ray, out hit)) {
-
-						Vector3 look_pos = hit.point - this.transform.position;
-						look_pos.y = 0;
-						transform.rotation = Quaternion.LookRotation (look_pos);
-					}
-				}*/
-			} else {
-				// Rotate to look mouse
+			// Rotate when shoot granade
+			/*if (Input.GetMouseButtonDown (0) && 
+				(PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.GRANADE || PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.BOOMERANG)) {
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast (ray, out hit)) {
 
-					Vector3 dir = hit.point - this.transform.position;
-					dir.y = 0;
-					transform.rotation = Quaternion.LookRotation (dir);
+					Vector3 look_pos = hit.point - this.transform.position;
+					look_pos.y = 0;
+					transform.rotation = Quaternion.LookRotation (look_pos);
 				}
-			}
+			}*/
 		}
 	}
 

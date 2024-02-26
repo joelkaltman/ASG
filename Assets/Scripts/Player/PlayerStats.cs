@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class PlayerStats : MonoBehaviour {
-
-	public static PlayerStats Instance;
-	
+public class PlayerStats : MonoBehaviour 
+{
 	public event Action onInitialized;
 	public event Action onScoreAdd;
 	public event Action onLifeChange;
 	public event Action onDie;
 	public event Action onGranadesThrow;
-
-	private GameObject shooter;
-	private GameObject hand;
 
 	public int life;
 	public int speed;
@@ -43,14 +34,6 @@ public class PlayerStats : MonoBehaviour {
 		onLifeChange = null;
 		onDie = null;
 		onGranadesThrow = null;
-	}
-	
-	private void Awake()
-	{
-		Instance = this;
-
-		shooter = GameObject.FindGameObjectWithTag ("Shooter");
-		hand = GameObject.FindGameObjectWithTag ("Hand");
 	}
 
 	private void Start()
@@ -80,18 +63,6 @@ public class PlayerStats : MonoBehaviour {
 		}
 
 		return newHighScore;
-	}
-	
-	public GameObject getPlayer(){
-		return this.gameObject;
-	}
-
-	public GameObject getShooter(){
-		return this.shooter;
-	}
-
-	public GameObject getHand(){
-		return this.hand;
 	}
 
 	public void RecieveDamage(int damage)

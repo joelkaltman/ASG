@@ -37,9 +37,9 @@ public class UIJoystickManager : MonoBehaviour {
 		localPlayerGuns.onGunChange += RefreshRotationJoystick;
 	}
 
-	void RefreshRotationJoystick(){
-		if (GameData.Instance.isMobile) {
-			switch (localPlayerGuns.GetCurrentGun ().GetGunType ()) {
+	void RefreshRotationJoystick()
+	{
+		switch (localPlayerGuns.GetCurrentGun ().GetGunType ()) {
 			case GunData.GunType.SHOTGUN:
 				this.changeJoystick (UIJoystickManager.JoystickType.SHOOTER);
 				break;
@@ -49,7 +49,6 @@ public class UIJoystickManager : MonoBehaviour {
 			case GunData.GunType.BOOMERANG:
 				this.changeJoystick (UIJoystickManager.JoystickType.BOOMERANG);
 				break;
-			}
 		}
 	}
 

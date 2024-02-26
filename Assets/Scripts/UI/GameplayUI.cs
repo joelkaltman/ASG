@@ -115,8 +115,8 @@ public class GameplayUI : MonoBehaviour {
 			MultiplayerManager.Instance.InitializeMultiplayer();
 		}
 
-		joystickMovement.SetActive (GameData.Instance.isMobile);
-		joystickRotation.SetActive (GameData.Instance.isMobile);
+		joystickMovement.SetActive (true);
+		joystickRotation.SetActive (true);
     }
 
 	void Update ()
@@ -158,7 +158,6 @@ public class GameplayUI : MonoBehaviour {
 		
 		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
 		
-		playerStats.onInitialized += OnUserInitialized;
 		playerStats.onScoreAdd += RefreshScore;
 		playerStats.onLifeChange += RefreshLife;
 		playerStats.onDie += RefreshGameOver;
@@ -169,9 +168,17 @@ public class GameplayUI : MonoBehaviour {
 		playerGuns.onShoot += RefreshGunCount;
 		playerGuns.onShoot += ResetFrecueny;
 	
-		playerStats.Initialize();
-		
 		gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
+		
+		playerStats.Initialize();
+		playerGuns.Initialize();
+		playerMovement.Initialize();
+		
+		RefreshLife ();
+		RefreshScore ();
+		RefreshCaps ();
+		RefreshGun ();
+		RefreshGunCount ();
 	}
 
 	private void ShowCanvas(PanelType type)
@@ -246,11 +253,7 @@ public class GameplayUI : MonoBehaviour {
 	{
 		Time.timeScale = 1;
 		
-		if (NetworkManager.Singleton != null)
-		{
-			NetworkManager.Singleton.Shutdown();
-			Destroy(NetworkManager.Singleton);
-		}
+		MultiplayerManager.Instance.Disconnect();
 
 		SceneManager.LoadScene ("MainMenu");
 	}
@@ -346,20 +349,9 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	public void ResetFrecueny()
+	private void ResetFrecueny()
 	{
 		imageFrecuency.fillAmount = 0;
-	}
-
-	public void OnUserInitialized()
-	{
-		playerGuns.InitializeGuns(playerStats);
-		
-		RefreshLife ();
-		RefreshScore ();
-		RefreshCaps ();
-		RefreshGun ();
-		RefreshGunCount ();
 	}
 	
 	public void RefreshCaps()

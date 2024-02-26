@@ -1275,8 +1275,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8183690968207853832}
   - component: {fileID: 8129481580394827506}
-  - component: {fileID: 8077887301970197960}
   - component: {fileID: 2572288382480545472}
+  - component: {fileID: 8077887301970197960}
   - component: {fileID: 8076275361303737190}
   - component: {fileID: 8076929814997280556}
   - component: {fileID: 8076480513791108770}
@@ -1334,6 +1334,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2572288382480545472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180750401825857422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1646896436
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &8077887301970197960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1350,26 +1370,6 @@ MonoBehaviour:
   speed: 10
   score: 0
   damageSound: {fileID: 8300000, guid: 39d6da8e7fdafd146aafbd81c71e9bba, type: 3}
---- !u!114 &2572288382480545472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8180750401825857422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1241703734
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &8076275361303737190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1397,6 +1397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebec6644957a805498728691330fe5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shooter: {fileID: 8179719280533894228}
+  hand: {fileID: 8180315429472925526}
   groundTarget: {fileID: 1089262084186898, guid: b422842959a926d45b652a8c4c354455,
     type: 3}
   Initialized: 0

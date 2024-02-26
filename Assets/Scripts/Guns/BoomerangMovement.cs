@@ -13,7 +13,7 @@ public class BoomerangMovement : MonoBehaviour {
 	public bool addCountOnReturn;
 
 	GameObject target;
-	GameObject player;
+	[HideInInspector] public GameObject player;
 
 	Vector3 initialForward;
 	bool found;
@@ -29,7 +29,6 @@ public class BoomerangMovement : MonoBehaviour {
 		searched = false;
 		bounces = 0;
 		lastBouncedEnemyID = -1;
-		player = PlayerStats.Instance.getPlayer();
 
 		this.transform.rotation = Quaternion.Euler (180, 0, -90);
 

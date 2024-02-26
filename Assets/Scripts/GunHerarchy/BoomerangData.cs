@@ -7,18 +7,12 @@ using UnityEngine;
 public class BoomerangData : GunData {
 
 	[SerializeField] private bool animateThrow;
-	[SerializeField] private bool comesBack;
 
-	private GameObject player;
-	private Animator anim;
+	public override void Initialize (GameObject player) 
+	{
+		base.Initialize(player);
 
-	public override void Initialize () {
-		this.shooter = PlayerStats.Instance.getShooter ();
-		this.player = PlayerStats.Instance.getPlayer ();
-		this.hand = PlayerStats.Instance.getHand ();
-		this.anim = player.GetComponent<Animator> ();
-
-		this.weaponInstance = Instantiate (weapon, this.hand.transform);
+		this.weaponInstance = Instantiate (weapon, hand.transform);
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
 
 		this.currentCount = this.initialCount;
@@ -27,8 +21,7 @@ public class BoomerangData : GunData {
 
 	public override bool Shoot ()
 	{
-		Animator anim = player.GetComponent<Animator> ();
-		if (this.timeElapsed > this.frecuency && this.currentCount > 0 && !anim.IsInTransition(0)) {
+		if (this.timeElapsed > this.frecuency && this.currentCount > 0 && !animator.IsInTransition(0)) {
 			this.currentCount--;
 			this.timeElapsed = 0;
 
@@ -37,22 +30,26 @@ public class BoomerangData : GunData {
 			}
 
 			if(animateThrow){
-				anim.SetTrigger ("Throw");
+				animator.SetTrigger ("Throw");
 			}
-			this.throwBoomerang();
+			this.ThrowBoomerang();
 
 			return true;
-		} else {
-			return false;
-		}
+		} 
+		
+		return false;
 	}
 
-	public void throwBoomerang()
+	private void ThrowBoomerang()
 	{
-		Instantiate (bullet, this.shooter.transform.position, this.shooter.transform.rotation);
+		var bulletInstance = Instantiate (bullet, shooter.transform.position, shooter.transform.rotation);
+
+		var movement = bulletInstance.GetComponent<BoomerangMovement>();
+		if (movement)
+			movement.player = player;
 	}
 
-	public void bumerangReturned(bool addCount)
+	public void BumerangReturned(bool addCount)
 	{
 		if (addCount) {
 			this.currentCount++;
@@ -67,13 +64,13 @@ public class BoomerangData : GunData {
 		if (this.currentCount > 0) {
 			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		PlayerStats.Instance.onGranadesThrow += throwBoomerang;
+		playerStats.onGranadesThrow += ThrowBoomerang;
 	}
 
 	public override void Discard ()
 	{
 		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
-		PlayerStats.Instance.onGranadesThrow -= throwBoomerang;
+		playerStats.onGranadesThrow -= ThrowBoomerang;
 	}
 
 	public override GunType GetGunType ()

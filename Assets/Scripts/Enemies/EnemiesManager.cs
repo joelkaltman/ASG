@@ -57,6 +57,7 @@ public class EnemiesManager : MonoBehaviour {
 
 	void Update()
 	{
+		return;
 		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
 		

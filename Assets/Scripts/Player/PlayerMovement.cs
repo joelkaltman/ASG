@@ -32,6 +32,8 @@ public class PlayerMovement : NetworkBehaviour {
 
 		playerStats = GetComponent<PlayerStats>();
 		//arrowCap.SetActive (true);
+
+		this.transform.position = new Vector3(0, 5, 0);
 	}
 	
 	// Update is called once per frame

@@ -53,6 +53,11 @@ public class PlayerStats : MonoBehaviour {
 		hand = GameObject.FindGameObjectWithTag ("Hand");
 	}
 
+	private void Start()
+	{
+		MultiplayerManager.Instance.RegisterPlayer(gameObject);
+	}
+
 	public async void Initialize()
 	{
 		initialLife = life;

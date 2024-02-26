@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -85,9 +86,6 @@ public class MultiplayerManager : MonoBehaviour
             
             var player = networkManager.SpawnManager.GetLocalPlayerObject();
             player.transform.position = spawnPos;
-
-            IsLocalPlayerReady = true;
-            OnLocalPlayerReady?.Invoke(player.gameObject);
             
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
@@ -108,17 +106,6 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartClient();
 
-            var clientId = networkManager.LocalClient.ClientId;
-            var player = networkManager.SpawnManager.GetPlayerNetworkObject(clientId);
-
-            if (player != null)
-            {
-                player.transform.position = spawnPos;
-
-                IsLocalPlayerReady = true;
-                OnLocalPlayerReady?.Invoke(player.gameObject);
-            }
-
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -134,15 +121,19 @@ public class MultiplayerManager : MonoBehaviour
             StartGame();
         }
     }
+
+    public void RegisterPlayer(GameObject player)
+    {
+        var netObject = player.GetComponent<NetworkObject>();
+        if (netObject.IsLocalPlayer)
+        {
+            IsLocalPlayerReady = true;
+            OnLocalPlayerReady?.Invoke(player);
+        }
+    }
     
     public void StartGame()
     {
-        var players = GetPlayers();
-        foreach (var player in players)
-        {
-            player.transform.position = spawnPos;
-        }
-        
         IsGameReady = true;
         OnGameReady?.Invoke();
     }

@@ -172,7 +172,7 @@ public class MultiplayerManager : MonoBehaviour
     public GameObject GetRandomPlayer()
     {
         var players = GetPlayers();
-        var rand = UnityEngine.Random.Range(0, players.Count - 1);
+        var rand = UnityEngine.Random.Range(0, players.Count);
         return players[rand];
     }
 }

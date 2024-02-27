@@ -10,6 +10,12 @@ public class SlimeScaleChange : MonoBehaviour {
 	float elapsedTime;
 
 	void Start(){
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+		
 		elapsedTime = 0;
 	}
 

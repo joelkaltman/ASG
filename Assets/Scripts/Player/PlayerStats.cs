@@ -1,5 +1,6 @@
 ﻿using System;
 using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,7 +12,14 @@ public class PlayerStats : MonoBehaviour
 	public event Action onDie;
 	public event Action onGranadesThrow;
 
-	public int life;
+	private NetworkVariable<int> Life = new(100);
+
+	public int life
+	{
+		get { return Life.Value; }
+		private set { if(MultiplayerManager.Instance.IsHostReady) Life.Value = value; }
+	}
+
 	public int speed;
 	[HideInInspector] public int score;
 
@@ -22,11 +30,13 @@ public class PlayerStats : MonoBehaviour
 
 	public AudioClip damageSound;
 
-	int initialLife;
-	int initialSpeed;
+	private int initialLife;
+	private int initialSpeed;
+	private int previousLife;
 
 	bool inmuneToFire;
 	public bool IsDead => life <= 0;
+	
 
 	public void ResetEvents()
 	{
@@ -44,6 +54,7 @@ public class PlayerStats : MonoBehaviour
 	public async void Initialize()
 	{
 		initialLife = life;
+		previousLife = life;
 		initialSpeed = speed;
 		inmuneToFire = false;
 
@@ -51,6 +62,23 @@ public class PlayerStats : MonoBehaviour
 
 		Initialized = true;
 		onInitialized?.Invoke ();
+	}
+	
+	private void Update()
+	{
+		if (!Initialized)
+			return;
+		
+		if (previousLife != life)
+		{
+			previousLife = life;
+			onLifeChange?.Invoke();
+		}
+
+		if (life == 0)
+		{
+			onDie?.Invoke();
+		}
 	}
 
 	public bool CheckNewHighScore()
@@ -81,8 +109,6 @@ public class PlayerStats : MonoBehaviour
 		if (!audio.isPlaying) {
 			audio.Play ();
 		}
-
-		onLifeChange?.Invoke();
 	}
 
 	public void RecieveDamageByFire(int damage)
@@ -99,13 +125,12 @@ public class PlayerStats : MonoBehaviour
 		this.inmuneToFire = false;
 	}
 
-	public void addLife(int amount)
+	public void AddLife(int amount)
 	{
 		life += amount;
 		if (life > initialLife) {
 			life = initialLife;
 		}
-		onLifeChange?.Invoke();
 	}
 
 	public void setSpeed(int amount, int time)
@@ -137,7 +162,6 @@ public class PlayerStats : MonoBehaviour
 	{
 		this.GetComponentInChildren<PlayerGuns> ().enabled = false;
 		this.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
-		onDie?.Invoke ();
 	}
 
 	public void ThrowGranade()
@@ -164,7 +188,6 @@ public class PlayerStats : MonoBehaviour
 
 		//Camera.main.GetComponent<CameraFollow> ().CurrentMoveSpeed = 2;
 
-		onLifeChange?.Invoke ();
 		onScoreAdd?.Invoke ();
 	}
 }

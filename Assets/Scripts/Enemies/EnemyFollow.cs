@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +12,14 @@ public class EnemyFollow : MonoBehaviour {
 	public bool follow;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+		
 		navAgent = this.GetComponent<NavMeshAgent> ();
 
 		int speedMin = this.GetComponent<EnemyStats> ().speedMin;

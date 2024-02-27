@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,15 @@ public class EnemyCollisionVoodoo : MonoBehaviour {
 	public GameObject explosionParticles;
 
 	GameObject explosionInstance;
+
+	private void Start()
+	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+	}
 
 	void OnCollisionEnter(Collision col)
 	{

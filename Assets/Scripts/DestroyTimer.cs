@@ -9,6 +9,12 @@ public class DestroyTimer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+		
 		StartCoroutine(DestroyObject());
 	}
 

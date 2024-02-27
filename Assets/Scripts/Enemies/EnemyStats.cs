@@ -21,6 +21,12 @@ public class EnemyStats : MonoBehaviour {
 
 	private void Start()
 	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+		
 		onDieEvent = new UnityEvent ();
 		inmuneToFire = false;
 	}

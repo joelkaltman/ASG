@@ -13,7 +13,7 @@ public class PowerUpPotionCollision : MonoBehaviour {
 		if (stats != null) {
 			this.GetComponent<AudioSource>().Play ();
 
-			stats.addLife (lifeRecupers);
+			stats.AddLife (lifeRecupers);
 			Destroy (this.gameObject);
 		}
 	}

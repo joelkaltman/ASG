@@ -11,6 +11,15 @@ public class EnemyCollisionZombie : MonoBehaviour {
 
 	float acumTime = 0;
 
+	void Start()
+	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+	}
+	
 	void OnCollisionEnter(Collision col)
 	{
 		PlayerStats player_stats = col.collider.GetComponent<PlayerStats> ();

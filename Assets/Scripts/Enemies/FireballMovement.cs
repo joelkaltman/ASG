@@ -6,7 +6,15 @@ public class FireballMovement : MonoBehaviour {
 
 	public float Velocity;
 
-	// Update is called once per frame
+	void Start()
+	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+	}
+	
 	void Update () {
 		this.transform.Translate (this.transform.forward * Velocity * Time.deltaTime);
 	}

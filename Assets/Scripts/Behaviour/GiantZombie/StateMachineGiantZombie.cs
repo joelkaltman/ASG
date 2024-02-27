@@ -27,6 +27,12 @@ public class StateMachineGiantZombie : MonoBehaviour {
 
 	private void Start()
 	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			enabled = false;
+			return;
+		}
+		
 		navAgent = this.GetComponent<NavMeshAgent> ();
 		player = MultiplayerManager.Instance.GetRandomPlayer();
 

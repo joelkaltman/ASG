@@ -12,27 +12,27 @@ public class GranadeData : GunData {
 	{
 		base.Initialize(player);
 
-		this.weaponInstance = Instantiate (weapon, hand.transform);
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+		weaponInstance = Instantiate (weapon, hand.transform);
+		weaponInstance.GetComponent<Renderer> ().enabled = false;
 
-		this.currentCount = this.initialCount;
-		this.shootingType = ShootingType.NORMAL;
+		currentCount = initialCount;
+		shootingType = ShootingType.NORMAL;
 	}
 
 	public override bool Shoot ()
 	{
-		if (this.timeElapsed > this.frecuency && this.currentCount > 0) {
-			this.currentCount--;
-			this.timeElapsed = 0;
+		if (timeElapsed > frecuency && currentCount > 0) {
+			currentCount--;
+			timeElapsed = 0;
 
-			if (this.currentCount == 0) {
-				this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+			if (currentCount == 0) {
+				weaponInstance.GetComponent<Renderer> ().enabled = false;
 			}
 
 			if(animateThrow){
 				animator.SetTrigger ("Throw");
 			}
-			ThrowGranade ();
+			ThrowGrenade ();
 
 			return true;
 		} 
@@ -40,27 +40,24 @@ public class GranadeData : GunData {
 		return false;
 	}
 
-	public void ThrowGranade()
+	private void ThrowGrenade()
 	{
-		var bulletInstance = Instantiate (bullet, shooter.transform.position, shooter.transform.rotation);
-		
-		var movement = bulletInstance.GetComponent<GranadeMovement>();
-		if (movement)
-			movement.player = player;
+		shooter.transform.GetPositionAndRotation(out var pos, out var rot);
+		playerGuns.ThrowGrenadeServerRpc(Id, pos, rot);
 	}
 
 	public override void Equip ()
 	{
-		if (this.currentCount > 0) {
-			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
+		if (currentCount > 0) {
+			weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		playerStats.onGranadesThrow += ThrowGranade;
+		playerStats.onGranadesThrow += ThrowGrenade;
 	}
 
 	public override void Discard ()
 	{
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
-		playerStats.onGranadesThrow -= ThrowGranade;
+		weaponInstance.GetComponent<Renderer> ().enabled = false;
+		playerStats.onGranadesThrow -= ThrowGrenade;
 	}
 
 	public override GunType GetGunType ()

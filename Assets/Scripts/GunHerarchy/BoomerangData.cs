@@ -12,27 +12,27 @@ public class BoomerangData : GunData {
 	{
 		base.Initialize(player);
 
-		this.weaponInstance = Instantiate (weapon, hand.transform);
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+		weaponInstance = Instantiate (weapon, hand.transform);
+		weaponInstance.GetComponent<Renderer> ().enabled = false;
 
-		this.currentCount = this.initialCount;
-		this.shootingType = ShootingType.NORMAL;
+		currentCount = initialCount;
+		shootingType = ShootingType.NORMAL;
 	}
 
 	public override bool Shoot ()
 	{
-		if (this.timeElapsed > this.frecuency && this.currentCount > 0 && !animator.IsInTransition(0)) {
-			this.currentCount--;
-			this.timeElapsed = 0;
+		if (timeElapsed > frecuency && currentCount > 0 && !animator.IsInTransition(0)) {
+			currentCount--;
+			timeElapsed = 0;
 
-			if (this.currentCount == 0) {
-				this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+			if (currentCount == 0) {
+				weaponInstance.GetComponent<Renderer> ().enabled = false;
 			}
 
 			if(animateThrow){
 				animator.SetTrigger ("Throw");
 			}
-			this.ThrowBoomerang();
+			ThrowBoomerang();
 
 			return true;
 		} 
@@ -42,34 +42,31 @@ public class BoomerangData : GunData {
 
 	private void ThrowBoomerang()
 	{
-		var bulletInstance = Instantiate (bullet, shooter.transform.position, shooter.transform.rotation);
-
-		var movement = bulletInstance.GetComponent<BoomerangMovement>();
-		if (movement)
-			movement.player = player;
+		shooter.transform.GetPositionAndRotation(out var pos, out var rot);
+		playerGuns.ThrowBoomerangServerRpc(Id, pos, rot);
 	}
 
-	public void BumerangReturned(bool addCount)
+	public void BoomerangReturned(bool addCount)
 	{
 		if (addCount) {
-			this.currentCount++;
+			currentCount++;
 		}
-		if (this.currentCount > 0) {
-			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
+		if (currentCount > 0) {
+			weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
 	}
 
 	public override void Equip ()
 	{
-		if (this.currentCount > 0) {
-			this.weaponInstance.GetComponent<Renderer> ().enabled = true;
+		if (currentCount > 0) {
+			weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
 		playerStats.onGranadesThrow += ThrowBoomerang;
 	}
 
 	public override void Discard ()
 	{
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+		weaponInstance.GetComponent<Renderer> ().enabled = false;
 		playerStats.onGranadesThrow -= ThrowBoomerang;
 	}
 

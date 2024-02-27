@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class BoomerangMovement : MonoBehaviour {
+public class BoomerangMovement : NetworkBehaviour {
 
 	public int damage;
 	public float speed;
@@ -15,40 +15,47 @@ public class BoomerangMovement : MonoBehaviour {
 	GameObject target;
 	[HideInInspector] public GameObject player;
 
-	Vector3 initialForward;
 	bool found;
 	bool searched;
 	int bounces;
 	int lastBouncedEnemyID;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
+		if (!IsHost)
+		{
+			enabled = false;
+			return;
+		}
+		
 		target = null;
-		initialForward = this.transform.forward;
 		found = false;
 		searched = false;
 		bounces = 0;
 		lastBouncedEnemyID = -1;
 
-		this.transform.rotation = Quaternion.Euler (180, 0, -90);
+		transform.rotation = Quaternion.Euler (180, 0, -90);
 
-		searchTarget ();
+		SearchTarget();
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 		if (target != null) {
-			Vector3 dir = target.transform.position - this.transform.position;
+			Vector3 dir = target.transform.position - transform.position;
 			dir.Normalize ();
 			dir.y = 0;
-			this.transform.position += speed * Time.deltaTime * dir;
-			this.transform.Rotate (rotationSpeed, 0, 0);
+			transform.position += speed * Time.deltaTime * dir;
+			transform.Rotate (rotationSpeed, 0, 0);
 		}else{
-			//Destroy (this.gameObject);
+			//Destroy (gameObject);
 		}
 	}
 
-	void searchTarget(){
+	void SearchTarget()
+	{
 		target = null;
 		found = false;
 		if (bounces < maxBounces) {
@@ -56,10 +63,10 @@ public class BoomerangMovement : MonoBehaviour {
 
 			float closest = 99999;
 			for (int i = 0; i < enemies.Count; i++) {
-				float distance = Vector3.Distance (enemies [i].transform.position, this.transform.position);
+				float distance = Vector3.Distance (enemies [i].transform.position, transform.position);
 				EnemyStats stats = enemies[i].GetComponent<EnemyStats> ();
 				if (stats.life > 0 && distance < distanceBounce && distance < closest && !(enemies[i].GetInstanceID() == lastBouncedEnemyID)) {
-					this.target = enemies [i];
+					target = enemies [i];
 					found = true;
 					closest = distance;
 				}
@@ -69,10 +76,10 @@ public class BoomerangMovement : MonoBehaviour {
 			if (comesBack) {
 				target = player;
 			} else {
-				this.gameObject.layer = 12;
-				this.GetComponent<Rigidbody> ().useGravity = true;
-				this.GetComponent<Collider> ().isTrigger = false;
-				Destroy (this.gameObject, 2);
+				gameObject.layer = 12;
+				GetComponent<Rigidbody> ().useGravity = true;
+				GetComponent<Collider> ().isTrigger = false;
+				Destroy (gameObject, 2);
 			}
 		}
 		searched = true;
@@ -83,23 +90,23 @@ public class BoomerangMovement : MonoBehaviour {
 		if (col.gameObject.tag == "Enemy" && col.gameObject.GetInstanceID() != lastBouncedEnemyID) {
 			EnemyStats stats = col.gameObject.GetComponent<EnemyStats> ();
 			stats.RecieveDamage (damage, true, true);
-			this.GetComponent<AudioSource> ().Play ();
+			GetComponent<AudioSource> ().Play ();
 			lastBouncedEnemyID = col.gameObject.GetInstanceID();
 			bounces++;
-			this.searchTarget ();
+			SearchTarget ();
 		} else if(col.gameObject.tag == "Player" && !found && searched) {
-			Destroy (this.gameObject);
+			Destroy (gameObject);
 		}
 	}
 
 	void OnTriggerStay(Collider col){
-		this.OnTriggerEnter (col);
+		OnTriggerEnter (col);
 	}
 
 	void OnDestroy(){
 		if (comesBack) {
 			PlayerGuns playerguns = player.GetComponent<PlayerGuns> ();
-			playerguns.BoomerangReturned (this.gameObject.name, addCountOnReturn);
+			playerguns.BoomerangReturned (gameObject.name, addCountOnReturn);
 		}
 	}
 }

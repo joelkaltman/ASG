@@ -1,14 +1,23 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeFireCollision : MonoBehaviour {
+public class GranadeFireCollision : NetworkBehaviour {
 
 	public int duration;
 	public GameObject fire;
 
 	GameObject fireInstance;
 
+	void Start()
+	{
+		if (!IsHost)
+		{
+			enabled = false;
+			return;
+		}
+	}
+	
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.GetComponent<PlayerMovement>() != null)

@@ -16,9 +16,11 @@ GameObject:
   - component: {fileID: 65558988074586302}
   - component: {fileID: 82119080596030252}
   - component: {fileID: 96066245691336948}
+  - component: {fileID: 4746537144958063748}
   - component: {fileID: 114846885359261434}
   - component: {fileID: 114518635330630060}
-  - component: {fileID: 2391131258854461610}
+  - component: {fileID: -2479619391249572577}
+  - component: {fileID: -2543050357450189670}
   m_Layer: 16
   m_Name: Batarang
   m_TagString: Projectile
@@ -336,6 +338,26 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &4746537144958063748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742477089698462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2459561156
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &114846885359261434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +377,7 @@ MonoBehaviour:
   distanceBounce: 10
   comesBack: 0
   addCountOnReturn: 0
+  player: {fileID: 0}
 --- !u!114 &114518635330630060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +393,7 @@ MonoBehaviour:
   imagesPow:
   - {fileID: 1122093458278606, guid: 67cd6e335fbb5214bb4b2d69ea4540eb, type: 3}
   - {fileID: 1034265805830324, guid: ffebe6bb2ece702489dd0585128266d3, type: 3}
---- !u!114 &2391131258854461610
+--- !u!114 &-2479619391249572577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,12 +402,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 1742477089698462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 3
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &-2543050357450189670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742477089698462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

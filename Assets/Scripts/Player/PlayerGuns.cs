@@ -58,15 +58,15 @@ public class PlayerGuns : NetworkBehaviour {
 		if (!Initialized)
 			return;
 		
-		this.GetCurrentGun().AddElapsedTime (Time.deltaTime);
+		GetCurrentGun().AddElapsedTime (Time.deltaTime);
 
 		bool shooted = false;
 		if (UIJoystickManager.Instance.getCurrentJoystick ().canShoot ()) {
-			shooted = this.GetCurrentGun ().Shoot ();
+			shooted = GetCurrentGun ().Shoot ();
 		}
 		if (shooted) {
-			AudioSource audio = this.GetComponentInChildren<AudioSource> ();
-			audio.clip = this.GetCurrentGun ().ShootAudio;
+			AudioSource audio = GetComponentInChildren<AudioSource> ();
+			audio.clip = GetCurrentGun ().ShootAudio;
 			audio.Play ();
 
 			onShoot?.Invoke ();
@@ -74,25 +74,25 @@ public class PlayerGuns : NetworkBehaviour {
 	}
 
 	public void SelectGunMobile(){
-		this.DiscardGun ();
+		DiscardGun ();
 		currentIndex++;
 		if (currentIndex == playerStats.userData.guns.Count) {
 			currentIndex = 0;
 		}
-		this.EquipGun ();
+		EquipGun ();
 		onGunChange?.Invoke ();
 	}
 
 	private void DiscardGun(){
-		GunData currentGun = this.GetCurrentGun();
+		GunData currentGun = GetCurrentGun();
 		currentGun.Discard ();
 	}
 
 	private void EquipGun (){
-		GunData currentGun = this.GetCurrentGun();
+		GunData currentGun = GetCurrentGun();
 		currentGun.Equip ();
 
-		AudioSource audio = this.GetComponentInChildren<AudioSource> ();
+		AudioSource audio = GetComponentInChildren<AudioSource> ();
 		audio.clip = currentGun.EquipAudio;
 		audio.Play ();
 	}
@@ -112,7 +112,7 @@ public class PlayerGuns : NetworkBehaviour {
 		}
 	}
 
-	private GunData GetGunFromId(int id)
+	private GunData GetGun(int id)
 	{
 		return GameData.Instance.guns.First(x => x.Id == id);
 	}
@@ -120,14 +120,14 @@ public class PlayerGuns : NetworkBehaviour {
 	public GunData GetCurrentGun()
 	{
 		int currentId = playerStats.userData.guns[currentIndex];
-		return GetGunFromId(currentId);
+		return GetGun(currentId);
 	}
 	
 	public void ChangeShootingType(GunData.ShootingType newType, int duration)
 	{
 		foreach (var gunId in playerStats.userData.guns)
 		{
-			GetGunFromId(gunId).ChangeShootingType (newType);
+			GetGun(gunId).ChangeShootingType (newType);
 		}
 		Invoke ("ChangeShootingTypeToNormal", duration);
 	}
@@ -136,7 +136,7 @@ public class PlayerGuns : NetworkBehaviour {
 	{
 		foreach (var gunId in playerStats.userData.guns)
 		{
-			GetGunFromId(gunId).ChangeShootingType (GunData.ShootingType.NORMAL);
+			GetGun(gunId).ChangeShootingType (GunData.ShootingType.NORMAL);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class PlayerGuns : NetworkBehaviour {
 			if (gun.CurrentCount < gun.InitialCount && gun.GetGunType() == GunData.GunType.BOOMERANG && 
 			    weaponName.Contains(gun.name)) {
 				BoomerangData boomerang = (BoomerangData)gun;
-				boomerang.BumerangReturned(addCount);
+				boomerang.BoomerangReturned(addCount);
 			}
 		}
 		onGunChange?.Invoke ();
@@ -155,12 +155,33 @@ public class PlayerGuns : NetworkBehaviour {
 	[ServerRpc]
 	public void ShootServerRpc(int id, Vector3 pos, Quaternion rot)
 	{
-		var gun = GameData.Instance.guns.First(x => x.Id == id);
-
-		if (gun == null)
-			return;
-		
+		var gun = GetGun(id);
 		var spawnedBullet = Instantiate(gun.Bullet, pos, rot);
 		spawnedBullet.GetComponent<NetworkObject>()?.Spawn();
+	}
+
+	[ServerRpc]
+	public void ThrowGrenadeServerRpc(int id, Vector3 pos, Quaternion rot)
+	{
+		var gun = GetGun(id);
+		var bulletInstance = Instantiate (gun.Bullet, pos, rot);
+		
+		var movement = bulletInstance.GetComponent<GranadeMovement>();
+		if (movement)
+			movement.player = gameObject;
+		movement.GetComponent<NetworkObject>()?.Spawn();
+	}
+
+
+	[ServerRpc]
+	public void ThrowBoomerangServerRpc(int id, Vector3 pos, Quaternion rot)
+	{
+		var gun = GetGun(id);
+		var bulletInstance = Instantiate (gun.Bullet, pos, rot);
+		
+		var movement = bulletInstance.GetComponent<BoomerangMovement>();
+		if (movement)
+			movement.player = gameObject;
+		movement.GetComponent<NetworkObject>()?.Spawn();
 	}
 }

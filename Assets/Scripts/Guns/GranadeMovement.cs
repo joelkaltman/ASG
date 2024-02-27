@@ -1,15 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeMovement : MonoBehaviour 
+public class GranadeMovement : NetworkBehaviour 
 {
 	[HideInInspector] public GameObject player;
 	
-	void Start () {
-		RaycastHit hit;
+	void Start () 
+	{
+		if (!IsHost)
+		{
+			enabled = false;
+			return;
+		}
+		
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		if (Physics.Raycast (ray, out hit)) {
+		if (Physics.Raycast (ray, out var hit)) {
 			// Calculate velocity
 			float distance = 5;
 			float t = 1;
@@ -19,7 +24,7 @@ public class GranadeMovement : MonoBehaviour
 
 			Vector3 vel = Vector3.up * vel_y + player.transform.forward * vel_x;
 
-			this.GetComponent<Rigidbody> ().velocity = vel;
+			GetComponent<Rigidbody> ().velocity = vel;
 		}
 	}
 }

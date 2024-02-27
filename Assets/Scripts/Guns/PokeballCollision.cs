@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PokeballCollision : MonoBehaviour {
+public class PokeballCollision : NetworkBehaviour {
 
 	public float distanceCatch;
 	public int chanceCatch;
@@ -15,6 +16,15 @@ public class PokeballCollision : MonoBehaviour {
 	GameObject capturedEnemy;
 
 	AudioSource audio;
+
+	void Start()
+	{
+		if (!IsHost)
+		{
+			enabled = false;
+			return;
+		}
+	}
 
 	void OnTriggerEnter(Collider col)
 	{

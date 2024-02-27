@@ -19,7 +19,10 @@ public class BulletMovement : NetworkBehaviour {
 	void Start ()
 	{
 		if (!IsHost)
+		{
+			enabled = false;
 			return;
+		}
 		
 		StartCoroutine(DestroyObject());
 	}
@@ -27,22 +30,17 @@ public class BulletMovement : NetworkBehaviour {
 	IEnumerator DestroyObject()
 	{
 		yield return new WaitForSeconds(destroySeconds);
-		Destroy (this.gameObject);
+		Destroy (gameObject);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (!IsHost)
-			return;
-		
-		this.transform.Translate (Vector3.up * velocity * Time.deltaTime);
+	void Update () 
+	{
+		transform.Translate (Vector3.up * velocity * Time.deltaTime);
 	}
 	
 	void OnTriggerEnter(Collider col)
 	{
-		if (!IsHost)
-			return;
-		
 		if (ignoreTags.Contains(col.gameObject.tag))
 			return;
 
@@ -54,6 +52,6 @@ public class BulletMovement : NetworkBehaviour {
 		if(sceneElement != null)
 			sceneElement.OnBulletCollision(transform.position);
 		
-		Destroy (this.gameObject);
+		Destroy (gameObject);
 	}
 }

@@ -9,22 +9,22 @@ public class ShotgunData : GunData {
 	{
 		base.Initialize(player);
 
-		this.weaponInstance = Instantiate (weapon, hand.transform);
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+		weaponInstance = Instantiate (weapon, hand.transform);
+		weaponInstance.GetComponent<Renderer>().enabled = false;
 
-		this.currentCount = this.initialCount;
-		this.shootingType = ShootingType.NORMAL;
+		currentCount = initialCount;
+		shootingType = ShootingType.NORMAL;
 	}
 
 	public override bool Shoot ()
 	{
-		if (this.timeElapsed > this.frecuency && this.currentCount != 0) {
-			if (this.initialCount != -1) {
-				this.currentCount--;
+		if (timeElapsed > frecuency && currentCount != 0) {
+			if (initialCount != -1) {
+				currentCount--;
 			}
-			this.timeElapsed = 0;
+			timeElapsed = 0;
 
-			switch (this.shootingType)
+			switch (shootingType)
 			{
 				case ShootingType.NONE:
 				{
@@ -32,25 +32,16 @@ public class ShotgunData : GunData {
 				}
 				case ShootingType.NORMAL:
 				{
-					var pos = shooter.transform.position;
-					var rot = shooter.transform.rotation;
-					
+					shooter.transform.GetPositionAndRotation(out var pos, out var rot);
 					playerGuns.ShootServerRpc(Id, pos, rot);
 					break;
 				}
 				case ShootingType.MULTPLE:
 				{
-					var pos = shooter.transform.position;
-					var rot = shooter.transform.rotation;
-
-					var spawnedBullet1 = Instantiate(bullet, pos, rot * Quaternion.Euler(0, 0, 30));
-					var spawnedBullet2 = Instantiate(bullet, pos, rot);
-					var spawnedBullet3 = Instantiate(bullet, pos, rot * Quaternion.Euler(0, 0, -30));
-
-					spawnedBullet1.GetComponent<NetworkObject>()?.Spawn();
-					spawnedBullet2.GetComponent<NetworkObject>()?.Spawn();
-					spawnedBullet3.GetComponent<NetworkObject>()?.Spawn();
-					
+					shooter.transform.GetPositionAndRotation(out var pos, out var rot);
+					playerGuns.ShootServerRpc(Id, pos, rot * Quaternion.Euler(0, 0, 30));
+					playerGuns.ShootServerRpc(Id, pos, rot);
+					playerGuns.ShootServerRpc(Id, pos, rot * Quaternion.Euler(0, 0, -30));
 					break;
 				}
 			}
@@ -63,12 +54,12 @@ public class ShotgunData : GunData {
 		
 	public override void Equip ()
 	{
-		this.weaponInstance.GetComponent<Renderer> ().enabled = true;
+		weaponInstance.GetComponent<Renderer>().enabled = true;
 	}
 
 	public override void Discard ()
 	{
-		this.weaponInstance.GetComponent<Renderer> ().enabled = false;
+		weaponInstance.GetComponent<Renderer>().enabled = false;
 	}
 
 	public override GunType GetGunType ()

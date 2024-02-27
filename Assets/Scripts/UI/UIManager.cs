@@ -252,7 +252,7 @@ public class UIManager : MonoBehaviour {
 
 		this.elapsedTime = 0;
 
-		int durationWaveSeconds = enemiesManager.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.WaveDuration;
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
@@ -461,7 +461,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void ShowWave(){
-		int wave = enemiesManager.wave;
+		int wave = enemiesManager.Wave;
 		this.textWave.text = "Wave " + wave.ToString ();
 		//this.textWave.enabled = true;
 		this.objetiveFade = 1;
@@ -503,7 +503,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void RefreshWaveTime(){
-		int durationWaveSeconds = enemiesManager.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.WaveDuration;
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}

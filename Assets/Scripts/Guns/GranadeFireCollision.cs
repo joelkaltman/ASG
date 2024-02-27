@@ -26,6 +26,7 @@ public class GranadeFireCollision : NetworkBehaviour {
 		this.GetComponent<AudioSource>().Play ();
 
 		fireInstance = Instantiate (fire, new Vector3(this.transform.position.x, 5, this.transform.position.z), Quaternion.Euler(-90,0,0));
+		fireInstance.GetComponent<NetworkObject>()?.Spawn(true);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;

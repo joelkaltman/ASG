@@ -43,7 +43,7 @@ public class PokeballCollision : NetworkBehaviour {
 
 	void CatchEnemy()
 	{
-		List<GameObject> enemies = EnemiesManager.Instance.getInstantiatedEnemies();
+		List<GameObject> enemies = EnemiesManager.Instance.EnemiesInstances;
 
 		for (int i = 0; i < enemies.Count; i++) {
 			float distance = Vector3.Distance (enemies [i].transform.position, this.transform.position);

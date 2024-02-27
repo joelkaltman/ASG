@@ -30,7 +30,8 @@ public class PlayerMovement : NetworkBehaviour {
 		playerStats = GetComponent<PlayerStats>();
 		//arrowCap.SetActive (true);
 
-		this.transform.position = new Vector3(0, 5, 0);
+		var spawnPos = IsHost ? new Vector3(0, 5, 0) : new Vector3(2, 5, 0);
+		this.transform.position = spawnPos;
 	}
 	
 	// Update is called once per frame

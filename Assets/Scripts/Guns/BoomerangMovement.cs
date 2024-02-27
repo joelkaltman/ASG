@@ -59,7 +59,7 @@ public class BoomerangMovement : NetworkBehaviour {
 		target = null;
 		found = false;
 		if (bounces < maxBounces) {
-			List<GameObject> enemies = EnemiesManager.Instance.getInstantiatedEnemies ();
+			List<GameObject> enemies = EnemiesManager.Instance.EnemiesInstances;
 
 			float closest = 99999;
 			for (int i = 0; i < enemies.Count; i++) {

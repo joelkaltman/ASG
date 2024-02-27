@@ -27,6 +27,7 @@ public class GranadeAttractionCollision : NetworkBehaviour {
 		this.GetComponent<AudioSource>().Play ();
 
 		attractionObjectInstance = Instantiate (attractionObject, new Vector3(this.transform.position.x, 6, this.transform.position.z), Quaternion.identity);
+		attractionObjectInstance.GetComponent<NetworkObject>()?.Spawn(true);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;

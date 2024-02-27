@@ -19,14 +19,9 @@ public class EnemyStats : MonoBehaviour {
 
 	bool inmuneToFire;
 
-	Material material;
-
 	private void Start()
 	{
 		onDieEvent = new UnityEvent ();
-
-		material = this.gameObject.GetComponent<Material> ();
-
 		inmuneToFire = false;
 	}
 

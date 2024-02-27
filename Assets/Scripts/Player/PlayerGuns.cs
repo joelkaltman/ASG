@@ -157,7 +157,7 @@ public class PlayerGuns : NetworkBehaviour {
 	{
 		var gun = GetGun(id);
 		var spawnedBullet = Instantiate(gun.Bullet, pos, rot);
-		spawnedBullet.GetComponent<NetworkObject>()?.Spawn();
+		spawnedBullet.GetComponent<NetworkObject>()?.Spawn(true);
 	}
 
 	[ServerRpc]
@@ -169,7 +169,7 @@ public class PlayerGuns : NetworkBehaviour {
 		var movement = bulletInstance.GetComponent<GranadeMovement>();
 		if (movement)
 			movement.player = gameObject;
-		movement.GetComponent<NetworkObject>()?.Spawn();
+		movement.GetComponent<NetworkObject>()?.Spawn(true);
 	}
 
 
@@ -182,6 +182,6 @@ public class PlayerGuns : NetworkBehaviour {
 		var movement = bulletInstance.GetComponent<BoomerangMovement>();
 		if (movement)
 			movement.player = gameObject;
-		movement.GetComponent<NetworkObject>()?.Spawn();
+		movement.GetComponent<NetworkObject>()?.Spawn(true);
 	}
 }

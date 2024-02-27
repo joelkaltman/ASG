@@ -15,8 +15,6 @@ public class MultiplayerManager : MonoBehaviour
     
     public GameObject networkManagerSP;
     public GameObject networkManagerMP;
-
-    public Vector3 spawnPos = new (0, 5, 0);
         
     private NetworkManager networkManager;
     private UnityTransport unityTransport;

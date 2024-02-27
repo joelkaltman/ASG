@@ -15,7 +15,7 @@ public class AttractEnemies : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		List<GameObject> enemies = EnemiesManager.Instance.getInstantiatedEnemies();
+		List<GameObject> enemies = EnemiesManager.Instance.EnemiesInstances;
 
 		for (int i = 0; i < (enemies.Count - 1); i++) {
 			float distance = Vector3.Distance (enemies [i].transform.position, this.transform.position);

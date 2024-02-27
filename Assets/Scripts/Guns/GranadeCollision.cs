@@ -1,14 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeCollision : MonoBehaviour {
+public class GranadeCollision : NetworkBehaviour {
 
 	public int damage;
 	public float distanceDamage;
 	public GameObject explosionParticles;
 
 	GameObject explosionInstance;
+
+	void Start()
+	{
+		if (!IsHost)
+		{
+			enabled = false;
+			return;
+		}
+	}
 
 	void OnTriggerEnter(Collider col)
 	{
@@ -20,6 +30,7 @@ public class GranadeCollision : MonoBehaviour {
 		DamageEnemies ();
 
 		explosionInstance = Instantiate (explosionParticles, this.transform.position, Quaternion.identity);
+		explosionInstance.GetComponent<NetworkObject>()?.Spawn(true);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;
@@ -36,7 +47,7 @@ public class GranadeCollision : MonoBehaviour {
 
 	void DamageEnemies()
 	{
-		List<GameObject> enemies = EnemiesManager.Instance.getInstantiatedEnemies();
+		List<GameObject> enemies = EnemiesManager.Instance.EnemiesInstances;
 
 		for (int i = 0; i < enemies.Count; i++) {
 			float distance = Vector3.Distance (enemies [i].transform.position, this.transform.position);

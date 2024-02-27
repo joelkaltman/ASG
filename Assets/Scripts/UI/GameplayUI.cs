@@ -232,14 +232,16 @@ public class GameplayUI : MonoBehaviour {
 
 		elapsedTime = 0;
 
-		int durationWaveSeconds = enemiesManager.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.WaveDuration;
 		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
 
 	public void PauseGame()
 	{
-		Time.timeScale = 0;
+		if(!GameData.Instance.isOnline)
+			Time.timeScale = 0;
+
 		ShowCanvas (PanelType.PAUSEMENU);
 	}
 
@@ -378,7 +380,7 @@ public class GameplayUI : MonoBehaviour {
 	}
 
 	void ShowWave(){
-		int wave = enemiesManager.wave;
+		int wave = enemiesManager.Wave;
 		textWave.text = "Wave " + wave.ToString ();
 		objetiveFade = 1;
 
@@ -409,7 +411,7 @@ public class GameplayUI : MonoBehaviour {
 	}
 
 	void RefreshWaveTime(){
-		int durationWaveSeconds = enemiesManager.getWaveDuration ();
+		int durationWaveSeconds = enemiesManager.WaveDuration;
 		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}

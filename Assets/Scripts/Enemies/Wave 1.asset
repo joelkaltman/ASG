@@ -17,4 +17,4 @@ MonoBehaviour:
   bossesToKill: 0
   enemies:
   - {fileID: 1930683322331160, guid: 8ea341b92894c6e42982801ef2906c82, type: 3}
-  frecuencySpawn: 1
+  frecuencySpawn: 5

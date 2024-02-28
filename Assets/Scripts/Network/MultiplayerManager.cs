@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -26,6 +27,8 @@ public class MultiplayerManager : MonoBehaviour
     public event Action<GameObject> OnLocalPlayerReady;
 
     public bool IsHostReady => IsGameReady && (networkManager ? networkManager.IsHost : false);
+
+    public List<GameObject> Players { get; private set; } = new();
     
     void Awake()
     {
@@ -62,7 +65,9 @@ public class MultiplayerManager : MonoBehaviour
     {
         networkManager.Shutdown();
         Destroy(networkManager.gameObject);
-        AuthenticationService.Instance.SignOut();
+        
+        if(AuthenticationService.Instance.IsSignedIn)
+            AuthenticationService.Instance.SignOut();
     }
 
     public struct ConnectionResult
@@ -121,6 +126,7 @@ public class MultiplayerManager : MonoBehaviour
 
     public void RegisterPlayer(GameObject player)
     {
+        Players.Add(player);
         var netObject = player.GetComponent<NetworkObject>();
         if (netObject.IsLocalPlayer)
         {
@@ -153,7 +159,7 @@ public class MultiplayerManager : MonoBehaviour
         return null;
     }
 
-    public List<GameObject> GetPlayers()
+    /*public List<GameObject> GetPlayers()
     {
         var players = new List<GameObject>();
 
@@ -167,12 +173,16 @@ public class MultiplayerManager : MonoBehaviour
         }
 
         return players;
-    }
+    }*/
 
     public GameObject GetRandomPlayer()
     {
-        var players = GetPlayers();
-        var rand = UnityEngine.Random.Range(0, players.Count);
-        return players[rand];
+        var rand = UnityEngine.Random.Range(0, Players.Count);
+        return Players[rand];
+    }
+
+    public GameObject GetPlayerCloserTo(Vector3 pos)
+    {
+        return Players.OrderBy(x => Vector3.Distance(x.transform.position, pos)).First();
     }
 }

@@ -1,57 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyFollow : MonoBehaviour {
+public class EnemyFollow : ServerOnlyMonobehavior {
 
 	NavMeshAgent navAgent;
-	private GameObject target;
-
 	public bool follow;
 
 	// Use this for initialization
 	void Start () 
 	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
-		
-		navAgent = this.GetComponent<NavMeshAgent> ();
+		navAgent = GetComponent<NavMeshAgent> ();
 
-		int speedMin = this.GetComponent<EnemyStats> ().speedMin;
-		int speedMax = this.GetComponent<EnemyStats> ().speedMax;
+		int speedMin = GetComponent<EnemyStats> ().speedMin;
+		int speedMax = GetComponent<EnemyStats> ().speedMax;
 		navAgent.speed = Random.Range (speedMin, speedMax + 1);
-
-		target = MultiplayerManager.Instance.GetRandomPlayer();
 		
-		this.follow = true;
+		follow = true;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		var target = MultiplayerManager.Instance.GetPlayerCloserTo(transform.position);
+		
 		if (!target)
 			return;
 		
-		if (this.gameObject.GetComponent<EnemyStats> ().life <= 0) {
+		if (gameObject.GetComponent<EnemyStats> ().life <= 0) {
 			navAgent.speed = 0;
 			return;
 		}
 
-		if (this.transform.position.y < 3) {
-			//Destroy (this.gameObject);
+		if (transform.position.y < 3) {
+			//Destroy (gameObject);
 		}
 
 		if (navAgent.isOnNavMesh) {
-			if (this.follow) {
+			if (follow) {
 				navAgent.SetDestination (target.transform.position);
 			} 
-		} else {
-			//Destroy (this.gameObject);
 		}
 	}
 }

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
-public class BoomerangMovement : NetworkBehaviour {
-
+public class BoomerangMovement : PlayerOwned
+{
 	public int damage;
 	public float speed;
 	public float rotationSpeed;
@@ -13,7 +12,6 @@ public class BoomerangMovement : NetworkBehaviour {
 	public bool addCountOnReturn;
 
 	GameObject target;
-	[HideInInspector] public GameObject player;
 
 	bool found;
 	bool searched;
@@ -23,12 +21,6 @@ public class BoomerangMovement : NetworkBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-		
 		target = null;
 		found = false;
 		searched = false;
@@ -89,7 +81,7 @@ public class BoomerangMovement : NetworkBehaviour {
 	{
 		if (col.gameObject.tag == "Enemy" && col.gameObject.GetInstanceID() != lastBouncedEnemyID) {
 			EnemyStats stats = col.gameObject.GetComponent<EnemyStats> ();
-			stats.RecieveDamage (damage, true, true);
+			stats.RecieveDamage (player, damage, true, true);
 			GetComponent<AudioSource> ().Play ();
 			lastBouncedEnemyID = col.gameObject.GetInstanceID();
 			bounces++;

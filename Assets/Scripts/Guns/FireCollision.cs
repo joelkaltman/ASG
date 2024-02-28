@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireCollision : MonoBehaviour {
+public class FireCollision : PlayerOwned {
 
 	void OnTriggerStay(Collider col)
 	{
@@ -12,7 +12,7 @@ public class FireCollision : MonoBehaviour {
 		}
 		EnemyStats enemy_stats = col.gameObject.GetComponent<EnemyStats> ();
 		if (enemy_stats != null) {
-			enemy_stats.RecieveDamageByFire (10);
+			enemy_stats.RecieveDamageByFire (player, 10);
 		}
 	}
 }

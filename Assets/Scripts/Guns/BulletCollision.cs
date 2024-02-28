@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletCollision : MonoBehaviour {
+public class BulletCollision : PlayerOwned {
 
 	public int damage;
 
@@ -20,12 +20,12 @@ public class BulletCollision : MonoBehaviour {
 
 		var scriptEnemyStats = col.gameObject.GetComponent<EnemyStats> ();
 		if (scriptEnemyStats != null)
-			scriptEnemyStats.RecieveDamage (damage, true, true);
+			scriptEnemyStats.RecieveDamage (player, damage, true, true);
 
 		var sceneElement = col.gameObject.GetComponent<SceneElementCollision>();
 		if(sceneElement != null)
 			sceneElement.OnBulletCollision(transform.position);
 		
-		Destroy (this.gameObject);
+		Destroy (gameObject);
 	}
 }

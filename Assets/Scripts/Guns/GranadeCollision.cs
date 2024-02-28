@@ -3,23 +3,14 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeCollision : NetworkBehaviour {
+public class GranadeCollision : PlayerOwned {
 
 	public int damage;
 	public float distanceDamage;
 	public GameObject explosionParticles;
 
 	GameObject explosionInstance;
-
-	void Start()
-	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-	}
-
+	
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.GetComponent<PlayerMovement>() != null)
@@ -54,7 +45,7 @@ public class GranadeCollision : NetworkBehaviour {
 			if (distance < distanceDamage) {
 				EnemyStats stats = enemies [i].GetComponent<EnemyStats> ();
 				if (stats != null) {
-					stats.RecieveDamage (damage, true, true);
+					stats.RecieveDamage (player, damage, true, true);
 				}
 			}
 		}

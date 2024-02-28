@@ -43,7 +43,7 @@ public class BoomerangData : GunData {
 	private void ThrowBoomerang()
 	{
 		shooter.transform.GetPositionAndRotation(out var pos, out var rot);
-		playerGuns.ThrowBoomerangServerRpc(Id, pos, rot);
+		playerGuns.ShootServerRpc(Id, pos, rot);
 	}
 
 	public void BoomerangReturned(bool addCount)

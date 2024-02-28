@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class BulletMovement : NetworkBehaviour {
-
+public class BulletMovement : PlayerOwned 
+{
 	public float velocity;
 	public int damage;
 	public int destroySeconds;
@@ -18,12 +18,6 @@ public class BulletMovement : NetworkBehaviour {
 
 	void Start ()
 	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-		
 		StartCoroutine(DestroyObject());
 	}
 
@@ -46,7 +40,7 @@ public class BulletMovement : NetworkBehaviour {
 
 		var scriptEnemyStats = col.gameObject.GetComponent<EnemyStats> ();
 		if (scriptEnemyStats != null)
-			scriptEnemyStats.RecieveDamage (damage, true, true);
+			scriptEnemyStats.RecieveDamage (player, damage, true, true);
 
 		var sceneElement = col.gameObject.GetComponent<SceneElementCollision>();
 		if(sceneElement != null)

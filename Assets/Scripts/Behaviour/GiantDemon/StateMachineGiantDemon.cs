@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StateMachineGiantDemon : MonoBehaviour {
+public class StateMachineGiantDemon : ServerOnlyMonobehavior {
 
 	public float timeFarAttackMin;
 	public float timeFarAttackMax;
@@ -19,55 +19,42 @@ public class StateMachineGiantDemon : MonoBehaviour {
 	NavMeshAgent navAgent;
 
 	private GameObject player;
-	float elapsedTime;
 	float elapsedTimeFarAttack;
 
 
-	private void Awake()
+
+	private void Start()
 	{
 		idle = Instantiate (idle);
 		follow = Instantiate (follow);
 		closeAttack = Instantiate (closeAttack);
 		farAttack1 = Instantiate (farAttack1);
 		farAttack2 = Instantiate (farAttack2);
-	}
-
-	private void Start()
-	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
 		
-		navAgent = this.GetComponent<NavMeshAgent> ();
+		navAgent = GetComponent<NavMeshAgent> ();
 		player = MultiplayerManager.Instance.GetRandomPlayer();
-
-		elapsedTime = 0;
-
-		idle.Initialize (this.gameObject);
-		follow.Initialize (this.gameObject);
-		closeAttack.Initialize (this.gameObject);
-		farAttack1.Initialize (this.gameObject);
-		farAttack2.Initialize (this.gameObject);
+		
+		idle.Initialize (gameObject);
+		follow.Initialize (gameObject);
+		closeAttack.Initialize (gameObject);
+		farAttack1.Initialize (gameObject);
+		farAttack2.Initialize (gameObject);
 
 		timeFarAttack = Random.Range (timeFarAttackMin, timeFarAttackMax);
 
-		SetState(this.idle);
+		SetState(idle);
 	}
 
 	private void Update()
 	{
-		if (this.gameObject.GetComponent<EnemyStats> ().life <= 0) {
+		if (gameObject.GetComponent<EnemyStats> ().life <= 0) {
 			navAgent.speed = 0;
 			return;
 		}
 
-		elapsedTime += Time.deltaTime;
+		currentState.Tick (Time.deltaTime);
 
-		this.currentState.Tick (Time.deltaTime);
-
-		this.checkFarAttack ();
+		checkFarAttack ();
 
 		if (currentState == idle) {
 			transitionIdle ();
@@ -87,7 +74,7 @@ public class StateMachineGiantDemon : MonoBehaviour {
 			elapsedTimeFarAttack += Time.deltaTime;
 		}
 
-		if (elapsedTimeFarAttack > timeFarAttack && currentState != this.closeAttack) {
+		if (elapsedTimeFarAttack > timeFarAttack && currentState != closeAttack) {
 			elapsedTimeFarAttack = 0;
 			timeFarAttack = Random.Range (timeFarAttackMin, timeFarAttackMax);
 			int rnd = Random.Range (0, 2);
@@ -101,35 +88,35 @@ public class StateMachineGiantDemon : MonoBehaviour {
 
 	void transitionIdle()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance < 2) {
-			SetState (this.closeAttack);
+			SetState (closeAttack);
 		} else {
-			SetState (this.follow);
+			SetState (follow);
 		}
 	}
 
 	void transitionFollow()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance < 2) {
-			SetState (this.closeAttack);
+			SetState (closeAttack);
 		}
 	}
 
 	void transitionCloseAttack()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance > 2) {
-			SetState (this.follow);
+			SetState (follow);
 		}
 	}
 
 	void transitionFarAttack()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
-		if (!((StateShoot)this.currentState).isShooting ()) {
-			SetState (this.idle);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
+		if (!((StateShoot)currentState).isShooting ()) {
+			SetState (idle);
 		}
 	}
 
@@ -147,6 +134,6 @@ public class StateMachineGiantDemon : MonoBehaviour {
 
 	public void EventShoot()
 	{
-		((StateShoot)this.currentState).Shoot ();
+		((StateShoot)currentState).Shoot ();
 	}
 }

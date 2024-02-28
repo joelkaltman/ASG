@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PokeballCollision : NetworkBehaviour {
+public class PokeballCollision : PlayerOwned {
 
 	public float distanceCatch;
 	public int chanceCatch;
@@ -16,15 +16,6 @@ public class PokeballCollision : NetworkBehaviour {
 	GameObject capturedEnemy;
 
 	AudioSource audio;
-
-	void Start()
-	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-	}
 
 	void OnTriggerEnter(Collider col)
 	{
@@ -82,7 +73,7 @@ public class PokeballCollision : NetworkBehaviour {
 				EnemyStats stats = this.capturedEnemy.GetComponent<EnemyStats>();
 				if (stats != null)
 				{
-					stats.RecieveDamage(99999, false, true);
+					stats.RecieveDamage(player, 99999, false, true);
 				}
 			}
 			else

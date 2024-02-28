@@ -13,7 +13,7 @@ public class PowerUpSpeedUpCollision : MonoBehaviour {
 		if (stats != null) {
 			this.GetComponent<AudioSource>().Play ();
 
-			stats.setSpeed (6, duration);
+			stats.SetSpeed (6, duration);
 			Destroy (this.gameObject);
 		}
 	}

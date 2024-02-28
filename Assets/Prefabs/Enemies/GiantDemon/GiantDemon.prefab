@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: -74514943032159284}
   - component: {fileID: -7929394168066021674}
   - component: {fileID: -8454042634854299706}
+  - component: {fileID: -7057891730767642053}
   m_Layer: 9
   m_Name: GiantDemon
   m_TagString: Enemy
@@ -561,6 +562,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7057891730767642053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224127478856044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 95325271918094674}
 --- !u!1 &1242633038583510
 GameObject:
   m_ObjectHideFlags: 0

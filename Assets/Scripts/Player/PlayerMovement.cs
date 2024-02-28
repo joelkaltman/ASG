@@ -48,7 +48,7 @@ public class PlayerMovement : NetworkBehaviour {
 		
 		this.FallAndMove ();
 
-		if (playerStats.life == 0)
+		if (playerStats.Life.Value == 0)
 			return;
 
 		this.animator.SetBool("Run", isMoving);
@@ -61,7 +61,7 @@ public class PlayerMovement : NetworkBehaviour {
 	void FallAndMove()
 	{
 		Vector3 direction = new Vector3 ();
-		if (playerStats.life > 0) {
+		if (playerStats.Life.Value > 0) {
 
 			Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
 			direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
@@ -73,8 +73,8 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 
 		var vel = rb.velocity;
-		vel.x = direction.x * playerStats.speed;
-		vel.z = direction.z * playerStats.speed;
+		vel.x = direction.x * playerStats.Speed.Value;
+		vel.z = direction.z * playerStats.Speed.Value;
 		rb.velocity = vel;
 
 		isMoving = true;
@@ -128,7 +128,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	void Dust()
 	{
-		if (playerStats.speed > 10 && isMoving && particlesDust) {
+		if (playerStats.Speed.Value > 10 && isMoving && particlesDust) {
 			GameObject dust = Instantiate (particlesDust, this.transform.position, Quaternion.identity);
 			Destroy (dust, 3);
 		}

@@ -81,8 +81,8 @@ public class GameplayUI : MonoBehaviour {
 	{
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
-		enemiesManager.onWaveChange += ShowWave;
-		enemiesManager.onWaveChange += RefreshWaveTime;
+		enemiesManager.Wave.OnValueChanged += ShowWave;
+		enemiesManager.Wave.OnValueChanged += RefreshWaveTime;
         
 		objetiveFade = 0;
 		currentFade = 0;
@@ -133,7 +133,7 @@ public class GameplayUI : MonoBehaviour {
 		FadeWave ();
 
 		if (currentPanel == PanelType.GAME) {
-			TakeTime (Time.deltaTime);
+			TakeTime ();
 		}
 	}
 
@@ -157,10 +157,10 @@ public class GameplayUI : MonoBehaviour {
 		playerGuns = player.GetComponent<PlayerGuns>();
 		
 		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
-		
-		playerStats.onScoreAdd += RefreshScore;
-		playerStats.onLifeChange += RefreshLife;
-		playerStats.onDie += RefreshGameOver;
+
+		playerStats.Life.OnValueChanged += RefreshLife;
+		playerStats.Life.OnValueChanged += RefreshGameOver;
+		playerStats.Score.OnValueChanged += RefreshScore;
 	
 		playerGuns.onGunChange += RefreshGun;
 		playerGuns.onGunChange += RefreshGunCount;
@@ -174,8 +174,8 @@ public class GameplayUI : MonoBehaviour {
 		playerGuns.Initialize();
 		playerMovement.Initialize();
 		
-		RefreshLife ();
-		RefreshScore ();
+		RefreshLife (playerStats.Life.Value, playerStats.Life.Value);
+		RefreshScore (playerStats.Score.Value, playerStats.Score.Value);
 		RefreshCaps ();
 		RefreshGun ();
 		RefreshGunCount ();
@@ -232,7 +232,7 @@ public class GameplayUI : MonoBehaviour {
 
 		elapsedTime = 0;
 
-		int durationWaveSeconds = enemiesManager.WaveDuration;
+		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
 		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
@@ -321,27 +321,27 @@ public class GameplayUI : MonoBehaviour {
 
 	// ================================= Game Interface ==============================
 
-	public void RefreshScore()
+	private void RefreshScore(int previousScore, int score)
 	{
-		textScore.text = playerStats.score.ToString();
+		textScore.text = playerStats.Score.Value.ToString();
 		BounceText bounce = textScore.GetComponent<BounceText> ();
 		if (bounce != null) {
 			bounce.Bounce (0.65f);
 		}
 	}
 
-	public void RefreshLife()
+	private void RefreshLife(int previousLife, int currentLife)
 	{
-		imageLife.fillAmount = (float)playerStats.life / 100;
+		imageLife.fillAmount = (float)currentLife / 100;
 	}
 
-	public void RefreshGun()
+	private void RefreshGun()
 	{
 		imageGun.GetComponent<Image> ().sprite = playerGuns.GetCurrentGun().Sprite;
 		//imageGun.GetComponent<Image> ().SetNativeSize ();
 	}
 
-	public void RefreshGunCount()
+	private void RefreshGunCount()
 	{
 		int count = playerGuns.GetCurrentGun ().CurrentCount;
 		if (count >= 0) {
@@ -370,28 +370,40 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	public void RefreshGameOver()
+	private void RefreshGameOver(int previousLife, int currentLife)
 	{
+		if (!playerStats.IsDead)
+			return;
+		
         ShowCanvas (PanelType.GAMEOVER);
-		textGiantScore.text = "You killed " + playerStats.score + " enemies!";
+		textGiantScore.text = "You killed " + playerStats.Score.Value + " enemies!";
 
 		bool newMaxScore = playerStats.CheckNewHighScore();
 		newHighScoreText.SetActive(newMaxScore);
 	}
 
-	void ShowWave(){
-		int wave = enemiesManager.Wave;
-		textWave.text = "Wave " + wave.ToString ();
+	void ShowWave(int previousWave, int newWave)
+	{
+		textWave.text = "Wave " + newWave;
 		objetiveFade = 1;
 
 		Invoke ("HideWave", 3);
 	}
 
-	void HideWave(){
+	void RefreshWaveTime(int previousWave, int newWave)
+	{
+		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
+		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
+		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+	}
+
+	void HideWave()
+	{
 		objetiveFade = 0;
 	}
 
-	void FadeWave(){
+	void FadeWave()
+	{
 		if (currentFade < objetiveFade) {
 			currentFade += speedFade;
 			if (currentFade > objetiveFade) {
@@ -410,13 +422,7 @@ public class GameplayUI : MonoBehaviour {
 		textWave.color = curr;
 	}
 
-	void RefreshWaveTime(){
-		int durationWaveSeconds = enemiesManager.WaveDuration;
-		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
-		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
-	}
-
-	void TakeTime(float deltaTime){
+	void TakeTime(){
 		elapsedTime += Time.deltaTime;
 
 		if (elapsedTime > 1) {

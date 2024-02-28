@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttractEnemies : MonoBehaviour {
+public class AttractEnemies : PlayerOwned {
 
 	public float distanceAttraction;
 
@@ -31,7 +31,7 @@ public class AttractEnemies : MonoBehaviour {
 		if (kill) {
 			EnemyStats enemyStats = col.gameObject.GetComponent<EnemyStats> ();
 			if (enemyStats != null) {
-				enemyStats.RecieveDamage (99999, false, true);
+				enemyStats.RecieveDamage (player, 99999, false, true);
 			}
 		}
 	}

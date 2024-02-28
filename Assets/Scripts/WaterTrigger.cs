@@ -15,7 +15,7 @@ public class WaterTrigger : MonoBehaviour {
 		}
 		EnemyStats enemyStats = col.gameObject.GetComponent<EnemyStats> ();
 		if (enemyStats != null) {
-			enemyStats.RecieveDamage (99999, true, false);
+			enemyStats.RecieveDamage (null, 99999, true, false);
 		}
 	}
 

@@ -43,7 +43,7 @@ public class GranadeData : GunData {
 	private void ThrowGrenade()
 	{
 		shooter.transform.GetPositionAndRotation(out var pos, out var rot);
-		playerGuns.ThrowGrenadeServerRpc(Id, pos, rot);
+		playerGuns.ShootServerRpc(Id, pos, rot);
 	}
 
 	public override void Equip ()

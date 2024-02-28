@@ -1,10 +1,9 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EnemyStats : MonoBehaviour {
+public class EnemyStats : ServerOnlyMonobehavior {
 
 	[HideInInspector] public UnityEvent onDieEvent;
 
@@ -21,65 +20,59 @@ public class EnemyStats : MonoBehaviour {
 
 	private void Start()
 	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
-		
 		onDieEvent = new UnityEvent ();
 		inmuneToFire = false;
 	}
 
-	public void RecieveDamage(int damage, bool animateDying, bool addPoint)
+	public void RecieveDamage(GameObject player, int damage, bool animateDying, bool addPoint)
 	{
 		life -= damage;
 		ShowBlood();
 
 		if (life <= 0) {
-			if (addPoint) {
-				MultiplayerManager.Instance.GetLocalPlayerComponent<PlayerStats>()?.AddPoints (1);
+			if (addPoint && player) {
+				player.GetComponent<PlayerStats>()?.AddPoints (1);
 			}
-			this.GetComponent<Collider> ().enabled = false;
-			this.GetComponent<Rigidbody> ().useGravity = false;
+			GetComponent<Collider> ().enabled = false;
+			GetComponent<Rigidbody> ().useGravity = false;
 			if (animateDying) {
 				if (hasAnimation) {
-					this.GetComponent<Animator> ().SetBool ("Die", true);
+					GetComponent<Animator> ().SetBool ("Die", true);
 					Invoke ("destroy", 2);
 				} else {
-					GameObject particles = Instantiate (particlesOnDie, this.transform.position, Quaternion.Euler(-90, 0, 0));
+					GameObject particles = Instantiate (particlesOnDie, transform.position, Quaternion.Euler(-90, 0, 0));
 					Destroy (particles, 1000);
-					this.destroy ();
+					destroy ();
 				}
 			} else {
-				this.destroy ();
+				destroy ();
 			}
 
-			AudioSource audio = this.GetComponent<AudioSource> ();
-			audio.clip = this.soundOnDie;
+			AudioSource audio = GetComponent<AudioSource> ();
+			audio.clip = soundOnDie;
 			audio.Play ();
 
 			onDieEvent.Invoke ();
 		}
 	}
 
-	public void RecieveDamageByFire(int damage)
+	public void RecieveDamageByFire(GameObject player, int damage)
 	{
 		if (!inmuneToFire) {
 			inmuneToFire = true;
 			Invoke ("makeVulnerableToFire", 1);
-			this.RecieveDamage (damage, true, true);
+			RecieveDamage (player, damage, true, true);
 		}
 	}
 
 	private void makeVulnerableToFire()
 	{
-		this.inmuneToFire = false;
+		inmuneToFire = false;
 	}
 
 	public void destroy()
 	{
-		EnemiesManager.Instance.DestroyEnemy (this.gameObject);
+		EnemiesManager.Instance.DestroyEnemy (gameObject);
 	}
 
 	public void ShowBlood()

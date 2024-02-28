@@ -1,18 +1,10 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeMovement : NetworkBehaviour 
+public class GranadeMovement : PlayerOwned 
 {
-	[HideInInspector] public GameObject player;
-	
 	void Start () 
 	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-		
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		if (Physics.Raycast (ray, out var hit)) {
 			// Calculate velocity

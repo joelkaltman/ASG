@@ -157,31 +157,11 @@ public class PlayerGuns : NetworkBehaviour {
 	{
 		var gun = GetGun(id);
 		var spawnedBullet = Instantiate(gun.Bullet, pos, rot);
+		
+		var playerOwned = spawnedBullet.GetComponents<PlayerOwned>();
+		foreach (var owned in playerOwned)
+			owned.player = gameObject;
+		
 		spawnedBullet.GetComponent<NetworkObject>()?.Spawn(true);
-	}
-
-	[ServerRpc]
-	public void ThrowGrenadeServerRpc(int id, Vector3 pos, Quaternion rot)
-	{
-		var gun = GetGun(id);
-		var bulletInstance = Instantiate (gun.Bullet, pos, rot);
-		
-		var movement = bulletInstance.GetComponent<GranadeMovement>();
-		if (movement)
-			movement.player = gameObject;
-		movement.GetComponent<NetworkObject>()?.Spawn(true);
-	}
-
-
-	[ServerRpc]
-	public void ThrowBoomerangServerRpc(int id, Vector3 pos, Quaternion rot)
-	{
-		var gun = GetGun(id);
-		var bulletInstance = Instantiate (gun.Bullet, pos, rot);
-		
-		var movement = bulletInstance.GetComponent<BoomerangMovement>();
-		if (movement)
-			movement.player = gameObject;
-		movement.GetComponent<NetworkObject>()?.Spawn(true);
 	}
 }

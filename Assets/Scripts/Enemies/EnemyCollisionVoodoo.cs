@@ -3,21 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCollisionVoodoo : MonoBehaviour {
+public class EnemyCollisionVoodoo : PlayerOwned {
 
 	public int damage;
 	public GameObject explosionParticles;
 
 	GameObject explosionInstance;
-
-	private void Start()
-	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
-	}
 
 	void OnCollisionEnter(Collision col)
 	{
@@ -35,6 +26,6 @@ public class EnemyCollisionVoodoo : MonoBehaviour {
 		posExplosion.y = 5;
 		explosionInstance = Instantiate (explosionParticles, posExplosion, Quaternion.identity);
 		Destroy (explosionInstance, 3);
-		this.GetComponent<EnemyStats> ().RecieveDamage (99999, false, false);
+		this.GetComponent<EnemyStats> ().RecieveDamage (player, 99999, false, false);
 	}
 }

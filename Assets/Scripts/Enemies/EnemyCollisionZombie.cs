@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EnemyCollisionZombie : MonoBehaviour {
+public class EnemyCollisionZombie : ServerOnlyMonobehavior {
 
 	public int damage;
 	public float attackFrecuency;
@@ -10,27 +8,19 @@ public class EnemyCollisionZombie : MonoBehaviour {
 	PlayerStats playerStatsInstance;
 
 	float acumTime = 0;
-
-	void Start()
-	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
-	}
 	
 	void OnCollisionEnter(Collision col)
 	{
 		PlayerStats player_stats = col.collider.GetComponent<PlayerStats> ();
 		if (player_stats != null) {
 			playerStatsInstance = player_stats;
-			this.GetComponent<Animator> ().SetBool ("Attack", true);
-			this.GetComponent<EnemyFollow> ().follow = false;
+			GetComponent<Animator> ().SetBool ("Attack", true);
+			GetComponent<EnemyFollow> ().follow = false;
 		}
 	}
 
-	void OnCollisionStay(){
+	void OnCollisionStay()
+	{
 		acumTime += Time.fixedDeltaTime;
 		if (acumTime >= attackFrecuency && playerStatsInstance != null) {
 			playerStatsInstance.RecieveDamage (damage);
@@ -38,11 +28,12 @@ public class EnemyCollisionZombie : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionExit(){
-		this.GetComponent<Animator> ().SetBool ("Attack", false);
-		this.GetComponent<EnemyFollow> ().follow = true;
+	void OnCollisionExit()
+	{
+		GetComponent<Animator> ().SetBool ("Attack", false);
+		GetComponent<EnemyFollow> ().follow = true;
 		acumTime = 0;
-		this.playerStatsInstance = null;
+		playerStatsInstance = null;
 	}
 
 	void AttackPlayer(){

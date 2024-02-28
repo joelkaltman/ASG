@@ -27,7 +27,7 @@ public class Share : MonoBehaviour
 		var score = 0;
 		var playerStats = MultiplayerManager.Instance.GetLocalPlayerComponent<PlayerStats>();
 		if (playerStats)
-			score = playerStats.score;
+			score = playerStats.Score.Value;
 
 		new NativeShare().AddFile(filePath)
 			.SetSubject("Another Shooting Game")

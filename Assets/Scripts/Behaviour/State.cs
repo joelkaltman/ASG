@@ -11,7 +11,7 @@ public abstract class State : ScriptableObject {
 	{
 		this.character = character;
 
-		this.target = MultiplayerManager.Instance.GetRandomPlayer();
+		this.target = MultiplayerManager.Instance.GetPlayerCloserTo(character.transform.position);
 	}
 		
 	public abstract void Tick (float deltaTime);

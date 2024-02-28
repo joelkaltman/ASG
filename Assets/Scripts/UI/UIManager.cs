@@ -80,14 +80,14 @@ public class UIManager : MonoBehaviour {
 	void Awake(){
 		playerStats.ResetEvents();
 		playerGuns.ResetEvents();
-		enemiesManager.ResetEvents();
+		//enemiesManager.ResetEvents();
         
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
 		playerStats.onInitialized += OnUserInitialized;
-		playerStats.onScoreAdd += RefreshScore;
-		playerStats.onLifeChange += RefreshLife;
-		playerStats.onDie += RefreshGameOver;
+		//playerStats.onScoreAdd += RefreshScore;
+		//playerStats.onLifeChange += RefreshLife;
+		//playerStats.onDie += RefreshGameOver;
 		
 		playerGuns.onGunChange += RefreshGun;
 		playerGuns.onGunChange += RefreshGunCount;
@@ -95,8 +95,8 @@ public class UIManager : MonoBehaviour {
 		playerGuns.onShoot += RefreshGunCount;
 		playerGuns.onShoot += ResetFrecueny;
 		
-		enemiesManager.onWaveChange += ShowWave;
-		enemiesManager.onWaveChange += RefreshWaveTime;
+		//enemiesManager.onWaveChange += ShowWave;
+		//enemiesManager.onWaveChange += RefreshWaveTime;
 
 		for (int i = 0; i < qualityButtons.Count; i++) {
 			qualityButtons [i].onClick.AddListener (ChangeQuality);
@@ -252,7 +252,7 @@ public class UIManager : MonoBehaviour {
 
 		this.elapsedTime = 0;
 
-		int durationWaveSeconds = enemiesManager.WaveDuration;
+		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
@@ -391,7 +391,7 @@ public class UIManager : MonoBehaviour {
 
 	public void RefreshScore()
 	{
-		textScore.text = playerStats.score.ToString();
+		textScore.text = playerStats.Score.Value.ToString();
 		BounceText bounce = textScore.GetComponent<BounceText> ();
 		if (bounce != null) {
 			bounce.Bounce (0.65f);
@@ -400,7 +400,7 @@ public class UIManager : MonoBehaviour {
 
 	public void RefreshLife()
 	{
-		imageLife.fillAmount = (float)playerStats.life / 100;
+		imageLife.fillAmount = (float)playerStats.Life.Value / 100;
 	}
 
 	public void RefreshGun()
@@ -454,15 +454,15 @@ public class UIManager : MonoBehaviour {
 	public void RefreshGameOver()
 	{
 		this.showCanvas (PanelType.GAMEOVER);
-		textGiantScore.text = "You killed " + playerStats.score + " enemies!";
+		textGiantScore.text = "You killed " + playerStats.Score.Value + " enemies!";
 
 		bool newMaxScore = playerStats.CheckNewHighScore();
 		newHighScoreText.SetActive(newMaxScore);
 	}
 
 	void ShowWave(){
-		int wave = enemiesManager.Wave;
-		this.textWave.text = "Wave " + wave.ToString ();
+		int wave = enemiesManager.Wave.Value;
+		this.textWave.text = "Wave " + wave;
 		//this.textWave.enabled = true;
 		this.objetiveFade = 1;
 
@@ -503,7 +503,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void RefreshWaveTime(){
-		int durationWaveSeconds = enemiesManager.WaveDuration;
+		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
 		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
 		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}

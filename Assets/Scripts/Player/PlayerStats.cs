@@ -3,25 +3,16 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Task = System.Threading.Tasks.Task;
 
-public class PlayerStats : MonoBehaviour 
+public class PlayerStats : NetworkBehaviour 
 {
 	public event Action onInitialized;
-	public event Action onScoreAdd;
-	public event Action onLifeChange;
-	public event Action onDie;
 	public event Action onGranadesThrow;
 
-	private NetworkVariable<int> Life = new(100);
-
-	public int life
-	{
-		get { return Life.Value; }
-		private set { if(MultiplayerManager.Instance.IsHostReady) Life.Value = value; }
-	}
-
-	public int speed;
-	[HideInInspector] public int score;
+	public NetworkVariable<int> Life = new(100);
+	public NetworkVariable<int> Score = new(0);
+	public NetworkVariable<int> Speed = new(10);
 
     private UserManager user;
     public AuthManager.UserData userData => user.UserData;
@@ -32,17 +23,13 @@ public class PlayerStats : MonoBehaviour
 
 	private int initialLife;
 	private int initialSpeed;
-	private int previousLife;
 
 	bool inmuneToFire;
-	public bool IsDead => life <= 0;
+	public bool IsDead => Life.Value <= 0;
 	
 
 	public void ResetEvents()
 	{
-		onScoreAdd = null;
-		onLifeChange = null;
-		onDie = null;
 		onGranadesThrow = null;
 	}
 
@@ -51,11 +38,10 @@ public class PlayerStats : MonoBehaviour
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
 	}
 
-	public async void Initialize()
+	public void Initialize()
 	{
-		initialLife = life;
-		previousLife = life;
-		initialSpeed = speed;
+		initialLife = Life.Value;
+		initialSpeed = Speed.Value;
 		inmuneToFire = false;
 
         user = UserManager.Instance();
@@ -64,29 +50,12 @@ public class PlayerStats : MonoBehaviour
 		onInitialized?.Invoke ();
 	}
 	
-	private void Update()
-	{
-		if (!Initialized)
-			return;
-		
-		if (previousLife != life)
-		{
-			previousLife = life;
-			onLifeChange?.Invoke();
-		}
-
-		if (life == 0)
-		{
-			onDie?.Invoke();
-		}
-	}
-
 	public bool CheckNewHighScore()
 	{
-		bool newHighScore = score > userData.maxKills;
+		bool newHighScore = Score.Value > userData.maxKills;
 		if (newHighScore)
 		{
-			userData.maxKills = score;
+			userData.maxKills = Score.Value;
             user.SaveKills();
 		}
 
@@ -96,16 +65,16 @@ public class PlayerStats : MonoBehaviour
 	public void RecieveDamage(int damage)
 	{
 		bool wasDead = IsDead;
-		life -= damage;
-		life = math.max(life, 0);
+		Life.Value -= damage;
+		Life.Value = math.max(Life.Value, 0);
 		
 		if (IsDead && !wasDead)
 			Die();
 		
-		this.GetComponent<Animator> ().SetInteger ("Life", life);
+		GetComponent<Animator> ().SetInteger ("Life", Life.Value);
 
-		AudioSource audio = this.GetComponent<AudioSource> ();
-		audio.clip = this.damageSound;
+		AudioSource audio = GetComponent<AudioSource> ();
+		audio.clip = damageSound;
 		if (!audio.isPlaying) {
 			audio.Play ();
 		}
@@ -116,41 +85,38 @@ public class PlayerStats : MonoBehaviour
 		if (!inmuneToFire) {
 			inmuneToFire = true;
 			Invoke ("makeVulnerableToFire", 1);
-			this.RecieveDamage (damage);
+			RecieveDamage (damage);
 		}
 	}
 
 	void makeVulnerableToFire()
 	{
-		this.inmuneToFire = false;
+		inmuneToFire = false;
 	}
 
 	public void AddLife(int amount)
 	{
-		life += amount;
-		if (life > initialLife) {
-			life = initialLife;
+		Life.Value += amount;
+		if (Life.Value > initialLife) {
+			Life.Value = initialLife;
 		}
 	}
 
-	public void setSpeed(int amount, int time)
+	public void SetSpeed(int amount, int time)
 	{
-		CancelInvoke ();
-
-		speed = amount;
-
-		Invoke ("setNormalSpeed", time);
+		Speed.Value = amount;
+		RestoreSpeed(time);
 	}
 
-	void setNormalSpeed()
+	async void RestoreSpeed(int sec)
 	{
-		speed = initialSpeed;
+		await Task.Delay(sec * 1000);
+		Speed.Value = initialSpeed;
 	}
 
 	public void AddPoints(int points)
 	{
-		score += points;
-		onScoreAdd?.Invoke ();
+		Score.Value += points;
 	}
 
 	public void AddCap()
@@ -160,8 +126,8 @@ public class PlayerStats : MonoBehaviour
 
 	void Die()
 	{
-		this.GetComponentInChildren<PlayerGuns> ().enabled = false;
-		this.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
+		GetComponentInChildren<PlayerGuns> ().enabled = false;
+		GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
 	}
 
 	public void ThrowGranade()
@@ -171,23 +137,16 @@ public class PlayerStats : MonoBehaviour
 
 	public void Revive()
 	{
-		this.score -= 15;
-		if (this.score < 0) {
-			this.score = 0;
-		}
-		this.life = 100;
-		this.GetComponent<Animator> ().SetInteger ("Life", life);
+		Score.Value = math.max(Score.Value - 15, 0);
+		Life.Value = 100;
+		GetComponent<Animator> ().SetInteger ("Life", Life.Value);
 
-		this.GetComponentInChildren<PlayerGuns> ().enabled = true;
+		GetComponentInChildren<PlayerGuns> ().enabled = true;
 
 		float rndX = Random.Range (-8, 8);
 		float rndZ = Random.Range (-8, 8);
-		this.transform.position = new Vector3 (rndX, 5.5f, rndZ);
+		transform.position = new Vector3 (rndX, 5.5f, rndZ);
 
-		this.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-
-		//Camera.main.GetComponent<CameraFollow> ().CurrentMoveSpeed = 2;
-
-		onScoreAdd?.Invoke ();
+		GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 	}
 }

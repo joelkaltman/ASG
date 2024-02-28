@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StateMachineGiantZombie : MonoBehaviour {
+public class StateMachineGiantZombie : ServerOnlyMonobehavior {
 
 	public State idle;
 	public State follow;
@@ -15,46 +15,34 @@ public class StateMachineGiantZombie : MonoBehaviour {
 	NavMeshAgent navAgent;
 
 	private GameObject player;
-	float elapsedTime;
 
-	private void Awake()
+	private void Start()
 	{
 		idle = Instantiate (idle);
 		follow = Instantiate (follow);
 		jump = Instantiate (jump);
 		attack = Instantiate (attack);
-	}
-
-	private void Start()
-	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
 		
-		navAgent = this.GetComponent<NavMeshAgent> ();
+		navAgent = GetComponent<NavMeshAgent> ();
 		player = MultiplayerManager.Instance.GetRandomPlayer();
 
-		elapsedTime = 0;
 
-		idle.Initialize (this.gameObject);
-		follow.Initialize (this.gameObject);
-		jump.Initialize (this.gameObject);
-		attack.Initialize (this.gameObject);
+		idle.Initialize (gameObject);
+		follow.Initialize (gameObject);
+		jump.Initialize (gameObject);
+		attack.Initialize (gameObject);
 
-		SetState(this.idle);
+		SetState(idle);
 	}
 
 	private void Update()
 	{
-		if (this.gameObject.GetComponent<EnemyStats> ().life <= 0) {
+		if (gameObject.GetComponent<EnemyStats> ().life <= 0) {
 			navAgent.speed = 0;
 			return;
 		}
 
-		elapsedTime += Time.deltaTime;
-		this.currentState.Tick (Time.deltaTime);
+		currentState.Tick (Time.deltaTime);
 
 		if (currentState == idle) {
 			transitionIdle ();
@@ -69,42 +57,39 @@ public class StateMachineGiantZombie : MonoBehaviour {
 
 	void transitionIdle()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance >= 4) {
-			elapsedTime = 0;
-			this.SetState (this.jump);
+			SetState (jump);
 		} else if (distance >= 2) {
-			this.SetState (this.follow);
+			SetState (follow);
 		} else {
-			this.SetState (this.attack);
+			SetState (attack);
 		}
 	}
 
 	void transitionFollow()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance <= 2.5f) {
-			this.SetState (this.attack);
+			SetState (attack);
 		}else if(distance >= 4) {
-			elapsedTime = 0;
-			this.SetState (this.jump);
+			SetState (jump);
 		}
 	}
 
 	void transitionJump()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
-		if (distance <= 5 && !((StateJump)this.jump).isJumping()) { // ver
-			elapsedTime = 0;
-			this.SetState (this.follow);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
+		if (distance <= 5 && !((StateJump)jump).isJumping()) { // ver
+			SetState (follow);
 		}
 	}
 
 	void transitionAttack()
 	{
-		float distance = Vector3.Distance (this.player.transform.position, this.transform.position);
+		float distance = Vector3.Distance (player.transform.position, transform.position);
 		if (distance >= 2) {
-			this.SetState (this.follow);
+			SetState (follow);
 		}
 	}
 
@@ -121,6 +106,6 @@ public class StateMachineGiantZombie : MonoBehaviour {
 
 	public void EventJump()
 	{
-		((StateJump)this.jump).Jump ();
+		((StateJump)jump).Jump ();
 	}
 }

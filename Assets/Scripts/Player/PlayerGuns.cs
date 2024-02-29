@@ -17,27 +17,17 @@ public class PlayerGuns : NetworkBehaviour
 	private PlayerStats playerStats;
 	private int currentIndex;
 
-	public GameObject groundTarget;
-	GameObject instanceGroundTarget;
-
 	public bool Initialized;
-	private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
 
 	public void ResetEvents()
 	{
 		onGunChange = null;
 		onShoot = null;
 	}
-	
-	void Awake()
-	{
-		instanceGroundTarget = Instantiate (groundTarget, new Vector3 (), Quaternion.identity);
-		instanceGroundTarget.SetActive (false);
-	}
 
 	public void Initialize()
 	{
-		if (!shouldMove)
+		if (!IsOwner)
 			return;
 
 		playerStats = gameObject.GetComponent<PlayerStats>();
@@ -55,7 +45,7 @@ public class PlayerGuns : NetworkBehaviour
 
 	void Update ()
 	{
-		if (!shouldMove)
+		if (!IsOwner)
 			return;
 		
 		if (!Initialized)
@@ -98,21 +88,6 @@ public class PlayerGuns : NetworkBehaviour
 		AudioSource audio = GetComponentInChildren<AudioSource> ();
 		audio.clip = currentGun.EquipAudio;
 		audio.Play ();
-	}
-
-	public void UpdateTarget()
-	{
-		GunData currentGun = GetCurrentGun();
-		if (currentGun.ShowTarget && currentGun.CurrentCount > 0 && Time.timeScale > 0) {
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit)) {
-				instanceGroundTarget.transform.position = new Vector3 (hit.point.x, 5, hit.point.z);
-			}
-			instanceGroundTarget.SetActive (true);
-		} else {
-			instanceGroundTarget.SetActive (false);
-		}
 	}
 
 	private GunData GetGun(int id)

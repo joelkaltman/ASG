@@ -45,7 +45,6 @@ public class EnemiesManager : MonoBehaviour {
 
 	void Update()
 	{
-		return;
 		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
 		
@@ -112,7 +111,6 @@ public class EnemiesManager : MonoBehaviour {
 
 	void OnChangeWave(int previousWave, int currentWave)
 	{
-		return;
 		for (int i = 0; i < wavesManager.CurrentWave().bossesToKill; i++) {
 			SpawnEnemy(true);
 		}

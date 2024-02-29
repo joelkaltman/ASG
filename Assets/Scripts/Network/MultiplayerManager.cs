@@ -26,6 +26,7 @@ public class MultiplayerManager : MonoBehaviour
     [HideInInspector] public bool IsLocalPlayerReady;
     
     public event Action OnGameReady;
+    public event Action OnGameOver;
     public event Action<GameObject> OnLocalPlayerReady;
 
     public bool IsHost => networkManager ? networkManager.IsHost : false;
@@ -163,14 +164,6 @@ public class MultiplayerManager : MonoBehaviour
             await Task.Yield();
         }
     }
-    
-    public async void StartGame()
-    {
-        await WaitForGameReady();
-        
-        IsGameReady = true;
-        OnGameReady?.Invoke();
-    }
 
     public GameObject GetLocalPlayer()
     {
@@ -190,22 +183,6 @@ public class MultiplayerManager : MonoBehaviour
         return null;
     }
 
-    /*public List<GameObject> GetPlayers()
-    {
-        var players = new List<GameObject>();
-
-        if (networkManager == null)
-            return players;
-        
-        foreach (var clientId in networkManager.ConnectedClientsIds)
-        {
-            var netPlayer = networkManager.SpawnManager.GetPlayerNetworkObject(clientId);
-            players.Add(netPlayer.gameObject);
-        }
-
-        return players;
-    }*/
-
     public GameObject GetRandomPlayer()
     {
         var rand = UnityEngine.Random.Range(0, Players.Count);
@@ -215,5 +192,33 @@ public class MultiplayerManager : MonoBehaviour
     public GameObject GetPlayerCloserTo(Vector3 pos)
     {
         return Players.OrderBy(x => Vector3.Distance(x.transform.position, pos)).First();
+    }
+    
+    private async void StartGame()
+    {
+        await WaitForGameReady();
+        
+        IsGameReady = true;
+        OnGameReady?.Invoke();
+    }
+
+    public void Update()
+    {
+        if (!IsGameReady)
+            return;
+        
+        if(CheckGameOver())
+            EndGame();
+    }
+
+    private bool CheckGameOver()
+    {
+        return Players.Any(x => x == null || x.GetComponent<PlayerStats>().IsDead);
+    }
+
+    private void EndGame()
+    {
+        IsGameReady = false;
+        OnGameOver?.Invoke();
     }
 }

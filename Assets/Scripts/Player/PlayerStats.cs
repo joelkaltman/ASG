@@ -24,15 +24,15 @@ public class PlayerStats : NetworkBehaviour
 
 	private void Start()
 	{
+		if(IsOwner)
+			user = UserManager.Instance();
+		
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
 
 		Caps.OnValueChanged += AddCap;
 		
 		initialLife = Life.Value;
 		initialSpeed = Speed.Value;
-		
-		if(IsOwner)
-			user = UserManager.Instance();
 	}
 
 	private void AddCap(int prevCaps, int newCaps)

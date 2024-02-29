@@ -1279,7 +1279,6 @@ GameObject:
   - component: {fileID: 8077887301970197960}
   - component: {fileID: 8076275361303737190}
   - component: {fileID: 8076929814997280556}
-  - component: {fileID: 8076480513791108770}
   - component: {fileID: 8076147129899394982}
   - component: {fileID: 8179357610089972291}
   - component: {fileID: 8179357610089972288}
@@ -1288,6 +1287,7 @@ GameObject:
   - component: {fileID: 6654900851908317634}
   - component: {fileID: -1900669107007681340}
   - component: {fileID: 1774665784320590756}
+  - component: {fileID: -2675875065676861022}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1374,9 +1374,8 @@ MonoBehaviour:
     m_InternalValue: 10
   Caps:
     m_InternalValue: 0
-  InitialLife: 100
-  InitialSpeed: 6
   damageSound: {fileID: 8300000, guid: 39d6da8e7fdafd146aafbd81c71e9bba, type: 3}
+  initialSpeed: 0
 --- !u!114 &8076275361303737190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,8 +1388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e5075c6e3c5ac45ab7cd34ebe1b06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particlesDust: {fileID: 1520154253265960, guid: a30e1b07d8ee3604582a0b92c116ed5d,
-    type: 3}
   joystickMovement: {fileID: 0}
 --- !u!114 &8076929814997280556
 MonoBehaviour:
@@ -1411,20 +1408,6 @@ MonoBehaviour:
   groundTarget: {fileID: 1089262084186898, guid: b422842959a926d45b652a8c4c354455,
     type: 3}
   Initialized: 0
---- !u!114 &8076480513791108770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8180750401825857422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf72fac33ca15e4f8d1f52f8eb49a73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalTexture: {fileID: 2800000, guid: ec48b591fd760bb4ca11ce5da59ac807, type: 3}
-  blinkingTexture: {fileID: 2800000, guid: cb8ed1459be4abd4fa2e1c4337974686, type: 3}
 --- !u!114 &8076147129899394982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1644,6 +1627,19 @@ MonoBehaviour:
     TriggerNameHash: -1907200461
     TransitionIndex: 0
   m_Animator: {fileID: 8129481580394827506}
+--- !u!114 &-2675875065676861022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180750401825857422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d98226d408aeee40afd488ce58b5b96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dust: {fileID: 1520154253265960, guid: a30e1b07d8ee3604582a0b92c116ed5d, type: 3}
 --- !u!1 &8180779116640466526
 GameObject:
   m_ObjectHideFlags: 0

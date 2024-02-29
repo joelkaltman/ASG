@@ -1,18 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
-using UnityEngine.SocialPlatforms;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
-#if UNITY_ANDROID
-using UnityEngine.Advertisements;
-#endif
 
 public class GameplayUI : MonoBehaviour {
 
@@ -92,6 +83,7 @@ public class GameplayUI : MonoBehaviour {
 	{
 		MultiplayerManager.Instance.OnLocalPlayerReady += OnPlayerReady;
 		MultiplayerManager.Instance.OnGameReady += StartGame;
+		MultiplayerManager.Instance.OnGameOver += GameOver;
 		
 		if (!GameData.Instance.isOnline)
 		{
@@ -145,7 +137,6 @@ public class GameplayUI : MonoBehaviour {
 		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
 
 		playerStats.Life.OnValueChanged += RefreshLife;
-		playerStats.Life.OnValueChanged += RefreshGameOver;
 		playerStats.Score.OnValueChanged += RefreshScore;
 	
 		playerGuns.onGunChange += RefreshGun;
@@ -230,15 +221,6 @@ public class GameplayUI : MonoBehaviour {
 	{
 		Time.timeScale = 1;
         ShowCanvas (PanelType.GAME);
-	}
-		
-	public void GoToMainMenu()
-	{
-		Time.timeScale = 1;
-		
-		MultiplayerManager.Instance.Disconnect();
-
-		SceneManager.LoadScene ("MainMenu");
 	}
 
 	public void GoToLastPanel()
@@ -360,11 +342,8 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	private void RefreshGameOver(int previousLife, int currentLife)
+	private void GameOver()
 	{
-		if (!playerStats.IsDead)
-			return;
-		
         ShowCanvas (PanelType.GAMEOVER);
 		textGiantScore.text = "You killed " + playerStats.Score.Value + " enemies!";
 

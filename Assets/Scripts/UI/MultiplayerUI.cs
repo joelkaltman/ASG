@@ -73,10 +73,4 @@ public class MultiplayerUI : MonoBehaviour
         
         middleText.text = "Or...";
     }
-    
-    public void GoToMainMenu()
-    {
-        MultiplayerManager.Instance.Disconnect();
-        SceneManager.LoadScene("MainMenu");
-    }
 }

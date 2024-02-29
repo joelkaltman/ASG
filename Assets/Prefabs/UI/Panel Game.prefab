@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 4999268658906250823}
   - component: {fileID: 2267891780070650401}
   - component: {fileID: 2757096730167313879}
+  - component: {fileID: 4642334172960292202}
   m_Layer: 0
   m_Name: Quit
   m_TagString: Untagged
@@ -278,6 +279,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &4642334172960292202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3867239176086074943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bf302961c64344e890552435e3911c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: MainMenu
+  disconnectMultiplayer: 1
 --- !u!1 &4808393974659529380
 GameObject:
   m_ObjectHideFlags: 0

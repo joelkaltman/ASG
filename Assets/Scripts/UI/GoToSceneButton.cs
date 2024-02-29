@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GoToSceneButton : MonoBehaviour
 {
     public string sceneName;
+    public bool disconnectMultiplayer;
     
     void Start()
     {
@@ -15,6 +16,9 @@ public class GoToSceneButton : MonoBehaviour
 
     void GoToScene()
     {
+        if(disconnectMultiplayer && MultiplayerManager.Instance)
+            MultiplayerManager.Instance.Disconnect();
+            
         SceneManager.LoadScene(sceneName);
     }
 }

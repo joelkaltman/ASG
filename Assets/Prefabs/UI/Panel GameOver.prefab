@@ -342,6 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Ranking
+  disconnectMultiplayer: 1
 --- !u!1 &406086304728620194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,6 +1467,7 @@ GameObject:
   - component: {fileID: 6045457573322004211}
   - component: {fileID: 2077749165985805968}
   - component: {fileID: 6329726403826387623}
+  - component: {fileID: 5023192623744844501}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -1618,6 +1620,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &5023192623744844501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5608822028539892380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bf302961c64344e890552435e3911c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: MainMenu
+  disconnectMultiplayer: 1
 --- !u!1 &8084264995237948046
 GameObject:
   m_ObjectHideFlags: 0

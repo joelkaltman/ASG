@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour {
-	
-	public GameObject particlesDust;
+public class PlayerMovement : NetworkBehaviour 
+{
 	[HideInInspector] public Joystick joystickMovement;
 
-	bool isMoving;
+	public bool IsMoving { get; private set; }
+	
 	float fallSpeed;
 	Rigidbody rb;
 	Animator animator;
@@ -22,7 +22,6 @@ public class PlayerMovement : NetworkBehaviour {
 		if(!shouldMove)
 			return;
 		
-		isMoving = false;
 		rb = GetComponent< Rigidbody > ();
 		rb.maxAngularVelocity = 0;
 		animator = GetComponent < Animator > ();
@@ -48,9 +47,7 @@ public class PlayerMovement : NetworkBehaviour {
 		if (playerStats.Life.Value == 0)
 			return;
 
-		animator.SetBool("Run", isMoving);
-
-		Dust ();
+		animator.SetBool("Run", IsMoving);
 
 		Rotation ();
 	}
@@ -75,10 +72,7 @@ public class PlayerMovement : NetworkBehaviour {
 		vel.z = dirNormalized.z * playerStats.Speed.Value;
 		rb.velocity = vel;
 
-		isMoving = true;
-		if (dirNormalized.x == 0 && dirNormalized.z == 0) {
-			isMoving = false;
-		}
+		IsMoving = dirNormalized.x != 0 | dirNormalized.z != 0;
 	}
 
 	void Rotation()
@@ -110,13 +104,4 @@ public class PlayerMovement : NetworkBehaviour {
 			}
 		}
 	}
-
-	void Dust()
-	{
-		if (playerStats.Speed.Value > playerStats.initialSpeed && isMoving && particlesDust) {
-			GameObject dust = Instantiate (particlesDust, transform.position, Quaternion.identity);
-			Destroy (dust, 3);
-		}
-	}
-
 }

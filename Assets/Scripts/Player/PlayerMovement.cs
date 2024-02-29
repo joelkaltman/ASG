@@ -42,9 +42,6 @@ public class PlayerMovement : NetworkBehaviour {
 
 		if (!joystickMovement)
 			return;
-
-		if (!playerStats.Initialized)
-			return;
 		
 		FallAndMove ();
 

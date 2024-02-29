@@ -120,7 +120,6 @@ public class UIManager : MonoBehaviour {
 		joystickMovement.SetActive (true);
 		joystickRotation.SetActive (true);
 		
-		playerStats.Initialize();
 
 		int currentQuality = QualitySettings.GetQualityLevel ();
 		if (currentQuality >= this.qualityButtons.Count) {
@@ -136,8 +135,6 @@ public class UIManager : MonoBehaviour {
 
 	void Update ()
 	{
-		if (!playerStats.Initialized)
-			return;
 		
 		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
 		this.imageFrecuency.fillAmount += Time.deltaTime / frecuency;

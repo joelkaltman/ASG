@@ -14,8 +14,6 @@ public class PlayerStats : NetworkBehaviour
     private UserManager user;
     public AuthManager.UserData userData => user.UserData;
 
-	public bool Initialized { get; private set; }
-
 	public AudioClip damageSound;
 
 	private int initialLife;
@@ -29,6 +27,12 @@ public class PlayerStats : NetworkBehaviour
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
 
 		Caps.OnValueChanged += AddCap;
+		
+		initialLife = Life.Value;
+		initialSpeed = Speed.Value;
+		
+		if(IsOwner)
+			user = UserManager.Instance();
 	}
 
 	private void AddCap(int prevCaps, int newCaps)
@@ -39,18 +43,6 @@ public class PlayerStats : NetworkBehaviour
 		user.AddCap();
 	}
 
-	public void Initialize()
-	{
-		initialLife = Life.Value;
-		initialSpeed = Speed.Value;
-		inmuneToFire = false;
-
-		if(IsOwner)
-			user = UserManager.Instance();
-
-		Initialized = true;
-	}
-	
 	public bool CheckNewHighScore()
 	{
 		if (!IsOwner)
@@ -69,8 +61,7 @@ public class PlayerStats : NetworkBehaviour
 	public void RecieveDamage(int damage)
 	{
 		bool wasDead = IsDead;
-		Life.Value -= damage;
-		Life.Value = math.max(Life.Value, 0);
+		Life.Value = math.max(Life.Value - damage, 0);
 		
 		if (IsDead && !wasDead)
 			Die();

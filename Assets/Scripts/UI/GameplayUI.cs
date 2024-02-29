@@ -116,11 +116,7 @@ public class GameplayUI : MonoBehaviour {
 		if (!MultiplayerManager.Instance.IsGameReady)
 			return;
 		
-		if (!playerStats || !playerStats.Initialized)
-			return;
-		
-		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
-		imageFrecuency.fillAmount += Time.deltaTime / frecuency;
+		GunReload();
 
 		FadeWave ();
 		
@@ -160,7 +156,6 @@ public class GameplayUI : MonoBehaviour {
 	
 		gunButton.onClick.AddListener(playerGuns.SelectGunMobile);
 		
-		playerStats.Initialize();
 		playerGuns.Initialize();
 		playerMovement.Initialize();
 		
@@ -307,6 +302,15 @@ public class GameplayUI : MonoBehaviour {
 
 	// ================================= Game Interface ==============================
 
+	private void GunReload()
+	{
+		if (!playerGuns || !playerGuns.Initialized)
+			return;
+		
+		float frecuency = playerGuns.GetCurrentGun ().Frecuency;
+		imageFrecuency.fillAmount += Time.deltaTime / frecuency;
+	}
+	
 	private void RefreshScore(int previousScore, int score)
 	{
 		textScore.text = playerStats.Score.Value.ToString();

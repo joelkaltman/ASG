@@ -1,20 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class DestroyTimer : MonoBehaviour {
+public class DestroyTimer : ServerOnlyMonobehavior {
 
 	public int destroySeconds;
 
-	// Use this for initialization
 	void Start () {
-		if (!MultiplayerManager.Instance.IsHostReady)
-		{
-			enabled = false;
-			return;
-		}
-		
 		StartCoroutine(DestroyObject());
 	}
 

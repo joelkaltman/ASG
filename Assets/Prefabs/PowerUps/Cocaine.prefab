@@ -178,10 +178,11 @@ GameObject:
   - component: {fileID: 95978562650973118}
   - component: {fileID: 54651159956643730}
   - component: {fileID: 65843997538410802}
+  - component: {fileID: 82198569800923598}
   - component: {fileID: 114562616772728384}
   - component: {fileID: 114682544221558182}
-  - component: {fileID: 82198569800923598}
   - component: {fileID: 114056669159131156}
+  - component: {fileID: -2604932892780363546}
   m_Layer: 12
   m_Name: Cocaine
   m_TagString: Untagged
@@ -258,31 +259,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 0.5, z: 1.2}
   m_Center: {x: 0, y: 0.16, z: 0}
---- !u!114 &114562616772728384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824854647180254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21e6fc48670af2478ef083735d0ebe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114682544221558182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824854647180254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b16b96e704076247b44c91f77669d0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 15
 --- !u!82 &82198569800923598
 AudioSource:
   m_ObjectHideFlags: 0
@@ -379,6 +355,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114562616772728384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824854647180254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21e6fc48670af2478ef083735d0ebe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114682544221558182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824854647180254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b16b96e704076247b44c91f77669d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 15
 --- !u!114 &114056669159131156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,6 +393,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroySeconds: 20
+--- !u!114 &-2604932892780363546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824854647180254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3857903934
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1938385284746744
 GameObject:
   m_ObjectHideFlags: 0

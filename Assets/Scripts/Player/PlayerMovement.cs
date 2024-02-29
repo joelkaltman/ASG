@@ -23,19 +23,19 @@ public class PlayerMovement : NetworkBehaviour {
 			return;
 		
 		isMoving = false;
-		this.rb = this.GetComponent< Rigidbody > ();
-		this.rb.maxAngularVelocity = 0;
-		this.animator = this.GetComponent < Animator > ();
+		rb = GetComponent< Rigidbody > ();
+		rb.maxAngularVelocity = 0;
+		animator = GetComponent < Animator > ();
 
 		playerStats = GetComponent<PlayerStats>();
 		//arrowCap.SetActive (true);
 
 		var spawnPos = IsHost ? new Vector3(0, 5, 0) : new Vector3(2, 5, 0);
-		this.transform.position = spawnPos;
+		transform.position = spawnPos;
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 
 		if(!shouldMove)
 			return;
@@ -46,16 +46,16 @@ public class PlayerMovement : NetworkBehaviour {
 		if (!playerStats.Initialized)
 			return;
 		
-		this.FallAndMove ();
+		FallAndMove ();
 
 		if (playerStats.Life.Value == 0)
 			return;
 
-		this.animator.SetBool("Run", isMoving);
+		animator.SetBool("Run", isMoving);
 
-		this.Dust ();
+		Dust ();
 
-		this.Rotation ();
+		Rotation ();
 	}
 
 	void FallAndMove()
@@ -66,19 +66,20 @@ public class PlayerMovement : NetworkBehaviour {
 			Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
 			direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
 
-			float posY = Vector3.Dot (this.transform.forward, direction); 
-			float posX = Vector3.Dot (this.transform.right, direction); 
+			float posY = Vector3.Dot (transform.forward, direction); 
+			float posX = Vector3.Dot (transform.right, direction); 
 			animator.SetFloat ("PosY", posY, 0.1f, Time.deltaTime);
 			animator.SetFloat ("PosX", posX, 0.1f, Time.deltaTime);
 		}
 
 		var vel = rb.velocity;
-		vel.x = direction.x * playerStats.Speed.Value;
-		vel.z = direction.z * playerStats.Speed.Value;
+		var dirNormalized = direction.normalized;
+		vel.x = dirNormalized.x * playerStats.Speed.Value;
+		vel.z = dirNormalized.z * playerStats.Speed.Value;
 		rb.velocity = vel;
 
 		isMoving = true;
-		if (direction.x == 0 && direction.z == 0) {
+		if (dirNormalized.x == 0 && dirNormalized.z == 0) {
 			isMoving = false;
 		}
 	}
@@ -101,35 +102,22 @@ public class PlayerMovement : NetworkBehaviour {
 				break;
 			
 			case UIJoystickManager.JoystickType.BOOMERANG:
-				GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (this.transform.position);
-				if (enemy != null && Vector3.Distance(enemy.transform.position, this.transform.position) > 2)
+				GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (transform.position);
+				if (enemy != null && Vector3.Distance(enemy.transform.position, transform.position) > 2)
 				{
-					var dir = enemy.transform.position - this.transform.position;
+					var dir = enemy.transform.position - transform.position;
 					dir.y = 0;
 					transform.rotation = Quaternion.LookRotation(dir);
 				}
 				break;
 			}
-
-			// Rotate when shoot granade
-			/*if (Input.GetMouseButtonDown (0) && 
-				(PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.GRANADE || PlayerGuns.Instance.GetCurrentGun ().GetGunType () == GunData.GunType.BOOMERANG)) {
-				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				if (Physics.Raycast (ray, out hit)) {
-
-					Vector3 look_pos = hit.point - this.transform.position;
-					look_pos.y = 0;
-					transform.rotation = Quaternion.LookRotation (look_pos);
-				}
-			}*/
 		}
 	}
 
 	void Dust()
 	{
-		if (playerStats.Speed.Value > 10 && isMoving && particlesDust) {
-			GameObject dust = Instantiate (particlesDust, this.transform.position, Quaternion.identity);
+		if (playerStats.Speed.Value > playerStats.initialSpeed && isMoving && particlesDust) {
+			GameObject dust = Instantiate (particlesDust, transform.position, Quaternion.identity);
 			Destroy (dust, 3);
 		}
 	}

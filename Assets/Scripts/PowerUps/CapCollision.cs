@@ -1,15 +1,7 @@
-﻿using Unity.Netcode;
-using UnityEngine;
-
-public class CapCollision : ServerOnlyMonobehavior 
+﻿public class CapCollision : PowerUpCollision 
 {
-	private void OnTriggerEnter(Collider col)
+	protected override void PowerUpAction(PlayerStats playerStats)
 	{
-		PlayerStats stats = col.gameObject.GetComponent<PlayerStats> ();
-		if (stats != null)
-		{
-			stats.Caps.Value++;
-			gameObject.GetComponent<NetworkObject>()?.Despawn();
-		}
+		playerStats.Caps.Value++;
 	}
 }

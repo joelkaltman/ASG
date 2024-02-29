@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -20,7 +19,7 @@ public class PlayerStats : NetworkBehaviour
 	public AudioClip damageSound;
 
 	private int initialLife;
-	private int initialSpeed;
+	public int initialSpeed;
 
 	bool inmuneToFire;
 	public bool IsDead => Life.Value <= 0;
@@ -32,7 +31,7 @@ public class PlayerStats : NetworkBehaviour
 		Caps.OnValueChanged += AddCap;
 	}
 
-	public void AddCap(int prevCaps, int newCaps)
+	private void AddCap(int prevCaps, int newCaps)
 	{
 		if (!IsOwner)
 			return;
@@ -101,15 +100,15 @@ public class PlayerStats : NetworkBehaviour
 
 	public void AddLife(int amount)
 	{
-		Life.Value += amount;
-		if (Life.Value > initialLife) {
-			Life.Value = initialLife;
-		}
+		Life.Value = math.min(initialLife, Life.Value + amount);
 	}
 
-	public void SetSpeed(int amount, int time)
+	public void IncreaseSpeed(int amount, int time)
 	{
-		Speed.Value = amount;
+		if (Speed.Value > initialSpeed)
+			return;
+		
+		Speed.Value *= amount;
 		RestoreSpeed(time);
 	}
 

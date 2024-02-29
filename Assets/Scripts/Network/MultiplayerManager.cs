@@ -28,7 +28,8 @@ public class MultiplayerManager : MonoBehaviour
     public event Action OnGameReady;
     public event Action<GameObject> OnLocalPlayerReady;
 
-    public bool IsHostReady => IsGameReady && (networkManager ? networkManager.IsHost : false);
+    public bool IsHost => networkManager ? networkManager.IsHost : false;
+    public bool IsHostReady => IsGameReady && IsHost;
 
     public List<GameObject> Players { get; private set; } = new();
 

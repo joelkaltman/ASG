@@ -1366,9 +1366,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce2eee3324f827459ccf92a16a84363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 100
-  speed: 10
-  score: 0
+  Life:
+    m_InternalValue: 100
+  Score:
+    m_InternalValue: 0
+  Speed:
+    m_InternalValue: 10
+  Caps:
+    m_InternalValue: 0
+  InitialLife: 100
+  InitialSpeed: 6
   damageSound: {fileID: 8300000, guid: 39d6da8e7fdafd146aafbd81c71e9bba, type: 3}
 --- !u!114 &8076275361303737190
 MonoBehaviour:
@@ -1397,6 +1404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebec6644957a805498728691330fe5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShootType:
+    m_InternalValue: 1
   shooter: {fileID: 8179719280533894228}
   hand: {fileID: 8180315429472925526}
   groundTarget: {fileID: 1089262084186898, guid: b422842959a926d45b652a8c4c354455,

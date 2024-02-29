@@ -9,15 +9,17 @@ public class PowerUpsManager : MonoBehaviour
 	float elapsedTimeSpawn;
 
 	public GameObject spawnPointsContainer;
-	private List<Transform> spawnPoints;
+	private List<(Transform, GameObject)> spawnPoints;
 	private GameObject currentCap;
-	private Transform lastCapSpawnPoint;
+	private int lastCapSpawnPoint;
 	
 	void Start()
 	{
 		Transform[] transforms = spawnPointsContainer.GetComponentsInChildren<Transform> ();
-		spawnPoints = new List<Transform> ();
-		spawnPoints.AddRange (transforms);
+		spawnPoints = new ();
+
+		foreach (var trans in transforms)
+			spawnPoints.Add((trans, null));
 		
 		MultiplayerManager.Instance.OnGameReady += OnGameReady;
 	}
@@ -38,67 +40,58 @@ public class PowerUpsManager : MonoBehaviour
 		
 		elapsedTimeSpawn += Time.deltaTime;
 
-		if (elapsedTimeSpawn >= spawnTime) {
+		if (elapsedTimeSpawn >= spawnTime) 
+		{
 			elapsedTimeSpawn = 0;
 			SpawnPowerUp ();
 		}
 
-		if (currentCap == null) {
+		if (currentCap == null) 
+		{
 			SpawnCap ();
 		}
 	}
 
 	void SpawnPowerUp()
 	{
-		return;
-		int random1 = Random.Range (0, spawnPoints.Count);
-		int random2 = Random.Range (0, GameData.Instance.powerUps.Count);
-
-		/*bool found = false;
-		int tries = 0;
-		while (!found) {
-			if (spawnPoints [random1].childCount == 0) {
-				found = true;
-			} else {
-				random1 = Random.Range (0, spawnPoints.Count);
-				tries++;
-			}
-
-			if (tries > 15) {
-				found = true;
-			}
-		}
-
-		GameObject.Instantiate (GameData.Instance.powerUps[random2], spawnPoints[random1]);*/
-
-		for (int i = 0; i < transform.childCount; i++) {
-			if (spawnPoints [random1].childCount == 0) {
-				GameObject.Instantiate (GameData.Instance.powerUps [random2], spawnPoints [random1]);
+		int it = 1000;
+		while (it > 0)
+		{
+			int random = Random.Range (0, spawnPoints.Count);
+			bool isFree = spawnPoints[random].Item2 == null;
+			
+			if (isFree) 
+			{
+				int randomItem = Random.Range (0, GameData.Instance.powerUps.Count);
+				var item = Instantiate (GameData.Instance.powerUps [randomItem], spawnPoints [random].Item1);
+				item.GetComponent<NetworkObject>()?.Spawn(true);
+				spawnPoints[random] = (spawnPoints[random].Item1, item);
 				break;
-			} else {
-				random1 = Random.Range (0, spawnPoints.Count);
 			}
+			it--;
+
 		}
 
 	}
 
 	void SpawnCap()
 	{
-		int maxIterations = 1000;
-		while (maxIterations > 0)
+		int it = 1000;
+		while (it > 0)
 		{
-			maxIterations--;
-			
 			int random = Random.Range (0, spawnPoints.Count);
-			bool isFree = spawnPoints[random].childCount == 0;
-			bool wasNotLast = lastCapSpawnPoint == null || lastCapSpawnPoint != spawnPoints[random];
+			bool isFree = spawnPoints[random].Item2 == null;
+			bool wasNotLast = random != lastCapSpawnPoint;
 			
-			if (isFree && wasNotLast) {
-				lastCapSpawnPoint = spawnPoints [random];
-				currentCap = Instantiate (GameData.Instance.cap, spawnPoints [random]);
+			if (isFree && wasNotLast) 
+			{
+				lastCapSpawnPoint = random;
+				currentCap = Instantiate (GameData.Instance.cap, spawnPoints [random].Item1);
 				currentCap.GetComponent<NetworkObject>()?.Spawn(true);
+				spawnPoints[random] = (spawnPoints[random].Item1, currentCap);
 				break;
 			}
+			it--;
 		}
 	}
 

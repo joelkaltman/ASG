@@ -13,7 +13,6 @@ public class ShotgunData : GunData {
 		weaponInstance.GetComponent<Renderer>().enabled = false;
 
 		currentCount = initialCount;
-		shootingType = ShootingType.NORMAL;
 	}
 
 	public override bool Shoot ()
@@ -24,7 +23,7 @@ public class ShotgunData : GunData {
 			}
 			timeElapsed = 0;
 
-			switch (shootingType)
+			switch (playerGuns.ShootType.Value)
 			{
 				case ShootingType.NONE:
 				{

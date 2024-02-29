@@ -2,8 +2,11 @@
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
-public class PlayerGuns : NetworkBehaviour {
+public class PlayerGuns : NetworkBehaviour
+{
+	public NetworkVariable<GunData.ShootingType> ShootType = new(GunData.ShootingType.NORMAL); 
 	
 	public GameObject shooter;
 	public GameObject hand;
@@ -125,19 +128,14 @@ public class PlayerGuns : NetworkBehaviour {
 	
 	public void ChangeShootingType(GunData.ShootingType newType, int duration)
 	{
-		foreach (var gunId in playerStats.userData.guns)
-		{
-			GetGun(gunId).ChangeShootingType (newType);
-		}
-		Invoke ("ChangeShootingTypeToNormal", duration);
+		ShootType.Value = newType;
+		ChangeShootingTypeToNormal(duration);
 	}
 
-	public void ChangeShootingTypeToNormal()
+	private async void ChangeShootingTypeToNormal(int duration)
 	{
-		foreach (var gunId in playerStats.userData.guns)
-		{
-			GetGun(gunId).ChangeShootingType (GunData.ShootingType.NORMAL);
-		}
+		await Task.Delay(duration * 1000);
+		ShootType.Value = GunData.ShootingType.NORMAL;
 	}
 
 	public void BoomerangReturned(string weaponName, bool addCount)

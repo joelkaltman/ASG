@@ -16,7 +16,6 @@ public class GranadeData : GunData {
 		weaponInstance.GetComponent<Renderer> ().enabled = false;
 
 		currentCount = initialCount;
-		shootingType = ShootingType.NORMAL;
 	}
 
 	public override bool Shoot ()

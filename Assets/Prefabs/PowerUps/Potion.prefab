@@ -94,10 +94,11 @@ GameObject:
   - component: {fileID: 4643173757403472}
   - component: {fileID: 54884870746908948}
   - component: {fileID: 65170762806985622}
+  - component: {fileID: 82568175204603006}
   - component: {fileID: 114640349755701858}
   - component: {fileID: 114898559255566466}
-  - component: {fileID: 82568175204603006}
   - component: {fileID: 114654710763760474}
+  - component: {fileID: 5968302283300661358}
   m_Layer: 12
   m_Name: Potion
   m_TagString: Untagged
@@ -152,31 +153,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0.16, z: 0}
---- !u!114 &114640349755701858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086103694319778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21e6fc48670af2478ef083735d0ebe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114898559255566466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086103694319778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4b9218d095f71047890c1af6f16635f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeRecupers: 50
 --- !u!82 &82568175204603006
 AudioSource:
   m_ObjectHideFlags: 0
@@ -273,6 +249,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114640349755701858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086103694319778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21e6fc48670af2478ef083735d0ebe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114898559255566466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086103694319778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b9218d095f71047890c1af6f16635f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeRecupers: 50
 --- !u!114 &114654710763760474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +287,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroySeconds: 30
+--- !u!114 &5968302283300661358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086103694319778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 822948578
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1215687076398214
 GameObject:
   m_ObjectHideFlags: 0

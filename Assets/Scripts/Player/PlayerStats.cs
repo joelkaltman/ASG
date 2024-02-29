@@ -7,12 +7,10 @@ using Task = System.Threading.Tasks.Task;
 
 public class PlayerStats : NetworkBehaviour 
 {
-	public event Action onInitialized;
-	public event Action onGranadesThrow;
-
 	public NetworkVariable<int> Life = new(100);
 	public NetworkVariable<int> Score = new(0);
 	public NetworkVariable<int> Speed = new(10);
+	public NetworkVariable<int> Caps = new(0);
 
     private UserManager user;
     public AuthManager.UserData userData => user.UserData;
@@ -26,16 +24,20 @@ public class PlayerStats : NetworkBehaviour
 
 	bool inmuneToFire;
 	public bool IsDead => Life.Value <= 0;
-	
-
-	public void ResetEvents()
-	{
-		onGranadesThrow = null;
-	}
 
 	private void Start()
 	{
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
+
+		Caps.OnValueChanged += AddCap;
+	}
+
+	public void AddCap(int prevCaps, int newCaps)
+	{
+		if (!IsOwner)
+			return;
+		
+		user.AddCap();
 	}
 
 	public void Initialize()
@@ -44,14 +46,17 @@ public class PlayerStats : NetworkBehaviour
 		initialSpeed = Speed.Value;
 		inmuneToFire = false;
 
-        user = UserManager.Instance();
+		if(IsOwner)
+			user = UserManager.Instance();
 
 		Initialized = true;
-		onInitialized?.Invoke ();
 	}
 	
 	public bool CheckNewHighScore()
 	{
+		if (!IsOwner)
+			return false;
+		
 		bool newHighScore = Score.Value > userData.maxKills;
 		if (newHighScore)
 		{
@@ -119,20 +124,10 @@ public class PlayerStats : NetworkBehaviour
 		Score.Value += points;
 	}
 
-	public void AddCap()
-	{
-        user.AddCap();
-	}
-
 	void Die()
 	{
 		GetComponentInChildren<PlayerGuns> ().enabled = false;
 		GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
-	}
-
-	public void ThrowGranade()
-	{
-		onGranadesThrow?.Invoke ();
 	}
 
 	public void Revive()

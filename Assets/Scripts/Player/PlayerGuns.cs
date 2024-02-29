@@ -140,7 +140,8 @@ public class PlayerGuns : NetworkBehaviour {
 		}
 	}
 
-	public void BoomerangReturned(string weaponName, bool addCount){
+	public void BoomerangReturned(string weaponName, bool addCount)
+	{
 		foreach (var gun in GameData.Instance.guns)
 		{
 			if (gun.CurrentCount < gun.InitialCount && gun.GetGunType() == GunData.GunType.BOOMERANG && 

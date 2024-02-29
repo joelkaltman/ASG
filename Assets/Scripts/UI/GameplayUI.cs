@@ -53,9 +53,6 @@ public class GameplayUI : MonoBehaviour {
 	public GameObject joystickRotation;
 	public Button gunButton;
 
-	[Header("Gameplay Scripts")] 
-	public EnemiesManager enemiesManager;
-
 	[Header("GameOver")] 
 	public GameObject newHighScoreText;
 	

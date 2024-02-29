@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class EnemiesManager : NetworkBehaviour {
+public class EnemiesManager : MonoBehaviour {
 
 	public static EnemiesManager Instance;
 
@@ -21,7 +18,7 @@ public class EnemiesManager : NetworkBehaviour {
 
 	private WavesManager wavesManager;
 
-	void Awake(){
+	void Start(){
 		Instance = this;
 
 		Transform[] transforms = spawnPointsContainer.GetComponentsInChildren<Transform> ();
@@ -37,7 +34,7 @@ public class EnemiesManager : NetworkBehaviour {
 	{
 		if (!MultiplayerManager.Instance.IsHostReady)
 		{
-			enabled = false;
+			Destroy(this);
 			return;
 		}
 
@@ -115,6 +112,7 @@ public class EnemiesManager : NetworkBehaviour {
 
 	void OnChangeWave(int previousWave, int currentWave)
 	{
+		return;
 		for (int i = 0; i < wavesManager.CurrentWave().bossesToKill; i++) {
 			SpawnEnemy(true);
 		}

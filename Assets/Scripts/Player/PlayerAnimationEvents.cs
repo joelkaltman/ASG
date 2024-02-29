@@ -13,6 +13,6 @@ public class PlayerAnimationEvents : MonoBehaviour {
 
 	public void throwGranade()
 	{
-		this.GetComponent<PlayerStats> ().ThrowGranade ();
+		//this.GetComponent<PlayerStats> ().ThrowGranade ();
 	}
 }

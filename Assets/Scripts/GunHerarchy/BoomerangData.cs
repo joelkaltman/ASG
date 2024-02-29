@@ -61,13 +61,11 @@ public class BoomerangData : GunData {
 		if (currentCount > 0) {
 			weaponInstance.GetComponent<Renderer> ().enabled = true;
 		}
-		playerStats.onGranadesThrow += ThrowBoomerang;
 	}
 
 	public override void Discard ()
 	{
 		weaponInstance.GetComponent<Renderer> ().enabled = false;
-		playerStats.onGranadesThrow -= ThrowBoomerang;
 	}
 
 	public override GunType GetGunType ()

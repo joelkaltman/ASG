@@ -1,33 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PowerUpsManager : MonoBehaviour {
-
-	[HideInInspector] public static PowerUpsManager Instance;
-
+public class PowerUpsManager : MonoBehaviour 
+{
 	public float spawnTime;
 
 	float elapsedTimeSpawn;
 
+	public GameObject spawnPointsContainer;
 	private List<Transform> spawnPoints;
 	private GameObject currentCap;
 	private Transform lastCapSpawnPoint;
 	
-	void Awake()
-	{
-		Instance = this;
-	}
-	
 	void Start()
 	{
-		Transform[] transforms = this.GetComponentsInChildren<Transform> ();
+		Transform[] transforms = spawnPointsContainer.GetComponentsInChildren<Transform> ();
 		spawnPoints = new List<Transform> ();
 		spawnPoints.AddRange (transforms);
+		
+		MultiplayerManager.Instance.OnGameReady += OnGameReady;
 	}
-
-	void Update () 
+	
+	void OnGameReady()
+	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+		{
+			Destroy(this);
+			return;
+		}
+	}
+	
+	void Update ()
 	{
 		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
@@ -40,22 +44,23 @@ public class PowerUpsManager : MonoBehaviour {
 		}
 
 		if (currentCap == null) {
-			this.SpawnCap ();
+			SpawnCap ();
 		}
 	}
 
 	void SpawnPowerUp()
 	{
-		int random1 = Random.Range (0, this.spawnPoints.Count);
+		return;
+		int random1 = Random.Range (0, spawnPoints.Count);
 		int random2 = Random.Range (0, GameData.Instance.powerUps.Count);
 
 		/*bool found = false;
 		int tries = 0;
 		while (!found) {
-			if (this.spawnPoints [random1].childCount == 0) {
+			if (spawnPoints [random1].childCount == 0) {
 				found = true;
 			} else {
-				random1 = Random.Range (0, this.spawnPoints.Count);
+				random1 = Random.Range (0, spawnPoints.Count);
 				tries++;
 			}
 
@@ -64,14 +69,14 @@ public class PowerUpsManager : MonoBehaviour {
 			}
 		}
 
-		GameObject.Instantiate (GameData.Instance.powerUps[random2], this.spawnPoints[random1]);*/
+		GameObject.Instantiate (GameData.Instance.powerUps[random2], spawnPoints[random1]);*/
 
-		for (int i = 0; i < this.transform.childCount; i++) {
-			if (this.spawnPoints [random1].childCount == 0) {
-				GameObject.Instantiate (GameData.Instance.powerUps [random2], this.spawnPoints [random1]);
+		for (int i = 0; i < transform.childCount; i++) {
+			if (spawnPoints [random1].childCount == 0) {
+				GameObject.Instantiate (GameData.Instance.powerUps [random2], spawnPoints [random1]);
 				break;
 			} else {
-				random1 = Random.Range (0, this.spawnPoints.Count);
+				random1 = Random.Range (0, spawnPoints.Count);
 			}
 		}
 
@@ -79,43 +84,28 @@ public class PowerUpsManager : MonoBehaviour {
 
 	void SpawnCap()
 	{
-		int random1 = Random.Range (0, this.spawnPoints.Count);
-
-		/*bool found = false;
-		int tries = 0;
-		while (!found) {
-			if (this.spawnPoints [random1].childCount == 0 &&
-				(lastCapSpawnPoint == null || lastCapSpawnPoint != this.spawnPoints [random1])) {
-				found = true;
-			} else {
-				random1 = Random.Range (0, this.spawnPoints.Count);
-				tries++;
-			}
-
-			if (tries > 15) {
-				found = true;
-			}
-		}
-
-		lastCapSpawnPoint = this.spawnPoints [random1];
-		this.currentCap = GameObject.Instantiate (GameData.Instance.cap, this.spawnPoints [random1]);*/
-
-
-		for (int i = 0; i < this.transform.childCount; i++) {
-			if (this.spawnPoints [random1].childCount == 0 && (lastCapSpawnPoint == null || lastCapSpawnPoint != this.spawnPoints [random1])) {
-				lastCapSpawnPoint = this.spawnPoints [random1];
-				this.currentCap = GameObject.Instantiate (GameData.Instance.cap, this.spawnPoints [random1]);
+		int maxIterations = 1000;
+		while (maxIterations > 0)
+		{
+			maxIterations--;
+			
+			int random = Random.Range (0, spawnPoints.Count);
+			bool isFree = spawnPoints[random].childCount == 0;
+			bool wasNotLast = lastCapSpawnPoint == null || lastCapSpawnPoint != spawnPoints[random];
+			
+			if (isFree && wasNotLast) {
+				lastCapSpawnPoint = spawnPoints [random];
+				currentCap = Instantiate (GameData.Instance.cap, spawnPoints [random]);
+				currentCap.GetComponent<NetworkObject>()?.Spawn(true);
 				break;
-			} else {
-				random1 = Random.Range (0, this.spawnPoints.Count);
 			}
 		}
 	}
 
 	public Vector3 GetCapPosition()
 	{
-		if (this.currentCap != null) {
-			return this.currentCap.transform.position;
+		if (currentCap != null) {
+			return currentCap.transform.position;
 		} else {
 			return new Vector3 ();
 		}

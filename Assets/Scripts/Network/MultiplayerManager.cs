@@ -156,6 +156,11 @@ public class MultiplayerManager : MonoBehaviour
         {
             await Task.Yield();
         }
+        
+        while (Players.Count == 0)
+        {
+            await Task.Yield();
+        }
     }
     
     public async void StartGame()

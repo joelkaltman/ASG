@@ -78,13 +78,13 @@ public class UIManager : MonoBehaviour {
 	private int remainMinutes;
 
 	void Awake(){
-		playerStats.ResetEvents();
+		//playerStats.ResetEvents();
 		playerGuns.ResetEvents();
 		//enemiesManager.ResetEvents();
         
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
-		playerStats.onInitialized += OnUserInitialized;
+		//playerStats.onInitialized += OnUserInitialized;
 		//playerStats.onScoreAdd += RefreshScore;
 		//playerStats.onLifeChange += RefreshLife;
 		//playerStats.onDie += RefreshGameOver;

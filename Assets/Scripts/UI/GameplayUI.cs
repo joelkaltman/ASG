@@ -71,18 +71,14 @@ public class GameplayUI : MonoBehaviour {
 	private PanelType currentPanel;
 	private PanelType lastPanel;
 
-	private float elapsedTime;
-	private int remainSeconds;
-	private int remainMinutes;
-
 	private NetworkManager netManager;
 
 	void Awake()
 	{
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
-		enemiesManager.Wave.OnValueChanged += ShowWave;
-		enemiesManager.Wave.OnValueChanged += RefreshWaveTime;
+		//enemiesManager.Wave.OnValueChanged += ShowWave;
+		//enemiesManager.Wave.OnValueChanged += RefreshWaveTime;
         
 		objetiveFade = 0;
 		currentFade = 0;
@@ -90,9 +86,8 @@ public class GameplayUI : MonoBehaviour {
 		usedContinue = false;
 		currentPanel = 0;
 		lastPanel = 0;
-		elapsedTime = 0;
-		remainSeconds = 0;
-		remainMinutes = 0;
+		//remainSeconds = 0;
+		//remainMinutes = 0;
 	}
 
 	// Use this for initialization
@@ -111,7 +106,7 @@ public class GameplayUI : MonoBehaviour {
 			ShowCanvas(PanelType.MULTIPAYER);
 			var mpUI = panelMultiplayer.GetComponent<MultiplayerUI>();
 			mpUI.OnHostStarted += OnHostStarted;
-			mpUI.OnClientStarted += OnClientStarted;
+			MultiplayerManager.Instance.OnLocalPlayerReady += OnClientStarted;
 			MultiplayerManager.Instance.InitializeMultiplayer();
 		}
 
@@ -131,10 +126,8 @@ public class GameplayUI : MonoBehaviour {
 		imageFrecuency.fillAmount += Time.deltaTime / frecuency;
 
 		FadeWave ();
-
-		if (currentPanel == PanelType.GAME) {
-			TakeTime ();
-		}
+		
+		RefreshWaveTime();
 	}
 
 	private void OnHostStarted(string code)
@@ -145,7 +138,7 @@ public class GameplayUI : MonoBehaviour {
 		textJoinCode.text = code;
 	}
 	
-	private void OnClientStarted()
+	private void OnClientStarted(GameObject player)
 	{
 		ShowCanvas(PanelType.GAME);
 	}
@@ -230,11 +223,7 @@ public class GameplayUI : MonoBehaviour {
 		topPanel.SetActive(true);
 		textJoinCode.gameObject.SetActive(false);
 
-		elapsedTime = 0;
-
-		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
-		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
-		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+		MultiplayerManager.Instance.WavesManager.Wave.OnValueChanged += ShowWave;
 	}
 
 	public void PauseGame()
@@ -390,11 +379,23 @@ public class GameplayUI : MonoBehaviour {
 		Invoke ("HideWave", 3);
 	}
 
-	void RefreshWaveTime(int previousWave, int newWave)
+	void RefreshWaveTime()
 	{
-		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
-		remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
-		remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+		var wavesManager = MultiplayerManager.Instance.WavesManager;
+
+		var min = wavesManager.Minutes.Value;
+		var sec = wavesManager.Seconds.Value;
+		
+		string strMin = min.ToString ();
+		string strSec = sec.ToString ();
+		if(min < 10) {
+			strMin = "0" + min;
+		}
+		if(sec < 10) {
+			strSec = "0" + sec;
+		}
+		
+		this.textTime.text = strMin + ":" + strSec;
 	}
 
 	void HideWave()
@@ -422,27 +423,4 @@ public class GameplayUI : MonoBehaviour {
 		textWave.color = curr;
 	}
 
-	void TakeTime(){
-		elapsedTime += Time.deltaTime;
-
-		if (elapsedTime > 1) {
-			elapsedTime -= 1;
-			remainSeconds--;
-		}
-		if (remainSeconds < 0) {
-			remainSeconds = 59;
-			remainMinutes--;
-		}
-
-		string strMin = remainMinutes.ToString ();
-		string strSec = remainSeconds.ToString ();
-		if(remainMinutes < 10) {
-			strMin = "0" + remainMinutes.ToString();
-		}
-		if(remainSeconds < 10) {
-			strSec = "0" + remainSeconds.ToString();
-		}
-
-		textTime.text = strMin + ":" + strSec;
-	}
 }

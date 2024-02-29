@@ -4473,6 +4473,8 @@ MonoBehaviour:
     type: 3}
   networkManagerMP: {fileID: 6749781597136248908, guid: adecc0e075522ad44922395814fc0c90,
     type: 3}
+  wavesManager: {fileID: 6264489405697136320, guid: 09cdfe6d1716179498380bb5aa2b51fe,
+    type: 3}
   IsGameReady: 0
   IsLocalPlayerReady: 0
 --- !u!4 &1398059677

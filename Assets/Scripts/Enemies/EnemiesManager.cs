@@ -10,20 +10,16 @@ using Random = UnityEngine.Random;
 public class EnemiesManager : NetworkBehaviour {
 
 	public static EnemiesManager Instance;
-	public List<Wave> waves;
 
 	public GameObject spawnPointsContainer;
 	private List<Transform> spawnPoints;
 	public List<GameObject> EnemiesInstances { get; private set; }
-	private float spawnTime;
-	private float elapsedTimeWave;
-	private float elapsedTimeSpawn;
-	private int index;
 	
-	public NetworkVariable<int> Wave = new();
-	public NetworkVariable<int> WaveDuration = new();
-
 	private List<GameObject> players = new ();
+
+	private float elapsedTimeSpawn;
+
+	private WavesManager wavesManager;
 
 	void Awake(){
 		Instance = this;
@@ -33,12 +29,8 @@ public class EnemiesManager : NetworkBehaviour {
 		spawnPoints.AddRange (transforms);
 
 		EnemiesInstances = new List<GameObject> ();
-		index = -1;
-		Wave.Value = 0;
-		spawnTime = 6;
 
 		MultiplayerManager.Instance.OnGameReady += OnGameReady;
-		
 	}
 
 	void OnGameReady()
@@ -50,18 +42,13 @@ public class EnemiesManager : NetworkBehaviour {
 		}
 
 		players = MultiplayerManager.Instance.Players;
-	}
-
-	void OnEnable()
-	{
-		if (!MultiplayerManager.Instance.IsHostReady)
-			return;
-		
-		ChangeWave ();
+		wavesManager = MultiplayerManager.Instance.WavesManager;
+		wavesManager.Wave.OnValueChanged += OnChangeWave;
 	}
 
 	void Update()
 	{
+		return;
 		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
 		
@@ -69,16 +56,11 @@ public class EnemiesManager : NetworkBehaviour {
 		
 		if (anyPlayerAlive && EnemiesInstances.Count < 250) {
 			elapsedTimeSpawn += Time.deltaTime;
-			elapsedTimeWave += Time.deltaTime;
 		}
 
-		if (elapsedTimeSpawn >= spawnTime) {
+		if (elapsedTimeSpawn >= wavesManager.SpawnTime) {
 			elapsedTimeSpawn = 0;
 			SpawnEnemy (false);
-		}
-
-		if (elapsedTimeWave > WaveDuration.Value) {
-			ChangeWave ();
 		}
 	}
 
@@ -98,7 +80,7 @@ public class EnemiesManager : NetworkBehaviour {
 			}
 		}
 
-		var listEnemies = isBoss ? waves[index].bosses : waves[index].enemies;
+		var listEnemies = isBoss ? wavesManager.CurrentWave().bosses : wavesManager.CurrentWave().enemies;
 		int r = Random.Range (0, listEnemies.Count);
 
 		GameObject enemyInstance = Instantiate(listEnemies[r], pos, Quaternion.identity);
@@ -131,23 +113,9 @@ public class EnemiesManager : NetworkBehaviour {
 		return selected;
 	}
 
-	void ChangeWave()
+	void OnChangeWave(int previousWave, int currentWave)
 	{
-		index++;
-		Wave.Value++;
-		if (index >= waves.Count) {
-			index--;
-			spawnTime *= 0.5f;
-			WaveDuration.Value += 10;
-		} else {
-			spawnTime = waves [index].frecuencySpawn;
-			WaveDuration.Value = waves [index].durationSeconds;
-		}
-
-		elapsedTimeSpawn = 0;
-		elapsedTimeWave = 0;
-
-		for (int i = 0; i < waves [index].bossesToKill; i++) {
+		for (int i = 0; i < wavesManager.CurrentWave().bossesToKill; i++) {
 			SpawnEnemy(true);
 		}
 	}

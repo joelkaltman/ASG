@@ -16,7 +16,9 @@ public class MultiplayerManager : MonoBehaviour
     
     public GameObject networkManagerSP;
     public GameObject networkManagerMP;
-        
+
+    [SerializeField] private GameObject wavesManager;
+    
     private NetworkManager networkManager;
     private UnityTransport unityTransport;
 
@@ -29,6 +31,8 @@ public class MultiplayerManager : MonoBehaviour
     public bool IsHostReady => IsGameReady && (networkManager ? networkManager.IsHost : false);
 
     public List<GameObject> Players { get; private set; } = new();
+
+    public WavesManager WavesManager { get; private set; }
     
     void Awake()
     {
@@ -48,6 +52,9 @@ public class MultiplayerManager : MonoBehaviour
         unityTransport = sp.GetComponent<UnityTransport>();
         networkManager.StartHost();
         
+        var wavesManagerInstance = Instantiate(wavesManager);
+        wavesManagerInstance.GetComponent<NetworkObject>()?.Spawn(true);
+
         StartGame();
     }
     
@@ -89,6 +96,9 @@ public class MultiplayerManager : MonoBehaviour
             unityTransport.OnTransportEvent += TransportEvent;
             networkManager.StartHost();
             
+            var wavesManagerInstance = Instantiate(wavesManager);
+            wavesManagerInstance.GetComponent<NetworkObject>()?.Spawn(true);
+
             return new ConnectionResult() { Result = true, JoinCode = joinCode };
         }
         catch (RelayServiceException e)
@@ -134,9 +144,24 @@ public class MultiplayerManager : MonoBehaviour
             OnLocalPlayerReady?.Invoke(player);
         }
     }
-    
-    public void StartGame()
+
+    public void RegisterWaveManager(WavesManager manager)
     {
+        WavesManager = manager;
+    }
+
+    private async Task WaitForGameReady()
+    {
+        while (!WavesManager)
+        {
+            await Task.Yield();
+        }
+    }
+    
+    public async void StartGame()
+    {
+        await WaitForGameReady();
+        
         IsGameReady = true;
         OnGameReady?.Invoke();
     }

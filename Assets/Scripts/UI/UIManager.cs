@@ -252,9 +252,10 @@ public class UIManager : MonoBehaviour {
 
 		this.elapsedTime = 0;
 
-		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
-		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
-		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+		//int durationWaveSeconds = enemiesManager.WaveDuration.Value;
+		//this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
+		//this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+		
 	}
 
 	public void ExitGame()
@@ -461,8 +462,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void ShowWave(){
-		int wave = enemiesManager.Wave.Value;
-		this.textWave.text = "Wave " + wave;
+		////int wave = enemiesManager.Wave.Value;
+		//this.textWave.text = "Wave " + wave;
 		//this.textWave.enabled = true;
 		this.objetiveFade = 1;
 
@@ -503,9 +504,9 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void RefreshWaveTime(){
-		int durationWaveSeconds = enemiesManager.WaveDuration.Value;
-		this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
-		this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
+		//int durationWaveSeconds = enemiesManager.WaveDuration.Value;
+		//this.remainMinutes = (int)Mathf.Floor (durationWaveSeconds / 60);
+		//this.remainSeconds = Mathf.RoundToInt(durationWaveSeconds % 60);
 	}
 
 	void takeTime(float deltaTime){

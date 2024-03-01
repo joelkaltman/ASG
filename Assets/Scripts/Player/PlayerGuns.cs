@@ -50,23 +50,25 @@ public class PlayerGuns : NetworkBehaviour
 		
 		if (!Initialized)
 			return;
-		
-		GetCurrentGun().AddElapsedTime (Time.deltaTime);
 
-		bool shooted = false;
-		if (UIJoystickManager.Instance.getCurrentJoystick ().canShoot ()) {
-			shooted = GetCurrentGun ().Shoot ();
-		}
-		if (shooted) {
-			AudioSource audio = GetComponentInChildren<AudioSource> ();
-			audio.clip = GetCurrentGun ().ShootAudio;
-			audio.Play ();
+		var gun = GetCurrentGun();
+		gun.AddElapsedTime (Time.deltaTime);
 
-			onShoot?.Invoke ();
+		if (UIJoystickManager.Instance.getCurrentJoystick().canShoot()) 
+		{
+			if (gun.Shoot())
+			{
+				var audio = GetComponentInChildren<AudioSource> ();
+				audio.clip = gun.ShootAudio;
+				audio.Play ();
+
+				onShoot?.Invoke ();
+			}
 		}
 	}
 
-	public void SelectGunMobile(){
+	public void SelectGunMobile()
+	{
 		DiscardGun ();
 		currentIndex++;
 		if (currentIndex == playerStats.userData.guns.Count) {
@@ -76,12 +78,14 @@ public class PlayerGuns : NetworkBehaviour
 		onGunChange?.Invoke ();
 	}
 
-	private void DiscardGun(){
+	private void DiscardGun()
+	{
 		GunData currentGun = GetCurrentGun();
 		currentGun.Discard ();
 	}
 
-	private void EquipGun (){
+	private void EquipGun ()
+	{
 		GunData currentGun = GetCurrentGun();
 		currentGun.Equip ();
 
@@ -129,6 +133,9 @@ public class PlayerGuns : NetworkBehaviour
 	[ServerRpc]
 	public void ShootServerRpc(int id, Vector3 pos, Quaternion rot)
 	{
+		if (playerStats.IsDead)
+			return;
+		
 		var gun = GetGun(id);
 		var spawnedBullet = Instantiate(gun.Bullet, pos, rot);
 		

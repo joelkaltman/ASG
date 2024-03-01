@@ -12,7 +12,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     public void Start()
     {
-		this.Initialize ();
+		Initialize ();
     }
 
 	public virtual void Initialize(){
@@ -39,8 +39,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 	public virtual void OnPointerDown(PointerEventData data) { }
 
 	public virtual Vector2 getJoystickCurrentValues(){
-		float valueX = (this.transform.position.x - this.m_StartPos.x) / MovementRange;
-		float valueY = (this.transform.position.y - this.m_StartPos.y) / MovementRange;
+		float valueX = (transform.position.x - m_StartPos.x) / MovementRange;
+		float valueY = (transform.position.y - m_StartPos.y) / MovementRange;
 		return new Vector2 (valueX, valueY);
 	}
 
@@ -49,7 +49,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 	}
 
 	public virtual bool canShoot(){
-		if (this.transform.position.x != this.m_StartPos.x && this.transform.position.y != this.m_StartPos.y) {
+		if (transform.position.x != m_StartPos.x && transform.position.y != m_StartPos.y) {
 			return true;
 		}
 		return false;

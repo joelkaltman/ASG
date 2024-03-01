@@ -8,7 +8,7 @@ public class PlayerStats : NetworkBehaviour
 {
 	public NetworkVariable<int> Life = new(100);
 	public NetworkVariable<int> Score = new(0);
-	public NetworkVariable<int> Speed = new(10);
+	public NetworkVariable<int> Speed = new(4);
 	public NetworkVariable<int> Caps = new(0);
 
     private UserManager user;
@@ -30,6 +30,7 @@ public class PlayerStats : NetworkBehaviour
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
 
 		Caps.OnValueChanged += AddCap;
+		Life.OnValueChanged += OnLifeChange;
 		
 		initialLife = Life.Value;
 		initialSpeed = Speed.Value;
@@ -60,21 +61,27 @@ public class PlayerStats : NetworkBehaviour
 
 	public void RecieveDamage(int damage)
 	{
-		bool wasDead = IsDead;
 		Life.Value = math.max(Life.Value - damage, 0);
-		
-		if (IsDead && !wasDead)
-			Die();
-		
-		GetComponent<Animator> ().SetInteger ("Life", Life.Value);
-
-		AudioSource audio = GetComponent<AudioSource> ();
-		audio.clip = damageSound;
-		if (!audio.isPlaying) {
-			audio.Play ();
-		}
 	}
 
+	private void OnLifeChange(int prevLife, int newLife)
+	{
+		GetComponent<Animator> ().SetInteger ("Life", newLife);
+
+		if (IsDead)
+		{
+			Die();
+		}
+		else
+		{
+			AudioSource audio = GetComponent<AudioSource> ();
+			audio.clip = damageSound;
+			if (!audio.isPlaying) {
+				audio.Play ();
+			}
+		}
+	}
+	
 	public void RecieveDamageByFire(int damage)
 	{
 		if (!inmuneToFire) {

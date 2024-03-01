@@ -3,16 +3,18 @@ using UnityEngine.AI;
 
 public class EnemyFollow : ServerOnlyMonobehavior {
 
-	NavMeshAgent navAgent;
-	public bool follow;
+	private NavMeshAgent navAgent;
+	private EnemyStats enemyStats;
+	[HideInInspector] public bool follow;
 
 	// Use this for initialization
 	void Start () 
 	{
-		navAgent = GetComponent<NavMeshAgent> ();
+		navAgent = GetComponent<NavMeshAgent>();
+		enemyStats = GetComponent<EnemyStats>();
 
-		int speedMin = GetComponent<EnemyStats> ().speedMin;
-		int speedMax = GetComponent<EnemyStats> ().speedMax;
+		int speedMin = GetComponent<EnemyStats>().speedMin;
+		int speedMax = GetComponent<EnemyStats>().speedMax;
 		navAgent.speed = Random.Range (speedMin, speedMax + 1);
 		
 		follow = true;
@@ -26,19 +28,14 @@ public class EnemyFollow : ServerOnlyMonobehavior {
 		if (!target)
 			return;
 		
-		if (gameObject.GetComponent<EnemyStats> ().life <= 0) {
+		if (enemyStats.life <= 0) {
 			navAgent.speed = 0;
+			enabled = false;
 			return;
 		}
 
-		if (transform.position.y < 3) {
-			//Destroy (gameObject);
-		}
-
-		if (navAgent.isOnNavMesh) {
-			if (follow) {
-				navAgent.SetDestination (target.transform.position);
-			} 
+		if (navAgent.isOnNavMesh && follow) {
+			navAgent.SetDestination (target.transform.position);
 		}
 	}
 }

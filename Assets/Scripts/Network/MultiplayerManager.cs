@@ -75,7 +75,7 @@ public class MultiplayerManager : MonoBehaviour
         networkManager.Shutdown();
         Destroy(networkManager.gameObject);
         
-        if(AuthenticationService.Instance.IsSignedIn)
+        if(UnityServices.State == ServicesInitializationState.Initialized && AuthenticationService.Instance.IsSignedIn)
             AuthenticationService.Instance.SignOut();
     }
 

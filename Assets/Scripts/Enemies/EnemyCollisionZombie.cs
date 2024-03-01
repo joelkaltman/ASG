@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class EnemyCollisionZombie : ServerOnlyMonobehavior {
 
@@ -8,14 +9,23 @@ public class EnemyCollisionZombie : ServerOnlyMonobehavior {
 	PlayerStats playerStatsInstance;
 
 	float acumTime = 0;
-	
+
+	private Animator animator;
+	private EnemyFollow enemyFollow;
+
+	private void Start()
+	{
+		animator = GetComponent<Animator>();
+		enemyFollow = GetComponent<EnemyFollow>();
+	}
+
 	void OnCollisionEnter(Collision col)
 	{
-		PlayerStats player_stats = col.collider.GetComponent<PlayerStats> ();
-		if (player_stats != null) {
-			playerStatsInstance = player_stats;
-			GetComponent<Animator> ().SetBool ("Attack", true);
-			GetComponent<EnemyFollow> ().follow = false;
+		PlayerStats playerStats = col.collider.GetComponent<PlayerStats> ();
+		if (playerStats != null) {
+			playerStatsInstance = playerStats;
+			animator.SetBool ("Attack", true);
+			enemyFollow.follow = false;
 		}
 	}
 
@@ -30,8 +40,8 @@ public class EnemyCollisionZombie : ServerOnlyMonobehavior {
 
 	void OnCollisionExit()
 	{
-		GetComponent<Animator> ().SetBool ("Attack", false);
-		GetComponent<EnemyFollow> ().follow = true;
+		animator.SetBool ("Attack", false);
+		enemyFollow.follow = true;
 		acumTime = 0;
 		playerStatsInstance = null;
 	}

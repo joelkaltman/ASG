@@ -13,13 +13,12 @@ public class PlayerMovement : NetworkBehaviour
 	Rigidbody rb;
 	Animator animator;
 
-    private bool shouldMove => !GameData.Instance.isOnline || IsOwner;
-
     private PlayerStats playerStats;
 
 	// Use this for initialization
-	public void Initialize () {
-		if(!shouldMove)
+	public void Initialize () 
+	{
+		if(!IsOwner)
 			return;
 		
 		rb = GetComponent< Rigidbody > ();
@@ -34,9 +33,9 @@ public class PlayerMovement : NetworkBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
-		if(!shouldMove)
+		if(!IsOwner)
 			return;
 
 		if (!joystickMovement)

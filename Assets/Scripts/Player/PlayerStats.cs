@@ -6,10 +6,10 @@ using Task = System.Threading.Tasks.Task;
 
 public class PlayerStats : NetworkBehaviour 
 {
-	public NetworkVariable<int> Life = new(100);
-	public NetworkVariable<int> Score = new(0);
-	public NetworkVariable<int> Speed = new(4);
-	public NetworkVariable<int> Caps = new(0);
+	[HideInInspector] public NetworkVariable<int> Life = new(100);
+	[HideInInspector] public NetworkVariable<int> Score = new(0);
+	[HideInInspector] public NetworkVariable<int> Speed = new(2);
+	[HideInInspector] public NetworkVariable<int> Caps = new(0);
 
     private UserManager user;
     public AuthManager.UserData userData => user.UserData;
@@ -24,13 +24,17 @@ public class PlayerStats : NetworkBehaviour
 
 	private void Start()
 	{
-		if(IsOwner)
+		if (IsOwner)
+		{
 			user = UserManager.Instance();
-		
+			user.ResetKills();
+		}
+
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
 
 		Caps.OnValueChanged += AddCap;
 		Life.OnValueChanged += OnLifeChange;
+		Score.OnValueChanged += OnKill;
 		
 		initialLife = Life.Value;
 		initialSpeed = Speed.Value;
@@ -43,20 +47,13 @@ public class PlayerStats : NetworkBehaviour
 		
 		user.AddCap();
 	}
-
-	public bool CheckNewHighScore()
+	
+	private void OnKill(int prevScore, int newScore)
 	{
 		if (!IsOwner)
-			return false;
+			return;
 		
-		bool newHighScore = Score.Value > userData.maxKills;
-		if (newHighScore)
-		{
-			userData.maxKills = Score.Value;
-            user.SaveKills();
-		}
-
-		return newHighScore;
+		user.SetKills(Score.Value);
 	}
 
 	public void RecieveDamage(int damage)

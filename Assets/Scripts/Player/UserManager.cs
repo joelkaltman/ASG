@@ -10,7 +10,8 @@ public class UserManager
     public static UserManager Instance() => userManager ??= new UserManager();
     
     public AuthManager.UserData UserData { get; private set; }
-    
+
+    public int Kills { get; private set; }
     public bool Initialized { get; private set; }
     
     public event Action OnCapCountChange;
@@ -70,4 +71,30 @@ public class UserManager
 		
         OnCapCountChange?.Invoke ();
     }
+    
+    public void SetKills(int score)
+    {
+        if (score < Kills)
+            return;
+        
+        Kills = score;
+    }
+
+    public void ResetKills()
+    {
+        Kills = 0;
+    }
+
+    public bool CheckNewHighScore()
+    {
+        bool newHighScore = Kills > UserData.maxKills;
+        if (newHighScore)
+        {
+            UserData.maxKills = Kills;
+            SaveKills();
+        }
+
+        return newHighScore;
+    }
+
 }

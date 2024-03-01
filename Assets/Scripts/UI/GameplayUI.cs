@@ -30,6 +30,7 @@ public class GameplayUI : MonoBehaviour {
 	public List<Text> textCapCount;
 	public Text textScore;
 	public Text textTime;
+	public Text textGameOverReason;
 	public Text textGiantScore;
 	public Text textGunCount;
 	public Text textWave;
@@ -65,17 +66,12 @@ public class GameplayUI : MonoBehaviour {
 	{
         UserManager.Instance().OnCapCountChange += RefreshCaps;
         
-		//enemiesManager.Wave.OnValueChanged += ShowWave;
-		//enemiesManager.Wave.OnValueChanged += RefreshWaveTime;
-        
 		objetiveFade = 0;
 		currentFade = 0;
 		speedFade = 0.01f;
 		usedContinue = false;
 		currentPanel = 0;
 		lastPanel = 0;
-		//remainSeconds = 0;
-		//remainMinutes = 0;
 	}
 
 	// Use this for initialization
@@ -342,12 +338,27 @@ public class GameplayUI : MonoBehaviour {
 		}
 	}
 
-	private void GameOver()
+	private void GameOver(MultiplayerManager.GameOverReason reason)
 	{
         ShowCanvas (PanelType.GAMEOVER);
-		textGiantScore.text = "You killed " + playerStats.Score.Value + " enemies!";
+        
+        switch (reason)
+        {
+	        case MultiplayerManager.GameOverReason.Disconnected:
+		        textGameOverReason.text = "You got disconnected";
+		        break;
+	        case MultiplayerManager.GameOverReason.PlayerDied:
+		        textGameOverReason.text = "You DIED!";
+		        break;
+	        case MultiplayerManager.GameOverReason.OtherPlayerDied:
+		        textGameOverReason.text = "Your buddy DIED!";
+		        break;
+        }
+        
+		textGiantScore.text = "Killed " + UserManager.Instance().Kills + " enemies!";
 
-		bool newMaxScore = playerStats.CheckNewHighScore();
+
+		bool newMaxScore = UserManager.Instance().CheckNewHighScore();
 		newHighScoreText.SetActive(newMaxScore);
 	}
 

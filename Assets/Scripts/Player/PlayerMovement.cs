@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,24 +13,25 @@ public class PlayerMovement : NetworkBehaviour
 	public bool IsMoving { get; private set; }
 	
 	float fallSpeed;
-	Rigidbody rb;
-	Animator animator;
-
+	private Rigidbody rb;
+	private Animator animator;
     private PlayerStats playerStats;
 
-	// Use this for initialization
+    private void Awake()
+    {
+	    rb = GetComponent<Rigidbody>();
+	    animator = GetComponent<Animator>();
+	    playerStats = GetComponent<PlayerStats>();
+    }
+
+    // Use this for initialization
 	public void Initialize () 
 	{
 		if(!IsOwner)
 			return;
 		
-		rb = GetComponent< Rigidbody > ();
 		rb.maxAngularVelocity = 0;
-		animator = GetComponent < Animator > ();
-
-		playerStats = GetComponent<PlayerStats>();
-		//arrowCap.SetActive (true);
-
+		
 		var spawnPos = IsHost ? new Vector3(0, 5, 0) : new Vector3(2, 5, 0);
 		transform.position = spawnPos;
 	}
@@ -37,7 +41,7 @@ public class PlayerMovement : NetworkBehaviour
 
 		if(!IsOwner)
 			return;
-
+		
 		if (!joystickMovement)
 			return;
 		
@@ -70,6 +74,13 @@ public class PlayerMovement : NetworkBehaviour
 		vel.x = dirNormalized.x * playerStats.Speed.Value;
 		vel.z = dirNormalized.z * playerStats.Speed.Value;
 		rb.velocity = vel;
+
+		Ray ray = new(transform.position, Vector3.down);
+		bool collidesWithTerrain = Physics.RaycastAll(ray, 0.5f).Any(x => x.collider.gameObject.name == "Terrain");
+		if(collidesWithTerrain)
+			rb.constraints |= RigidbodyConstraints.FreezePositionY;
+		else
+			rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
 
 		IsMoving = dirNormalized.x != 0 | dirNormalized.z != 0;
 	}

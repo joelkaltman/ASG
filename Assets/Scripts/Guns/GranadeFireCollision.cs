@@ -2,21 +2,12 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeFireCollision : NetworkBehaviour {
+public class GranadeFireCollision : PlayerOwned {
 
 	public int duration;
 	public GameObject fire;
 
 	GameObject fireInstance;
-
-	void Start()
-	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-	}
 	
 	void OnTriggerEnter(Collider col)
 	{
@@ -26,6 +17,8 @@ public class GranadeFireCollision : NetworkBehaviour {
 		this.GetComponent<AudioSource>().Play ();
 
 		fireInstance = Instantiate (fire, new Vector3(this.transform.position.x, 5, this.transform.position.z), Quaternion.Euler(-90,0,0));
+		fireInstance.GetComponent<FireCollision>().player = player;
+		
 		fireInstance.GetComponent<NetworkObject>()?.Spawn(true);
 
 		this.GetComponent<Collider> ().enabled = false;
@@ -44,7 +37,7 @@ public class GranadeFireCollision : NetworkBehaviour {
 	IEnumerator DestroyFire()
 	{
 		yield return new WaitForSeconds(1);
-		Destroy (fireInstance);
-		Destroy (this.gameObject);
+		fireInstance.GetComponent<NetworkObject>()?.Despawn(true);
+		gameObject.GetComponent<NetworkObject>()?.Despawn(true);
 	}
 }

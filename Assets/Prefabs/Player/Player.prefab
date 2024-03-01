@@ -1405,8 +1405,6 @@ MonoBehaviour:
     m_InternalValue: 1
   shooter: {fileID: 8179719280533894228}
   hand: {fileID: 8180315429472925526}
-  groundTarget: {fileID: 1089262084186898, guid: b422842959a926d45b652a8c4c354455,
-    type: 3}
   Initialized: 0
 --- !u!114 &8076147129899394982
 MonoBehaviour:

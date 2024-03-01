@@ -25,12 +25,15 @@ public class PlayerGuns : NetworkBehaviour
 		onShoot = null;
 	}
 
+	private void Awake()
+	{
+		playerStats = gameObject.GetComponent<PlayerStats>();
+	}
+
 	public void Initialize()
 	{
 		if (!IsOwner)
 			return;
-
-		playerStats = gameObject.GetComponent<PlayerStats>();
 		
 		var ownedGuns = GameData.Instance.guns.Where(x => playerStats.userData.guns.Contains(x.Id)).ToList();
 		foreach (var owned in ownedGuns)
@@ -133,6 +136,9 @@ public class PlayerGuns : NetworkBehaviour
 	[ServerRpc]
 	public void ShootServerRpc(int id, Vector3 pos, Quaternion rot)
 	{
+		if (!MultiplayerManager.Instance.IsHostReady)
+			return;
+		
 		if (playerStats.IsDead)
 			return;
 		

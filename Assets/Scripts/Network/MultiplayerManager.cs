@@ -12,6 +12,13 @@ using UnityEngine;
 
 public class MultiplayerManager : MonoBehaviour
 {
+    public enum GameOverReason
+    {
+        Disconnected,
+        PlayerDied,
+        OtherPlayerDied,
+    }
+    
     public static MultiplayerManager Instance;
     
     public GameObject networkManagerSP;
@@ -24,16 +31,16 @@ public class MultiplayerManager : MonoBehaviour
 
     [HideInInspector] public bool IsGameReady;
     [HideInInspector] public bool IsLocalPlayerReady;
+
     
     public event Action OnGameReady;
-    public event Action OnGameOver;
+    public event Action<GameOverReason> OnGameOver;
     public event Action<GameObject> OnLocalPlayerReady;
 
     public bool IsHost => networkManager ? networkManager.IsHost : false;
     public bool IsHostReady => IsGameReady && IsHost;
-
+    
     public List<GameObject> Players { get; private set; } = new();
-
     public WavesManager WavesManager { get; private set; }
     
     void Awake()
@@ -134,6 +141,10 @@ public class MultiplayerManager : MonoBehaviour
         {
             StartGame();
         }
+        else if (eventType == NetworkEvent.Disconnect)
+        {
+            EndGame(GameOverReason.Disconnected);
+        }
     }
 
     public void RegisterPlayer(GameObject player)
@@ -207,18 +218,29 @@ public class MultiplayerManager : MonoBehaviour
         if (!IsGameReady)
             return;
         
-        if(CheckGameOver())
-            EndGame();
+        if(CheckGameOver(out var reason))
+            EndGame(reason);
     }
 
-    private bool CheckGameOver()
+    private bool CheckGameOver(out GameOverReason reason)
     {
-        return Players.Any(x => x == null || x.GetComponent<PlayerStats>().IsDead);
+        var deadPlayer = Players.FirstOrDefault(x => x && x.GetComponent<PlayerStats>().IsDead);
+        if (deadPlayer != null)
+        {
+            reason = deadPlayer.GetComponent<NetworkObject>().IsOwner ? 
+                GameOverReason.PlayerDied : 
+                GameOverReason.OtherPlayerDied;
+
+            return true;
+        }
+
+        reason = default;
+        return false;
     }
 
-    private void EndGame()
+    private void EndGame(GameOverReason reason)
     {
         IsGameReady = false;
-        OnGameOver?.Invoke();
+        OnGameOver?.Invoke(reason);
     }
 }

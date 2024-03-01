@@ -3,21 +3,12 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GranadeAttractionCollision : NetworkBehaviour {
+public class GranadeAttractionCollision : PlayerOwned {
 
 	public int duration;
 	public GameObject attractionObject;
 
-	GameObject attractionObjectInstance;
-
-	void Start()
-	{
-		if (!IsHost)
-		{
-			enabled = false;
-			return;
-		}
-	}
+	GameObject attractionInstance;
 	
 	void OnTriggerEnter(Collider col)
 	{
@@ -26,8 +17,10 @@ public class GranadeAttractionCollision : NetworkBehaviour {
 		
 		this.GetComponent<AudioSource>().Play ();
 
-		attractionObjectInstance = Instantiate (attractionObject, new Vector3(this.transform.position.x, 6, this.transform.position.z), Quaternion.identity);
-		attractionObjectInstance.GetComponent<NetworkObject>()?.Spawn(true);
+		attractionInstance = Instantiate (attractionObject, new Vector3(this.transform.position.x, 6, this.transform.position.z), Quaternion.identity);
+		attractionInstance.GetComponent<AttractEnemies>().player = player;
+		
+		attractionInstance.GetComponent<NetworkObject>()?.Spawn(true);
 
 		this.GetComponent<Collider> ().enabled = false;
 		this.GetComponent<Renderer> ().enabled = false;
@@ -38,7 +31,7 @@ public class GranadeAttractionCollision : NetworkBehaviour {
 	IEnumerator Destroy()
 	{
 		yield return new WaitForSeconds(duration);
-		Destroy (attractionObjectInstance);
-		Destroy (this.gameObject);
+		attractionInstance.GetComponent<NetworkObject>()?.Despawn();
+		gameObject.GetComponent<NetworkObject>()?.Despawn();
 	}
 }

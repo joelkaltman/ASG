@@ -32,8 +32,8 @@ public class GranadeCollision : PlayerOwned {
 	IEnumerator DestroyExplosion()
 	{
 		yield return new WaitForSeconds(3);
-		Destroy (explosionInstance);
-		Destroy (this.gameObject);
+		explosionInstance.GetComponent<NetworkObject>()?.Despawn();
+		gameObject.GetComponent<NetworkObject>()?.Despawn();
 	}
 
 	void DamageEnemies()

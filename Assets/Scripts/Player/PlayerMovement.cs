@@ -6,8 +6,11 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour 
+public class PlayerMovement : NetworkBehaviour
 {
+	public Vector3 hostSpawnPosition;
+	public Vector3 clientSpawnPosition;
+	
 	[HideInInspector] public Joystick joystickMovement;
 
 	public bool IsMoving { get; private set; }
@@ -32,7 +35,7 @@ public class PlayerMovement : NetworkBehaviour
 		
 		rb.maxAngularVelocity = 0;
 		
-		var spawnPos = IsHost ? new Vector3(0, 5, 0) : new Vector3(2, 5, 0);
+		var spawnPos = IsHost ? hostSpawnPosition : clientSpawnPosition;
 		transform.position = spawnPos;
 	}
 	

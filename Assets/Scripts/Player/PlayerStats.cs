@@ -8,7 +8,7 @@ public class PlayerStats : NetworkBehaviour
 {
 	[HideInInspector] public NetworkVariable<int> Life = new(100);
 	[HideInInspector] public NetworkVariable<int> Score = new(0);
-	[HideInInspector] public NetworkVariable<int> Speed = new(2);
+	[HideInInspector] public NetworkVariable<float> Speed = new(2);
 	[HideInInspector] public NetworkVariable<int> Caps = new(0);
 
     private UserManager user;
@@ -17,7 +17,7 @@ public class PlayerStats : NetworkBehaviour
 	public AudioClip damageSound;
 
 	private int initialLife;
-	public int initialSpeed;
+	public float initialSpeed;
 
 	bool inmuneToFire;
 	public bool IsDead => Life.Value <= 0;
@@ -98,7 +98,7 @@ public class PlayerStats : NetworkBehaviour
 		Life.Value = math.min(initialLife, Life.Value + amount);
 	}
 
-	public void IncreaseSpeed(int amount, int time)
+	public void IncreaseSpeed(float amount, int time)
 	{
 		if (Speed.Value > initialSpeed)
 			return;

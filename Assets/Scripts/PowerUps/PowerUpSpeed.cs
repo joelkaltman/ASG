@@ -4,6 +4,6 @@
 
 	protected override void PowerUpAction(PlayerStats playerStats)
 	{
-		playerStats.IncreaseSpeed(2, duration);
+		playerStats.IncreaseSpeed(1.5f, duration);
 	}
 }

@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1241703734
+  GlobalObjectIdHash: 1646896436
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1388,6 +1388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e5075c6e3c5ac45ab7cd34ebe1b06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hostSpawnPosition: {x: 0, y: 5.15, z: 0}
+  clientSpawnPosition: {x: 2, y: 5.15, z: 0}
   joystickMovement: {fileID: 0}
 --- !u!114 &8076929814997280556
 MonoBehaviour:

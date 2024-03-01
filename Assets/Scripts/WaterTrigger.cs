@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WaterTrigger : MonoBehaviour {
+public class WaterTrigger : ServerOnlyMonobehavior {
 
 	PlayerStats playerStats;
 
@@ -10,7 +8,6 @@ public class WaterTrigger : MonoBehaviour {
 	{
 		playerStats = col.gameObject.GetComponent<PlayerStats> ();
 		if (playerStats != null) {
-			//stats.RecieveDamage (99999);
 			Invoke ("KillPlayer", 1);
 		}
 		EnemyStats enemyStats = col.gameObject.GetComponent<EnemyStats> ();

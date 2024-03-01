@@ -27,7 +27,6 @@ public class GameplayUI : MonoBehaviour {
 
     [Header("UI")] 
     public GameObject topPanel;
-	public List<Text> textCapCount;
 	public Text textScore;
 	public Text textTime;
 	public Text textGameOverReason;
@@ -64,8 +63,6 @@ public class GameplayUI : MonoBehaviour {
 
 	void Awake()
 	{
-        UserManager.Instance().OnCapCountChange += RefreshCaps;
-        
 		objetiveFade = 0;
 		currentFade = 0;
 		speedFade = 0.01f;
@@ -148,7 +145,6 @@ public class GameplayUI : MonoBehaviour {
 		
 		RefreshLife (playerStats.Life.Value, playerStats.Life.Value);
 		RefreshScore (playerStats.Score.Value, playerStats.Score.Value);
-		RefreshCaps ();
 		RefreshGun ();
 		RefreshGunCount ();
 	}
@@ -322,20 +318,6 @@ public class GameplayUI : MonoBehaviour {
 	private void ResetFrecueny()
 	{
 		imageFrecuency.fillAmount = 0;
-	}
-	
-	public void RefreshCaps()
-	{
-		for (int i = 0; i < textCapCount.Count; i++) {
-			if(textCapCount[i] == null)
-				continue;
-			
-			textCapCount[i].text = "x" + playerStats.userData.caps;
-			BounceText bounce = textCapCount[i].GetComponent<BounceText> ();
-			if (bounce != null) {
-				bounce.Bounce (0.65f);
-			}
-		}
 	}
 
 	private void GameOver(MultiplayerManager.GameOverReason reason)

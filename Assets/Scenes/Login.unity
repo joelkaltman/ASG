@@ -320,7 +320,7 @@ RectTransform:
   m_GameObject: {fileID: 374216238}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.41666287, y: 0.4166631, z: 0.41666317}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1482466093}
@@ -328,8 +328,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 797.5, y: 239.5}
+  m_AnchoredPosition: {x: 0, y: -39.482}
+  m_SizeDelta: {x: 797.5, y: 160.537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374216240
 MonoBehaviour:
@@ -383,10 +383,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4506bf6ca285b494ab0993e12703d5e6, type: 3}
-    m_FontSize: 160
+    m_FontSize: 120
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 1
     m_MaxSize: 204
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -748,7 +748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
 --- !u!114 &771230680
 MonoBehaviour:
@@ -1182,7 +1182,7 @@ RectTransform:
   m_GameObject: {fileID: 867956358}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5678652, y: 0.47956565, z: 0.41666314}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1499098554}
@@ -1190,8 +1190,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9}
-  m_SizeDelta: {x: 72.8898, y: 25.44}
+  m_AnchoredPosition: {x: 0.00021362305, y: 9}
+  m_SizeDelta: {x: 0.00048828, y: -9}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &867956360
 MonoBehaviour:
@@ -1247,9 +1247,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 4506bf6ca285b494ab0993e12703d5e6, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 4
-    m_MaxSize: 60
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 300
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -1693,7 +1693,7 @@ RectTransform:
   m_GameObject: {fileID: 1293722400}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5678652, y: 0.47956565, z: 0.41666314}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1849485225}
@@ -1701,8 +1701,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 9.689, y: 25.44}
+  m_AnchoredPosition: {x: -2.4221954, y: 10}
+  m_SizeDelta: {x: 4.8445, y: -10}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1293722402
 MonoBehaviour:
@@ -1758,9 +1758,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 4506bf6ca285b494ab0993e12703d5e6, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 4
-    m_MaxSize: 60
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 83
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -2133,7 +2133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
 --- !u!114 &1529685973
 MonoBehaviour:
@@ -4548,6 +4548,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4865531937012237220, guid: 7e65952e89fd0f344beec4e24e58e03c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00021362305
+      objectReference: {fileID: 0}
     - target: {fileID: 6533000279216644333, guid: 7e65952e89fd0f344beec4e24e58e03c,
         type: 3}
       propertyPath: m_AnchorMax.y

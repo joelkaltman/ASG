@@ -22,18 +22,13 @@ public class MainMenuUI : MonoBehaviour {
 	public GameObject panelMainMenu;
 	public GameObject panelOptions;
 	
-	public GameObject networkManagerSP;
-	public GameObject playerSpawn;
-
 	public Button buttonSinglePlayer;
 	public Button buttonMultiPlayer;
 	public Text textUsername;
 	public Text textRandomTextMenu;
-	public List<Text> textCapCount;
 	public List<Image> buttonsSound;
 	public Sprite soundOn;
 	public Sprite soundOff;
-	public List<Button> qualityButtons;
 	
 	private PanelType currentPanel;
 	private PanelType lastPanel;
@@ -64,23 +59,8 @@ public class MainMenuUI : MonoBehaviour {
     private void OnUserInitialized()
     {
         textUsername.text = UserManager.Instance().UserData.username;
-        RefreshCaps();
         buttonSinglePlayer.interactable = true;
         buttonMultiPlayer.interactable = true;
-    }
-    
-    private void RefreshCaps()
-    {
-        for (int i = 0; i < textCapCount.Count; i++) {
-            if(textCapCount[i] == null)
-                continue;
-			
-            textCapCount[i].text = "x" + UserManager.Instance().UserData.caps;
-            BounceText bounce = textCapCount[i].GetComponent<BounceText> ();
-            if (bounce != null) {
-                bounce.Bounce (0.65f);
-            }
-        }
     }
     
 	private void ShowCanvas(PanelType type)
@@ -151,17 +131,6 @@ public class MainMenuUI : MonoBehaviour {
 	public void StartGame()
 	{
 		GameData.Instance.isOnline = false;
-		
-		/*var netManagerObject = Instantiate(networkManagerSP);
-		var netManager = netManagerObject.GetComponent<NetworkManager>();
-		netManager.StartHost();
-
-		var spawner = Instantiate(playerSpawn);
-		spawner.GetComponent<NetworkObject>().Spawn();
-		spawner.GetComponent<PlayerSpawn>().Initialize();
-
-		netManager.SceneManager.LoadScene("Game", LoadSceneMode.Single);*/
-		
 		SceneManager.LoadScene ("Game");
 	}
 	

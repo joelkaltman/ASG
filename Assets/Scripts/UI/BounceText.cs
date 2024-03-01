@@ -18,13 +18,13 @@ public class BounceText : MonoBehaviour {
 
 	void Start()
 	{
-		this.text = this.GetComponent<Text> ();
-		this.elapsedTime = 0;
+		text = GetComponent<Text> ();
+		elapsedTime = 0;
 		if (alwaysBounce) {
-			this.totalTime = -1;
-			this.bouncing = true;
+			totalTime = -1;
+			bouncing = true;
 		} else {
-			this.bouncing = false;
+			bouncing = false;
 		}
 	}
 
@@ -34,10 +34,10 @@ public class BounceText : MonoBehaviour {
 			return;
 		}
 
-		this.totalTime = time;
-		this.elapsedTime = 0;
-		this.bouncing = true;
-		this.originalScale = this.transform.localScale;
+		totalTime = time;
+		elapsedTime = 0;
+		bouncing = true;
+		originalScale = transform.localScale;
 	}
 
 	// Update is called once per frame
@@ -51,7 +51,7 @@ public class BounceText : MonoBehaviour {
 
 			if (elapsedTime > totalTime && totalTime != -1) {
 				bouncing = false;
-				this.transform.localScale = originalScale;
+				transform.localScale = originalScale;
 			}
 		}
 	}

@@ -1004,18 +1004,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 489885148}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &573387525 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5983988044154003450, guid: bfbb619b98bd654489e25b644ce0460d,
-    type: 3}
-  m_PrefabInstance: {fileID: 5983988043581156607}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &575073382
 GameObject:
   m_ObjectHideFlags: 0
@@ -6584,7 +6572,7 @@ MonoBehaviour:
   panelMultiplayer: {fileID: 1504853379}
   topPanel: {fileID: 5983988043581156610}
   textCapCount:
-  - {fileID: 573387525}
+  - {fileID: 0}
   - {fileID: 1536007381}
   textScore: {fileID: 2001390066}
   textTime: {fileID: 1766948671}

@@ -8,7 +8,7 @@ public class PlayerStats : NetworkBehaviour
 {
 	[HideInInspector] public NetworkVariable<int> Life = new(100);
 	[HideInInspector] public NetworkVariable<int> Score = new(0);
-	[HideInInspector] public NetworkVariable<float> Speed = new(2);
+	[HideInInspector] public NetworkVariable<float> Speed = new(1);
 	[HideInInspector] public NetworkVariable<int> Caps = new(0);
 
     private UserManager user;

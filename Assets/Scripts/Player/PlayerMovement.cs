@@ -73,9 +73,8 @@ public class PlayerMovement : NetworkBehaviour
 		}
 
 		var vel = rb.velocity;
-		var dirNormalized = direction.normalized;
-		vel.x = dirNormalized.x * playerStats.Speed.Value;
-		vel.z = dirNormalized.z * playerStats.Speed.Value;
+		vel.x = direction.x * playerStats.Speed.Value;
+		vel.z = direction.z * playerStats.Speed.Value;
 		rb.velocity = vel;
 
 		Ray ray = new(transform.position, Vector3.down);
@@ -85,7 +84,7 @@ public class PlayerMovement : NetworkBehaviour
 		else
 			rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
 
-		IsMoving = dirNormalized.x != 0 | dirNormalized.z != 0;
+		IsMoving = direction.x != 0 | direction.z != 0;
 	}
 
 	void Rotation()

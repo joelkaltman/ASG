@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1f4b49ba557a4ab1dd4161bb75fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 2
   damage: 40
   explosionParticles: {fileID: 1200366526657224, guid: 65d32f88d6f515547b02a69767a17289,
     type: 3}

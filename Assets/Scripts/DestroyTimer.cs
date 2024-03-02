@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class DestroyTimer : ServerOnlyMonobehavior {
@@ -12,6 +13,14 @@ public class DestroyTimer : ServerOnlyMonobehavior {
 	IEnumerator DestroyObject()
 	{
 		yield return new WaitForSeconds(destroySeconds);
-		Destroy (this.gameObject);
+		var netObj = GetComponent<NetworkObject>();
+		if (netObj)
+		{
+			netObj.Despawn();
+		}
+		else
+		{
+			Destroy (this.gameObject);
+		}
 	}
 }

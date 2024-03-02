@@ -1,52 +1,41 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EnemyCollisionZombie : ServerOnlyMonobehavior {
+public class EnemyCollisionZombie : EnemyAttack {
 
 	public int damage;
 	public float attackFrecuency;
-
-	PlayerStats playerStatsInstance;
 
 	float acumTime = 0;
 
 	private Animator animator;
 	private EnemyFollow enemyFollow;
-
+	
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
 		enemyFollow = GetComponent<EnemyFollow>();
 	}
-
-	void OnCollisionEnter(Collision col)
+	
+	protected override void OnEnterAttackRange(GameObject player)
 	{
-		PlayerStats playerStats = col.collider.GetComponent<PlayerStats> ();
-		if (playerStats != null) {
-			playerStatsInstance = playerStats;
-			animator.SetBool ("Attack", true);
-			enemyFollow.follow = false;
-		}
+		animator.SetBool ("Attack", true);
+		enemyFollow.follow = false;
 	}
 
-	void OnCollisionStay()
+	protected override void OnStayAttackRange(GameObject player)
 	{
-		acumTime += Time.fixedDeltaTime;
-		if (acumTime >= attackFrecuency && playerStatsInstance != null) {
-			playerStatsInstance.RecieveDamage (damage);
+		acumTime += Time.deltaTime;
+		bool canAttack = acumTime >= attackFrecuency;
+		if (canAttack)
+		{
+			player.GetComponent<PlayerStats>().RecieveDamage (damage);
 			acumTime = 0;
 		}
 	}
 
-	void OnCollisionExit()
+	protected override void OnExitAttackRange()
 	{
 		animator.SetBool ("Attack", false);
 		enemyFollow.follow = true;
-		acumTime = 0;
-		playerStatsInstance = null;
-	}
-
-	void AttackPlayer(){
-		playerStatsInstance.RecieveDamage (damage);
 	}
 }

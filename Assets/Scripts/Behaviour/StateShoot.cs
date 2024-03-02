@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -47,6 +48,7 @@ public class StateShoot : State {
 		for (int i = -bulletsCountPerShoot / 2; i <= (bulletsCountPerShoot / 2) + 1; i++) {
 			Quaternion rot = character.transform.rotation * Quaternion.Euler (0, i * bulletsAngle, 0);
 			GameObject instance = Instantiate(bullet, pos, rot);
+			instance.GetComponent<NetworkObject>()?.Spawn(true);
 
 			switch (type) {
 			case ShootingType.LINEAR:

@@ -39,8 +39,10 @@ public class MainMenuUI : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	async void Start () {
-        
+	async void Start () 
+	{
+		Time.timeScale = 1;
+		
         if(!UserManager.Instance().Initialized)
             await DefaultUserFallback();
         

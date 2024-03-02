@@ -12,7 +12,6 @@ public class TargetLocator : MonoBehaviour
     [SerializeField] private float screenBoundOffset = 0.9f;
     
     public GameObject indicatorPrefab;
-    public string panelGameName;
 
     private GameObject indicator;
     
@@ -58,7 +57,9 @@ public class TargetLocator : MonoBehaviour
         
         float angle = float.MinValue;
         GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
-        indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+        var rotate = indicator.transform.GetChild(0);
+        rotate.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+        
         indicator.transform.position = screenPosition;
         indicator.transform.localScale = Vector3.one;
     }

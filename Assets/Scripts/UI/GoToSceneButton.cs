@@ -11,7 +11,7 @@ public class GoToSceneButton : MonoBehaviour
     
     void Start()
     {
-        this.GetComponent<Button>().onClick.AddListener(GoToScene);
+        GetComponent<Button>().onClick.AddListener(GoToScene);
     }
 
     void GoToScene()

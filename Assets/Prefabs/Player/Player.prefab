@@ -1654,8 +1654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenBoundOffset: 0.85
-  indicatorPrefab: {fileID: 150680, guid: 5a9ac8456344aaa4580b4e091d1b149b, type: 3}
-  panelGameName: Panel Game
+  indicatorPrefab: {fileID: 150680, guid: a93c1d74a447fad43b5ffac8bf32650b, type: 3}
 --- !u!1 &8180779116640466526
 GameObject:
   m_ObjectHideFlags: 0

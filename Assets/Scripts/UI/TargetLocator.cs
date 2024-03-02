@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +19,8 @@ public class TargetLocator : MonoBehaviour
     private Camera mainCamera;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
+
+    public static event Action<GameObject> OnLocatorSpawn;
     
     void Awake()
     {
@@ -27,8 +30,14 @@ public class TargetLocator : MonoBehaviour
     
     private void Start()
     {
-        var gamePanel = GameObject.Find(panelGameName);
-        indicator = Instantiate(indicatorPrefab, gamePanel.transform);
+        indicator = Instantiate(indicatorPrefab);
+        OnLocatorSpawn?.Invoke(indicator);
+    }
+
+    public static void SetLocatorListener(Action<GameObject> listener)
+    {
+        OnLocatorSpawn = null;
+        OnLocatorSpawn += listener;
     }
     
     private void OnDestroy()
@@ -51,6 +60,7 @@ public class TargetLocator : MonoBehaviour
         GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
         indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
         indicator.transform.position = screenPosition;
+        indicator.transform.localScale = Vector3.one;
     }
     
     public static Vector3 GetScreenPosition(Camera mainCamera, Vector3 targetPosition)

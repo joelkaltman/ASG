@@ -77,6 +77,9 @@ public class GameplayUI : MonoBehaviour {
 		MultiplayerManager.Instance.OnLocalPlayerReady += OnPlayerReady;
 		MultiplayerManager.Instance.OnGameReady += StartGame;
 		MultiplayerManager.Instance.OnGameOver += GameOver;
+
+		
+		TargetLocator.SetLocatorListener(OnLocatorSpawn);
 		
 		if (!GameData.Instance.isOnline)
 		{
@@ -149,6 +152,11 @@ public class GameplayUI : MonoBehaviour {
 		RefreshGunCount ();
 	}
 
+	private void OnLocatorSpawn(GameObject locator)
+	{
+		locator.transform.SetParent(panelGame.transform);
+	}
+	
 	private void ShowCanvas(PanelType type)
 	{
 		switch (type) {

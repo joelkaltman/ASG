@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb2a90403e989dd46b9be14461de1d2c, type: 3}
-  m_Name: GameData
+  m_Name: GameDataScript
   m_EditorClassIdentifier: Assembly-CSharp::GameData
   isMobile: 1
   cap: {fileID: 1835289421287908, guid: a174305d909c17e4681eb34ff77ede93, type: 3}

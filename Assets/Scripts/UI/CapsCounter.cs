@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,11 @@ public class CapsCounter : MonoBehaviour
     {
         SetTextCaps();
         UserManager.Instance().OnCapCountChange += RefreshCaps;
+    }
+
+    private void OnDestroy()
+    {
+        UserManager.Instance().OnCapCountChange -= RefreshCaps;
     }
 
     private void SetTextCaps()

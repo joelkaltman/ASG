@@ -236,6 +236,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 93874516}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &94907689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7251738273899263851, guid: f118dfac544dace4e93c2dc2c1bc054a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7251738272213283155}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd3904fb173c644e9fd152cd221b279, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &97155089
 GameObject:
   m_ObjectHideFlags: 0
@@ -5223,18 +5235,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1529288167}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1536007381 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 406086304993657112, guid: 678b1cf830eb228489ea2d38d7056853,
-    type: 3}
-  m_PrefabInstance: {fileID: 406086304347053517}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1566276219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6571,9 +6571,6 @@ MonoBehaviour:
   panelOptions: {fileID: 1027220084}
   panelMultiplayer: {fileID: 1504853379}
   topPanel: {fileID: 5983988043581156610}
-  textCapCount:
-  - {fileID: 0}
-  - {fileID: 1536007381}
   textScore: {fileID: 2001390066}
   textTime: {fileID: 1766948671}
   textGameOverReason: {fileID: 406086304347053519}
@@ -7239,6 +7236,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1482466093}
     m_Modifications:
+    - target: {fileID: 2989240448904189101, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: powerUpManager
+      value: 
+      objectReference: {fileID: 94907689}
     - target: {fileID: 4999268658906250823, guid: bfbb619b98bd654489e25b644ce0460d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7388,6 +7390,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039767224292112678, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.29352084
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039767224292112678, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.29352084
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039767224292112678, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6415094
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039767224292112678, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6710675785748649820, guid: bfbb619b98bd654489e25b644ce0460d,
         type: 3}

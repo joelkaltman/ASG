@@ -10,7 +10,7 @@ public class PowerUpsManager : MonoBehaviour
 
 	public GameObject spawnPointsContainer;
 	private List<(Transform, GameObject)> spawnPoints;
-	private GameObject currentCap;
+	public GameObject Cap { get; private set; }
 	private int lastCapSpawnPoint;
 	
 	void Start()
@@ -46,7 +46,7 @@ public class PowerUpsManager : MonoBehaviour
 			SpawnPowerUp ();
 		}
 
-		if (currentCap == null) 
+		if (Cap == null) 
 		{
 			SpawnCap ();
 		}
@@ -86,21 +86,12 @@ public class PowerUpsManager : MonoBehaviour
 			if (isFree && wasNotLast) 
 			{
 				lastCapSpawnPoint = random;
-				currentCap = Instantiate (GameData.Instance.cap, spawnPoints [random].Item1);
-				currentCap.GetComponent<NetworkObject>()?.Spawn(true);
-				spawnPoints[random] = (spawnPoints[random].Item1, currentCap);
+				Cap = Instantiate (GameData.Instance.cap, spawnPoints [random].Item1);
+				Cap.GetComponent<NetworkObject>()?.Spawn(true);
+				spawnPoints[random] = (spawnPoints[random].Item1, Cap);
 				break;
 			}
 			it--;
-		}
-	}
-
-	public Vector3 GetCapPosition()
-	{
-		if (currentCap != null) {
-			return currentCap.transform.position;
-		} else {
-			return new Vector3 ();
 		}
 	}
 }

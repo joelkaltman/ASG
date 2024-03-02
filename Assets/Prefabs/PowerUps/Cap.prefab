@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 54144330774830958}
   - component: {fileID: 82514562946964358}
   - component: {fileID: 2460586404247787358}
+  - component: {fileID: -8565462249874798606}
   m_Layer: 12
   m_Name: Cap
   m_TagString: Untagged
@@ -141,7 +142,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!82 &82514562946964358
 AudioSource:
@@ -251,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3812677159
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -259,6 +260,21 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-8565462249874798606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835289421287908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d59aa214236a441a07bac199334f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenBoundOffset: 0.85
+  indicatorPrefab: {fileID: 150680, guid: 09cefc679ac23c54aa919111d8f3fc40, type: 3}
+  panelGameName: Panel Game
 --- !u!1 &1943379391568812
 GameObject:
   m_ObjectHideFlags: 0

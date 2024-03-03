@@ -5140,6 +5140,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7338507977662209118, guid: 911157cd2ac812149a5f0b536f6aba99,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.3929443
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 911157cd2ac812149a5f0b536f6aba99, type: 3}
 --- !u!224 &1504853378 stripped
@@ -6588,6 +6593,9 @@ MonoBehaviour:
   joystickMovement: {fileID: 816476958}
   joystickRotation: {fileID: 912101636}
   gunButton: {fileID: 5983988043581156608}
+  remotePlayerPanel: {fileID: 5983988043581156613}
+  textRemoteUsername: {fileID: 5983988043581156612}
+  imageRemoteLife: {fileID: 5983988043581156611}
   newHighScoreText: {fileID: 406086304347053518}
 --- !u!4 &2057747744 stripped
 Transform:
@@ -7445,6 +7453,36 @@ MonoBehaviour:
 --- !u!1 &5983988043581156610 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5983988044128801678, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5983988043581156611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5820812336447183871, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5983988043581156612 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6270860117852519634, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5983988043581156613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5227773517571380768, guid: bfbb619b98bd654489e25b644ce0460d,
     type: 3}
   m_PrefabInstance: {fileID: 5983988043581156607}
   m_PrefabAsset: {fileID: 0}

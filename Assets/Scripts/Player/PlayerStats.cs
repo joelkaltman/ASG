@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using Unity.Collections;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,6 +11,7 @@ public class PlayerStats : NetworkBehaviour
 	[HideInInspector] public NetworkVariable<int> Score = new(0);
 	[HideInInspector] public NetworkVariable<float> Speed = new(1);
 	[HideInInspector] public NetworkVariable<int> Caps = new(0);
+	[HideInInspector] public NetworkVariable<FixedString64Bytes> Username = new();
 
     private UserManager user;
     public AuthManager.UserData userData => user.UserData;
@@ -28,6 +30,16 @@ public class PlayerStats : NetworkBehaviour
 		{
 			user = UserManager.Instance();
 			user.ResetKills();
+
+			string username = user.UserData.username;
+			if (IsHost)
+			{
+				Username.Value = username;
+			}
+			else
+			{
+				SendUsernameServerRpc(username);
+			}
 		}
 
 		MultiplayerManager.Instance.RegisterPlayer(gameObject);
@@ -39,6 +51,16 @@ public class PlayerStats : NetworkBehaviour
 		initialLife = Life.Value;
 		initialSpeed = Speed.Value;
 	}
+	
+	[ServerRpc]
+	private void SendUsernameServerRpc(string username)
+	{
+		if (IsOwner)
+			return;
+		
+		Username.Value = username;
+	}
+
 
 	private void AddCap(int prevCaps, int newCaps)
 	{

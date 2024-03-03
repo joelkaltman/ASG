@@ -36,6 +36,7 @@ public class MultiplayerManager : MonoBehaviour
     public event Action OnGameReady;
     public event Action<GameOverReason> OnGameOver;
     public event Action<GameObject> OnLocalPlayerReady;
+    public event Action<GameObject> OnRemotePlayerReady;
 
     public bool IsHost => networkManager ? networkManager.IsHost : false;
     public bool IsHostReady => IsGameReady && IsHost;
@@ -156,6 +157,10 @@ public class MultiplayerManager : MonoBehaviour
             IsLocalPlayerReady = true;
             OnLocalPlayerReady?.Invoke(player);
         }
+        else
+        {
+            OnRemotePlayerReady?.Invoke(player);
+        }
     }
 
     public void RegisterWaveManager(WavesManager manager)
@@ -202,7 +207,7 @@ public class MultiplayerManager : MonoBehaviour
 
     public GameObject GetPlayerCloserTo(Vector3 pos)
     {
-        return Players.OrderBy(x => Vector3.Distance(x.transform.position, pos)).First();
+        return Players.Where(x => x != null).OrderBy(x => Vector3.Distance(x.transform.position, pos)).FirstOrDefault();
     }
     
     private async void StartGame()

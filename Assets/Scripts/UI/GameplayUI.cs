@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -43,6 +44,11 @@ public class GameplayUI : MonoBehaviour {
 	public GameObject joystickMovement;
 	public GameObject joystickRotation;
 	public Button gunButton;
+	
+	[Header("RemotePlayer")]
+	public GameObject remotePlayerPanel;
+	public Text textRemoteUsername;
+	public Image imageRemoteLife;
 
 	[Header("GameOver")] 
 	public GameObject newHighScoreText;
@@ -61,6 +67,8 @@ public class GameplayUI : MonoBehaviour {
 
 	private NetworkManager netManager;
 
+	private string remoteUsername;
+
 	void Awake()
 	{
 		objetiveFade = 0;
@@ -74,7 +82,8 @@ public class GameplayUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		MultiplayerManager.Instance.OnLocalPlayerReady += OnPlayerReady;
+		MultiplayerManager.Instance.OnLocalPlayerReady += OnLocalPlayerReady;
+		MultiplayerManager.Instance.OnRemotePlayerReady += OnRemotePlayerReady;
 		MultiplayerManager.Instance.OnGameReady += StartGame;
 		MultiplayerManager.Instance.OnGameOver += GameOver;
 
@@ -97,6 +106,8 @@ public class GameplayUI : MonoBehaviour {
 
 		joystickMovement.SetActive (true);
 		joystickRotation.SetActive (true);
+		
+		remotePlayerPanel.SetActive(false);
     }
 
 	void Update ()
@@ -124,7 +135,7 @@ public class GameplayUI : MonoBehaviour {
 		ShowCanvas(PanelType.GAME);
 	}
 	
-	private void OnPlayerReady(GameObject player)
+	private void OnLocalPlayerReady(GameObject player)
 	{
 		playerMovement = player.GetComponent<PlayerMovement>();
 		playerStats = player.GetComponent<PlayerStats>();
@@ -150,6 +161,21 @@ public class GameplayUI : MonoBehaviour {
 		RefreshScore (playerStats.Score.Value, playerStats.Score.Value);
 		RefreshGun ();
 		RefreshGunCount ();
+	}
+
+	private void OnRemotePlayerReady(GameObject player)
+	{
+		remotePlayerPanel.SetActive(true);
+		var remotePlayerStats = player.GetComponent<PlayerStats>();
+		SetUsername(remotePlayerStats.Username.Value, remotePlayerStats.Username.Value);
+		remotePlayerStats.Username.OnValueChanged += SetUsername;
+		remotePlayerStats.Life.OnValueChanged += RefreshRemoteLife;
+	}
+
+	private void SetUsername(FixedString64Bytes old, FixedString64Bytes username)
+	{
+		remoteUsername = username.ToString();
+		textRemoteUsername.text = remoteUsername;
 	}
 
 	private void OnLocatorSpawn(GameObject locator)
@@ -306,6 +332,11 @@ public class GameplayUI : MonoBehaviour {
 	{
 		imageLife.fillAmount = (float)currentLife / 100;
 	}
+	
+	private void RefreshRemoteLife(int previousLife, int currentLife)
+	{
+		imageRemoteLife.fillAmount = (float)currentLife / 100;
+	}
 
 	private void RefreshGun()
 	{
@@ -341,7 +372,7 @@ public class GameplayUI : MonoBehaviour {
 		        textGameOverReason.text = "You DIED!";
 		        break;
 	        case MultiplayerManager.GameOverReason.OtherPlayerDied:
-		        textGameOverReason.text = "Your buddy DIED!";
+		        textGameOverReason.text = $"{remoteUsername ?? "Your partner"} has DIED!";
 		        break;
         }
         

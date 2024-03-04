@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 114682544221558182}
   - component: {fileID: 114056669159131156}
   - component: {fileID: -2604932892780363546}
+  - component: {fileID: -5863148601869508344}
   m_Layer: 12
   m_Name: Cocaine
   m_TagString: Untagged
@@ -413,6 +414,24 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-5863148601869508344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824854647180254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1938385284746744
 GameObject:
   m_ObjectHideFlags: 0

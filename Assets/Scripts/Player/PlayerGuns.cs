@@ -120,8 +120,12 @@ public class PlayerGuns : NetworkBehaviour
 		ShootType.Value = GunData.ShootingType.NORMAL;
 	}
 
-	public void BoomerangReturned(string weaponName, bool addCount)
+	[ClientRpc]
+	public void BoomerangReturnedClientRpc(ulong clientId, string weaponName, bool addCount)
 	{
+		if(OwnerClientId != clientId)
+			return;
+		
 		foreach (var gun in GameData.Instance.guns)
 		{
 			if (gun.CurrentCount < gun.InitialCount && gun.GetGunType() == GunData.GunType.BOOMERANG && 

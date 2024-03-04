@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 114898559255566466}
   - component: {fileID: 114654710763760474}
   - component: {fileID: 5968302283300661358}
+  - component: {fileID: -3131445781391186088}
   m_Layer: 12
   m_Name: Potion
   m_TagString: Untagged
@@ -307,6 +308,24 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-3131445781391186088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086103694319778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1215687076398214
 GameObject:
   m_ObjectHideFlags: 0

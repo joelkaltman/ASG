@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class BoomerangMovement : PlayerOwned
@@ -96,9 +97,13 @@ public class BoomerangMovement : PlayerOwned
 	}
 
 	void OnDestroy(){
+		if (!MultiplayerManager.Instance.IsHostReady)
+			return;
+		
 		if (comesBack) {
-			PlayerGuns playerguns = player.GetComponent<PlayerGuns> ();
-			playerguns.BoomerangReturned (gameObject.name, addCountOnReturn);
+			var playerGuns = player.GetComponent<PlayerGuns> ();
+			var netObject = player.GetComponent<NetworkObject> ();
+			playerGuns.BoomerangReturnedClientRpc(netObject.OwnerClientId, gameObject.name, addCountOnReturn);
 		}
 	}
 }

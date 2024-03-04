@@ -369,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673ed304077706d4096e862f553ec25d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   damage: 15
   speed: 10
   rotationSpeed: 10
@@ -376,7 +377,6 @@ MonoBehaviour:
   distanceBounce: 10
   comesBack: 1
   addCountOnReturn: 1
-  player: {fileID: 0}
 --- !u!114 &7316029475019530550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,9 +392,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0

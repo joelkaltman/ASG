@@ -28,6 +28,8 @@ public class GameplayUI : MonoBehaviour {
 
     [Header("UI")] 
     public GameObject topPanel;
+    public Transform locatorsContainer;
+    public Text playerName;
 	public Text textScore;
 	public Text textTime;
 	public Text textGameOverReason;
@@ -156,6 +158,8 @@ public class GameplayUI : MonoBehaviour {
 		
 		playerGuns.Initialize();
 		playerMovement.Initialize();
+
+		playerName.text = UserManager.Instance().UserData.username;
 		
 		RefreshLife (playerStats.Life.Value, playerStats.Life.Value);
 		RefreshScore (playerStats.Score.Value, playerStats.Score.Value);
@@ -180,7 +184,7 @@ public class GameplayUI : MonoBehaviour {
 
 	private void OnLocatorSpawn(GameObject locator)
 	{
-		locator.transform.SetParent(panelGame.transform);
+		locator.transform.SetParent(locatorsContainer);
 	}
 	
 	private void ShowCanvas(PanelType type)

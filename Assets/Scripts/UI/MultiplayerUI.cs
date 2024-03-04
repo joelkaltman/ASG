@@ -19,7 +19,22 @@ public class MultiplayerUI : MonoBehaviour
 
     public Action<string> OnHostStarted;
     public Action OnClientStarted;
-    
+
+    public void Start()
+    {
+        hostButton.enabled = false;
+        joinButton.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (MultiplayerManager.Instance.ServicesReady())
+        {
+            hostButton.enabled = true;
+            joinButton.enabled = true;
+        }
+    }
+
     public async void StartHost()
     {
         DisableUI("Creating match...");

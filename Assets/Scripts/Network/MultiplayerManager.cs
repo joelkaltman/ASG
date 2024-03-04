@@ -78,12 +78,18 @@ public class MultiplayerManager : MonoBehaviour
         unityTransport = mp.GetComponent<UnityTransport>();
     }
 
+    public bool ServicesReady()
+    {
+        return UnityServices.State == ServicesInitializationState.Initialized &&
+               AuthenticationService.Instance.IsSignedIn;
+    }
+
     public void Disconnect()
     {
         networkManager.Shutdown();
         Destroy(networkManager.gameObject);
         
-        if(UnityServices.State == ServicesInitializationState.Initialized && AuthenticationService.Instance.IsSignedIn)
+        if(ServicesReady())
             AuthenticationService.Instance.SignOut();
     }
 

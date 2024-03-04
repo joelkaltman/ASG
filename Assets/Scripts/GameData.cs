@@ -7,14 +7,12 @@ using UnityEngine;
 public class GameData : MonoBehaviour
 {
     public static GameData Instance;
-
-    public GameDataScriptable gameDataScriptable;
     
     public bool isOnline;
 
-    public GameObject cap => gameDataScriptable.cap;
-    public List<GunData> guns => gameDataScriptable.guns;
-    public List<GameObject> powerUps => gameDataScriptable.powerUps;
+    public GameObject cap;
+    public List<GunData> guns;
+    public List<GameObject> powerUps;
     
     public void Awake()
     {

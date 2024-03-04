@@ -7,23 +7,23 @@ using UnityEngine;
 
 public class WavesManager : NetworkBehaviour
 {
-    public NetworkVariable<int> Wave = new();
+    public NetworkVariable<int> Wave = new(-1);
     public NetworkVariable<int> WaveDuration = new();
     
     public NetworkVariable<int> Seconds = new();
     public NetworkVariable<int> Minutes = new();
 
-    public List<Wave> waves;
+    [SerializeField] private List<Wave> waves;
+
+    private Wave additionalWave;
     
     public float SpawnTime;
     public float ElapsedTimeWave;
-    private int index;
 
     private float elapsedTime;
     
     void Awake()
     {
-        index = -1;
         SpawnTime = 6;
     }
 
@@ -53,15 +53,16 @@ public class WavesManager : NetworkBehaviour
     
     void ChangeWave()
     {
-        index++;
         Wave.Value++;
-        if (index >= waves.Count) {
-            index--;
+        if (Wave.Value >= waves.Count) 
+        {
             SpawnTime *= 0.5f;
             WaveDuration.Value += 10;
-        } else {
-            SpawnTime = waves [index].frecuencySpawn;
-            WaveDuration.Value = waves [index].durationSeconds;
+        } 
+        else 
+        {
+            SpawnTime = waves [Wave.Value].frecuencySpawn;
+            WaveDuration.Value = waves [Wave.Value].durationSeconds;
         }
         ElapsedTimeWave = 0;
         
@@ -71,7 +72,7 @@ public class WavesManager : NetworkBehaviour
 
     public Wave CurrentWave()
     {
-        return waves[index];
+        return Wave.Value < waves.Count ? waves[Wave.Value] : waves.Last();
     }
 
     void TakeTime()

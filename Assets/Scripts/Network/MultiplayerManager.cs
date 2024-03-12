@@ -30,8 +30,6 @@ public class MultiplayerManager : MonoBehaviour
     private UnityTransport unityTransport;
 
     [HideInInspector] public bool IsGameReady;
-    [HideInInspector] public bool IsLocalPlayerReady;
-
     
     public event Action OnGameReady;
     public event Action<GameOverReason> OnGameOver;
@@ -150,7 +148,8 @@ public class MultiplayerManager : MonoBehaviour
         }
         else if (eventType == NetworkEvent.Disconnect)
         {
-            EndGame(GameOverReason.Disconnected);
+            if(IsGameReady)
+                EndGame(GameOverReason.Disconnected);
         }
     }
 
@@ -160,7 +159,6 @@ public class MultiplayerManager : MonoBehaviour
         var netObject = player.GetComponent<NetworkObject>();
         if (netObject.IsLocalPlayer)
         {
-            IsLocalPlayerReady = true;
             OnLocalPlayerReady?.Invoke(player);
         }
         else

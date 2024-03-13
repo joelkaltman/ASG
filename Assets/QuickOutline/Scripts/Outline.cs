@@ -74,6 +74,9 @@ public class Outline : MonoBehaviour {
   [SerializeField, HideInInspector]
   private List<ListVector3> bakeValues = new List<ListVector3>();
 
+  [SerializeField] 
+  private bool applyOnlyOnRoot;
+  
   private Renderer[] renderers;
   private Material outlineMaskMaterial;
   private Material outlineFillMaterial;
@@ -83,7 +86,7 @@ public class Outline : MonoBehaviour {
   void Awake() {
 
     // Cache renderers
-    renderers = GetComponentsInChildren<Renderer>();
+    renderers = SearchComponent<Renderer>();
 
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
@@ -162,7 +165,8 @@ public class Outline : MonoBehaviour {
     // Generate smooth normals for each mesh
     var bakedMeshes = new HashSet<Mesh>();
 
-    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+    var meshesFilters = SearchComponent<MeshFilter>();
+    foreach (var meshFilter in meshesFilters) {
 
       // Skip duplicates
       if (!bakedMeshes.Add(meshFilter.sharedMesh)) {
@@ -180,7 +184,8 @@ public class Outline : MonoBehaviour {
   void LoadSmoothNormals() {
 
     // Retrieve or generate smooth normals
-    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+    var meshesFilters = SearchComponent<MeshFilter>();
+    foreach (var meshFilter in meshesFilters) {
 
       // Skip if smooth normals have already been adopted
       if (!registeredMeshes.Add(meshFilter.sharedMesh)) {
@@ -203,7 +208,8 @@ public class Outline : MonoBehaviour {
     }
 
     // Clear UV3 on skinned mesh renderers
-    foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
+    var skinnedMeshRenderers = SearchComponent<SkinnedMeshRenderer>();
+    foreach (var skinnedMeshRenderer in skinnedMeshRenderers) {
 
       // Skip if UV3 has already been reset
       if (!registeredMeshes.Add(skinnedMeshRenderer.sharedMesh)) {
@@ -305,5 +311,14 @@ public class Outline : MonoBehaviour {
         outlineFillMaterial.SetFloat("_OutlineWidth", 0f);
         break;
     }
+  }
+
+  private T[] SearchComponent<T>() where T : Component
+  {
+    if (!applyOnlyOnRoot)
+      return GetComponentsInChildren<T>();
+
+    var comp = GetComponent<T>();
+    return comp ? new[]{comp} : Array.Empty<T>();
   }
 }

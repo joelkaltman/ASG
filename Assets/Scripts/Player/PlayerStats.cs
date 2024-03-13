@@ -9,7 +9,7 @@ public class PlayerStats : NetworkBehaviour
 {
 	[HideInInspector] public NetworkVariable<int> Life = new(100);
 	[HideInInspector] public NetworkVariable<int> Score = new(0);
-	[HideInInspector] public NetworkVariable<float> Speed = new(1);
+	[HideInInspector] public NetworkVariable<float> Speed = new(5);
 	[HideInInspector] public NetworkVariable<int> Caps = new(0);
 	[HideInInspector] public NetworkVariable<FixedString64Bytes> Username = new();
 
@@ -19,7 +19,7 @@ public class PlayerStats : NetworkBehaviour
 	public AudioClip damageSound;
 
 	private int initialLife;
-	public float initialSpeed;
+	[HideInInspector] public float initialSpeed;
 
 	bool inmuneToFire;
 	public bool IsDead => Life.Value <= 0;

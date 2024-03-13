@@ -23,7 +23,7 @@ MonoBehaviour:
   price: 40
   sprite: {fileID: 21300000, guid: 33c3fa4067d357e4485b5330a71e7510, type: 3}
   gunName: Pokeball
-  description: 'Throw it to the monsters and see if you can catch em all! (you have
-    about 70% chance of catching ANYTHING). '
+  description: See if you can catch em all! gives you have about 70% chance of catching
+    anything. You cannot keep it as a pet tho.
   showTarget: 0
   animateThrow: 1

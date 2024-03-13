@@ -18,11 +18,11 @@ MonoBehaviour:
   shootAudio: {fileID: 8300000, guid: 1518ae552855f874d8caf08adb149b18, type: 3}
   equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
   frecuency: 0.4
-  initialCount: 700
+  initialCount: 500
   damage: 10
   price: 15
   sprite: {fileID: 21300000, guid: 3c040f4277c4d0c419244422cf2a2185, type: 3}
   gunName: Han's Blaster
-  description: Han Solo's blaster always shoot first. Does more damage and is faster
-    but has slow frecuency. Especially effective for killing Greedo.
+  description: Han's blaster always shoot first. Fast and dangerous, but takes its
+    time reloading. Especially effective for killing Greedo.
   showTarget: 0

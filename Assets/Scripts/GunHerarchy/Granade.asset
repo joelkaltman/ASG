@@ -22,8 +22,8 @@ MonoBehaviour:
   damage: 20
   price: 15
   sprite: {fileID: 21300000, guid: cef6812f2c9407e48aaba6f891253e48, type: 3}
-  gunName: Granade
-  description: Oh, so you are looking for a boring but effective weapon? we have
-    what you are looking for. Throw one at a time and damages everything close by.
+  gunName: Grenade
+  description: Classic grenade. Throw it, explodes, and hopefully you manage to kill
+    something in the way.
   showTarget: 1
   animateThrow: 1

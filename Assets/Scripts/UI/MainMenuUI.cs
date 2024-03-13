@@ -111,17 +111,14 @@ public class MainMenuUI : MonoBehaviour {
             "Are you afraid of monsters? I am.",
             "Oh... the horror... THE HORROR",
             "Check out the cool guns at the store",
-            "Dinopianito se come la frutita",
             "This is a test... checking 1, 2, 3...",
             "Dude, this game is so stup--- GREAT",
             "I'm running out of ideas over here",
-            "This game was made with love (and coffe)",
+            "This game was made with love (and coffee)",
             "Cocaine is one hell of a drug",
-            "Titanic is overrated. There, i said it.",
             "if (noMoreIdeas) { text = this; }",
             "Thank god this game is free",
             "Stay tuned for next updates!",
-            "Greatings from Argentina",
             "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
             "Random line n°31415"
         };

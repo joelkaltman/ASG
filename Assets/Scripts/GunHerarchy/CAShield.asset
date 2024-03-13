@@ -23,8 +23,6 @@ MonoBehaviour:
   price: 50
   sprite: {fileID: 21300000, guid: c916f8ed0cf828a44ad63372acf7128f, type: 3}
   gunName: Cap's Shield
-  description: An old piece of stark technology. Made entirely of Vibranium. Bounces
-    around 3 times and comes back.
+  description: An old piece of Stark tech. Made entirely of Vibranium.
   showTarget: 0
   animateThrow: 0
-  comesBack: 1

@@ -73,7 +73,7 @@ public abstract class GunData : ScriptableObject {
 		get{ return gunName; }
 		set{ gunName = value; }
 	}
-	[SerializeField] protected string description;
+	[SerializeField] [Multiline] protected string description;
 	public string Description{
 		get{ return description; }
 		set{ description = value; }

@@ -22,8 +22,8 @@ MonoBehaviour:
   damage: 10
   price: 25
   sprite: {fileID: 21300000, guid: cadc29e482bba0446a666a70939cdb3f, type: 3}
-  gunName: Fire Granade
-  description: When explodes creates a fire area that damages everything inside.
-    This is just a lazy weapon idea. Looks pretty cool tho.
+  gunName: Fire Grenade
+  description: Ideal for the little pyromaniac you carry inside. Be careful tho,
+    the fire damages everything in its path.
   showTarget: 1
   animateThrow: 1

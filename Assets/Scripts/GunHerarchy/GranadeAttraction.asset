@@ -22,8 +22,8 @@ MonoBehaviour:
   damage: 0
   price: 30
   sprite: {fileID: 21300000, guid: e97c34b3a9b1c3245922616f38223106, type: 3}
-  gunName: Attraction Granade
-  description: Attracts everything to a point and doesn't let anything escape. Who
-    is responsible for these ideas? Someone will be fired for this.
+  gunName: Attraction Grenade
+  description: Attraction Grenade? What the --? I guess it attracts enemies to it?
+    how original.
   showTarget: 1
   animateThrow: 1

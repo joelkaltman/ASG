@@ -18,13 +18,11 @@ MonoBehaviour:
   shootAudio: {fileID: 8300000, guid: 53cc0bb3e1d805e4ea0633c4c0088049, type: 3}
   equipAudio: {fileID: 8300000, guid: b0b50ebac2d95ea44a58ecfec98c4ac6, type: 3}
   frecuency: 1
-  initialCount: 200
+  initialCount: 100
   damage: 8
   price: 10
   sprite: {fileID: 21300000, guid: 057cea6c5308008468bacc20bf04bdfa, type: 3}
   gunName: Football
-  description: If you ever wanted to be like Messi, this is your chance! except you're
-    going to fail... But you can still try it, right? Bounces around 4 times.
+  description: Want to feel like Messi? This is the closest you'll ever get.
   showTarget: 0
   animateThrow: 0
-  comesBack: 0

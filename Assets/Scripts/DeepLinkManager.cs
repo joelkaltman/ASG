@@ -23,11 +23,6 @@ public class DeepLinkManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        OnDeepLinkActivated("asd?rtlh9p");
-    }
-
     private async void OnDeepLinkActivated(string code)
     {
         string joinCode = code.Split('?')[1];

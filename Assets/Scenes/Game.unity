@@ -4494,7 +4494,6 @@ MonoBehaviour:
   wavesManager: {fileID: 6264489405697136320, guid: 09cdfe6d1716179498380bb5aa2b51fe,
     type: 3}
   IsGameReady: 0
-  IsLocalPlayerReady: 0
 --- !u!4 &1398059677
 Transform:
   m_ObjectHideFlags: 0
@@ -7292,6 +7291,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4999268658906250823, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameplayUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076245167147411797, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2051715112}
+    - target: {fileID: 5076245167147411797, guid: bfbb619b98bd654489e25b644ce0460d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShareCode
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076245167147411797, guid: bfbb619b98bd654489e25b644ce0460d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameplayUI, Assembly-CSharp

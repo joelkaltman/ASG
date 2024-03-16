@@ -130,6 +130,18 @@ public class GameplayUI : MonoBehaviour {
 		textJoinCode.gameObject.SetActive(true);
 		textJoinCode.text = code;
 	}
+
+	public void ShareCode()
+	{
+		var joinCode = textJoinCode.text;
+		var username = UserManager.Instance().UserData.username;
+		
+		new NativeShare()
+			.SetSubject("Another Shooting Game")
+			.SetText($"{username} has invited you to kill some monsters!")
+			.SetUrl($"unitydl://asg.{joinCode}")
+			.Share();
+	}
 	
 	private void OnClientStarted(GameObject player)
 	{

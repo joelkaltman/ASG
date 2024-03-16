@@ -15,7 +15,6 @@ public class LoginUI : MonoBehaviour
     public GameObject loadingText;
     public GameObject inputPanel;
 
-    private bool initialized;
     private static bool usedAutomaticLogin;
 
     private const string emailSufix = "@asg.com";
@@ -27,7 +26,7 @@ public class LoginUI : MonoBehaviour
         if (usedAutomaticLogin)
         {
             // loged out
-            SavePlayerPrefs("", "");
+            UserManager.Instance().SavePlayerPrefs("", "");
             return;
         }
         
@@ -99,7 +98,7 @@ public class LoginUI : MonoBehaviour
         inputPanel.SetActive(false);
         loadingText.SetActive(true);
         
-        if (!usedAutomaticLogin && GetPlayerPrefs(out string email, out string password))
+        if (!usedAutomaticLogin && UserManager.Instance().GetPlayerPrefs(out string email, out string password))
         {
             usedAutomaticLogin = true;
             if(await Login(email, password))
@@ -110,34 +109,10 @@ public class LoginUI : MonoBehaviour
         loadingText.SetActive(false);
     }
 
-    private bool GetPlayerPrefs(out string email, out string password)
-    {
-        if (!PlayerPrefs.HasKey("email") || !PlayerPrefs.HasKey("password"))
-        {
-            email = null;
-            password = null;
-            return false;
-        }
-
-        email = PlayerPrefs.GetString("email");
-        password = PlayerPrefs.GetString("password");
-        return !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
-    }
-    
-    private void SavePlayerPrefs(string email, string password)
-    {
-        PlayerPrefs.SetString("email", email);
-        PlayerPrefs.SetString("password", password);
-    }
-
     private async Task InitializeAuth()
     {
-        if (initialized)
-            return;
-        
         var result = await AuthManager.Initialize();
-        initialized = result.valid;
-        if (!initialized)
+        if (!result.valid)
         {
             Debug.LogError(result.error);
         }
@@ -166,7 +141,7 @@ public class LoginUI : MonoBehaviour
             return false;
         }
 
-        SavePlayerPrefs(email, password);
+        UserManager.Instance().SavePlayerPrefs(email, password);
         EnterGame();
         return true;
     }
@@ -195,7 +170,7 @@ public class LoginUI : MonoBehaviour
             return;
         }
         
-        SavePlayerPrefs(email, password);
+        UserManager.Instance().SavePlayerPrefs(email, password);
         EnterGame();
     }
 

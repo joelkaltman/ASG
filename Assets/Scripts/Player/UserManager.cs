@@ -21,12 +21,22 @@ public class UserManager
         UserData = await AuthManager.GetUserData();
         Initialized = true;
     }
-    
-    public void ResetEvents()
-    {
-        OnCapCountChange = null;
-    }
 
+    public async Task<bool> TryDirectLogin()
+    {
+        if (!GetPlayerPrefs(out string email, out string password))
+            return false;
+        
+        await AuthManager.Initialize();
+        
+        var result = await AuthManager.Login(email, password);
+        
+        if(result.valid)
+            SavePlayerPrefs(email, password);
+
+        return result.valid;
+    }
+    
     public void Clean()
     {
         UserData = null;
@@ -97,4 +107,23 @@ public class UserManager
         return newHighScore;
     }
 
+    public bool GetPlayerPrefs(out string email, out string password)
+    {
+        if (!PlayerPrefs.HasKey("email") || !PlayerPrefs.HasKey("password"))
+        {
+            email = null;
+            password = null;
+            return false;
+        }
+
+        email = PlayerPrefs.GetString("email");
+        password = PlayerPrefs.GetString("password");
+        return !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
+    }
+    
+    public void SavePlayerPrefs(string email, string password)
+    {
+        PlayerPrefs.SetString("email", email);
+        PlayerPrefs.SetString("password", password);
+    }
 }

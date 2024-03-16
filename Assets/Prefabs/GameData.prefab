@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9062106579564369162}
   - component: {fileID: 9062106579564369163}
+  - component: {fileID: 4063702636468653448}
   m_Layer: 0
   m_Name: GameData
   m_TagString: Untagged
@@ -62,3 +63,16 @@ MonoBehaviour:
   - {fileID: 1824854647180254, guid: 48f3c44c8752bc44287b761abaf56ae5, type: 3}
   - {fileID: 1086103694319778, guid: 1a3cb5d72156b88419c784e2201ad889, type: 3}
   - {fileID: 1802510494018256, guid: dae9943d4a4346744aac4780b96919a4, type: 3}
+--- !u!114 &4063702636468653448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062106579564369165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 517c0afb405c9914ab2022da66cbb373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deeplinkURL: unitydl://mylink

@@ -14,6 +14,8 @@ public static class AuthManager
     static FirebaseUser User;
     static DatabaseReference dbReference;
 
+    public static bool Initialized;
+
     public struct Result
     {
         public bool valid;
@@ -32,6 +34,9 @@ public static class AuthManager
 
     public static async Task<Result> Initialize()
     {
+        if (Initialized)
+            return Result.Valid();
+        
         try
         {
             var init = await FirebaseApp.CheckAndFixDependenciesAsync();
@@ -39,6 +44,7 @@ public static class AuthManager
             {
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+                Initialized = true;
                 return Result.Valid();
             }
         }

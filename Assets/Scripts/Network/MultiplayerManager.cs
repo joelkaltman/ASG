@@ -30,7 +30,8 @@ public class MultiplayerManager : MonoBehaviour
     private UnityTransport unityTransport;
 
     [HideInInspector] public bool IsGameReady;
-    
+
+    public event Action<bool> OnServicesBooted;
     public event Action OnGameReady;
     public event Action<GameOverReason> OnGameOver;
     public event Action<GameObject> OnLocalPlayerReady;
@@ -74,6 +75,29 @@ public class MultiplayerManager : MonoBehaviour
         var mp = Instantiate(networkManagerMP);
         networkManager = mp.GetComponent<NetworkManager>();
         unityTransport = mp.GetComponent<UnityTransport>();
+
+        CheckServicesReadyAndNotify();
+    }
+
+    private async void CheckServicesReadyAndNotify()
+    {
+        while (!ServicesReady())
+        {
+            if (ServicesFailed())
+            {
+                OnServicesBooted?.Invoke(false);
+                return;
+            }
+
+            await Task.Yield();
+        }
+        OnServicesBooted?.Invoke(true);
+    }
+
+    public bool ServicesFailed()
+    {
+        return UnityServices.State == ServicesInitializationState.Uninitialized ||
+               AuthenticationService.Instance.IsExpired;
     }
 
     public bool ServicesReady()

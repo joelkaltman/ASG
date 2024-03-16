@@ -9,6 +9,8 @@ public class GameData : MonoBehaviour
     public static GameData Instance;
     
     public bool isOnline;
+    public string directJoinCode;
+    public bool JoinWithDirectCode => !string.IsNullOrEmpty(directJoinCode);
 
     public GameObject cap;
     public List<GunData> guns;

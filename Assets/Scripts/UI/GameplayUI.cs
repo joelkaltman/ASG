@@ -103,7 +103,6 @@ public class GameplayUI : MonoBehaviour {
 			var mpUI = panelMultiplayer.GetComponent<MultiplayerUI>();
 			mpUI.OnHostStarted += OnHostStarted;
 			MultiplayerManager.Instance.OnLocalPlayerReady += OnClientStarted;
-			MultiplayerManager.Instance.InitializeMultiplayer();
 		}
 
 		joystickMovement.SetActive (true);

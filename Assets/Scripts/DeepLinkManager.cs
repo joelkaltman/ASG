@@ -23,22 +23,18 @@ public class DeepLinkManager : MonoBehaviour
         }
     }
 
-    private async void OnDeepLinkActivated(string code)
+    private void OnDeepLinkActivated(string code)
     {
-        string joinCode = code.Split('?')[1];
-
-        bool loggedIn = UserManager.Instance().Initialized;
-        if (!loggedIn)
-            loggedIn = await UserManager.Instance().TryDirectLogin();
-
-        if (!loggedIn)
-        {
-            PopupUI.Instance.ShowPopUp("Login Error", "Didn't manage to login. Please try entering your credentials.", "Ok");
-            return;
-        }
-
         GameData.Instance.isOnline = true;
-        GameData.Instance.directJoinCode = joinCode;
-        SceneManager.LoadScene("Game");
+        GameData.Instance.directJoinCode = code.Split('?')[1];
+        
+        if (UserManager.Instance.Initialized)
+        {
+            SceneManager.LoadScene("Game");
+        }
+        else
+        {
+            PopupUI.Instance.ShowPopUp("Login needed", "You will be automatically redirected to the match after login in.", "Ok");
+        }
     }
 }

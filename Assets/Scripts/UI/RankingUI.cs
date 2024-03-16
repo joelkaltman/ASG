@@ -41,7 +41,7 @@ public class RankingUI : MonoBehaviour
             instances.Add(rankObject);
         }
 
-        var username = UserManager.Instance().UserData.username;
+        var username = UserManager.Instance.UserData.username;
         var userIndex = ranking.FindIndex(x => x.username == username);
         var userRank = userIndex < 0 ? new AuthManager.UserRank(username, 0) : ranking[userIndex];
         var mainPos = userIndex < 0 ? -1 : userIndex + 1;

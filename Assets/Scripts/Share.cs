@@ -24,11 +24,7 @@ public class Share : MonoBehaviour
 		// To avoid memory leaks
 		Destroy(ss);
 
-		var score = 0;
-		var playerStats = MultiplayerManager.Instance.GetLocalPlayerComponent<PlayerStats>();
-		if (playerStats)
-			score = playerStats.Score.Value;
-
+		var score = UserManager.Instance.Kills;
 		new NativeShare().AddFile(filePath)
 			.SetSubject("Another Shooting Game")
 			.SetText("I killed " + score + " monsters in ASG! Think you can beat me??")

@@ -132,7 +132,7 @@ public class UIStoreManager : MonoBehaviour
 	
 	void UpdateInfo()
 	{
-		playerCapsText.text = "x" + UserManager.Instance().UserData.caps;
+		playerCapsText.text = "x" + UserManager.Instance.UserData.caps;
 		gunNameText.text = GameData.Instance.guns [currentGun].GunName;
 		gunDescriptionText.text = GameData.Instance.guns [currentGun].Description;
 		gunPriceText.text = "Price: x" + GameData.Instance.guns [currentGun].Price.ToString();
@@ -220,10 +220,10 @@ public class UIStoreManager : MonoBehaviour
 	{
 		var gun = GameData.Instance.guns[gunIndex];
 		
-		if (UserManager.Instance().UserData.guns.Contains(gun.Id))
+		if (UserManager.Instance.UserData.guns.Contains(gun.Id))
 			return PurchaseType.PURCHASED;
 
-		return UserManager.Instance().UserData.caps >= gun.Price ? PurchaseType.CAN : PurchaseType.CANT;
+		return UserManager.Instance.UserData.caps >= gun.Price ? PurchaseType.CAN : PurchaseType.CANT;
 		
 		/*if (DataBase.Instance.EntryHasGun (gunIndex)) {
 			return PurchaseType.PURCHASED;
@@ -242,7 +242,7 @@ public class UIStoreManager : MonoBehaviour
 	public void Purchase()
 	{
 		var gun = GameData.Instance.guns[currentGun];
-        var user = UserManager.Instance();
+        var user = UserManager.Instance;
 		if (user.UserData.caps >= gun.Price) {
             user.PurchaseGun(gun);
 			this.UpdateInfo ();

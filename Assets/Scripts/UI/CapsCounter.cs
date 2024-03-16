@@ -9,17 +9,17 @@ public class CapsCounter : MonoBehaviour
     void Start()
     {
         SetTextCaps();
-        UserManager.Instance().OnCapCountChange += RefreshCaps;
+        UserManager.Instance.OnCapCountChange += RefreshCaps;
     }
 
     private void OnDestroy()
     {
-        UserManager.Instance().OnCapCountChange -= RefreshCaps;
+        UserManager.Instance.OnCapCountChange -= RefreshCaps;
     }
 
     private void SetTextCaps()
     {
-        var user = UserManager.Instance()?.UserData;
+        var user = UserManager.Instance?.UserData;
         int count = user != null ? user.caps : 0;
         capText.text = count < 10 ? $"x0{count}" : $"x{count}";
     }

@@ -43,7 +43,7 @@ public class MainMenuUI : MonoBehaviour {
 	{
 		Time.timeScale = 1;
 		
-        if(!UserManager.Instance().Initialized)
+        if(!UserManager.Instance.Initialized)
             await DefaultUserFallback();
         
         ShowCanvas (PanelType.MAINMENU);
@@ -55,12 +55,12 @@ public class MainMenuUI : MonoBehaviour {
     {
         await AuthManager.Initialize();
         await AuthManager.Login("joelkalt@asg.com", "asdasd");
-        await UserManager.Instance().Initialize();
+        await UserManager.Instance.Initialize();
     }
     
     private void OnUserInitialized()
     {
-        textUsername.text = UserManager.Instance().UserData.username;
+        textUsername.text = UserManager.Instance.UserData.username;
         buttonSinglePlayer.interactable = true;
         buttonMultiPlayer.interactable = true;
     }
@@ -135,6 +135,7 @@ public class MainMenuUI : MonoBehaviour {
 	
 	public void LogOut()
 	{
+		UserManager.Instance.SavePlayerPrefs("", "");
 		AuthManager.Logout();
 		SceneManager.LoadScene ("Login");
 	}

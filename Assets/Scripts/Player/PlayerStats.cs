@@ -28,7 +28,7 @@ public class PlayerStats : NetworkBehaviour
 	{
 		if (IsOwner)
 		{
-			user = UserManager.Instance();
+			user = UserManager.Instance;
 			user.ResetKills();
 
 			string username = user.UserData.username;

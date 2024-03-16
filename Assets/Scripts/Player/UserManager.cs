@@ -7,34 +7,21 @@ using UnityEngine;
 public class UserManager
 {
     private static UserManager userManager;
-    public static UserManager Instance() => userManager ??= new UserManager();
+    public static UserManager Instance => userManager ??= new UserManager();
     
     public AuthManager.UserData UserData { get; private set; }
 
     public int Kills { get; private set; }
     public bool Initialized { get; private set; }
-    
+
+    public event Action OnInitialize;
     public event Action OnCapCountChange;
 
     public async Task Initialize()
     {
         UserData = await AuthManager.GetUserData();
         Initialized = true;
-    }
-
-    public async Task<bool> TryDirectLogin()
-    {
-        if (!GetPlayerPrefs(out string email, out string password))
-            return false;
-        
-        await AuthManager.Initialize();
-        
-        var result = await AuthManager.Login(email, password);
-        
-        if(result.valid)
-            SavePlayerPrefs(email, password);
-
-        return result.valid;
+        OnInitialize?.Invoke();
     }
     
     public void Clean()

@@ -15,21 +15,12 @@ public class LoginUI : MonoBehaviour
     public GameObject loadingText;
     public GameObject inputPanel;
 
-    private static bool usedAutomaticLogin;
 
     private const string emailSufix = "@asg.com";
     
     void Start()
     {
-        UserManager.Instance().Clean();
-        
-        if (usedAutomaticLogin)
-        {
-            // loged out
-            UserManager.Instance().SavePlayerPrefs("", "");
-            return;
-        }
-        
+        UserManager.Instance.Clean();
         TryAutomaticLogic();
     }
 
@@ -98,9 +89,8 @@ public class LoginUI : MonoBehaviour
         inputPanel.SetActive(false);
         loadingText.SetActive(true);
         
-        if (!usedAutomaticLogin && UserManager.Instance().GetPlayerPrefs(out string email, out string password))
+        if (UserManager.Instance.GetPlayerPrefs(out string email, out string password))
         {
-            usedAutomaticLogin = true;
             if(await Login(email, password))
                 return;
         }
@@ -141,7 +131,7 @@ public class LoginUI : MonoBehaviour
             return false;
         }
 
-        UserManager.Instance().SavePlayerPrefs(email, password);
+        UserManager.Instance.SavePlayerPrefs(email, password);
         EnterGame();
         return true;
     }
@@ -170,14 +160,18 @@ public class LoginUI : MonoBehaviour
             return;
         }
         
-        UserManager.Instance().SavePlayerPrefs(email, password);
+        UserManager.Instance.SavePlayerPrefs(email, password);
         EnterGame();
     }
 
     private async void EnterGame()
     {
-        await UserManager.Instance().Initialize();
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        await UserManager.Instance.Initialize();
+        
+        if (GameData.Instance.JoinWithDirectCode)
+            SceneManager.LoadScene("Game");
+        else
+            SceneManager.LoadScene("MainMenu");
     }
 
     private bool ValidateFields()

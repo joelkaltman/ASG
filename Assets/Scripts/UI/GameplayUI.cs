@@ -134,12 +134,12 @@ public class GameplayUI : MonoBehaviour {
 	public void ShareCode()
 	{
 		var joinCode = textJoinCode.text;
-		var username = UserManager.Instance().UserData.username;
+		var username = UserManager.Instance.UserData.username;
 		
 		new NativeShare()
 			.SetSubject("Another Shooting Game")
 			.SetText($"{username} has invited you to kill some monsters!")
-			.SetUrl($"unitydl://asg.{joinCode}")
+			.SetUrl($"https://asgame-6af5c.web.app?code={joinCode}")
 			.Share();
 	}
 	
@@ -170,7 +170,7 @@ public class GameplayUI : MonoBehaviour {
 		playerGuns.Initialize();
 		playerMovement.Initialize();
 
-		playerName.text = UserManager.Instance().UserData.username;
+		playerName.text = UserManager.Instance.UserData.username;
 		
 		RefreshLife (playerStats.Life.Value, playerStats.Life.Value);
 		RefreshScore (playerStats.Score.Value, playerStats.Score.Value);
@@ -391,10 +391,10 @@ public class GameplayUI : MonoBehaviour {
 		        break;
         }
         
-		textGiantScore.text = "Killed " + UserManager.Instance().Kills + " enemies!";
+		textGiantScore.text = "Killed " + UserManager.Instance.Kills + " enemies!";
 
 
-		bool newMaxScore = UserManager.Instance().CheckNewHighScore();
+		bool newMaxScore = UserManager.Instance.CheckNewHighScore();
 		newHighScoreText.SetActive(newMaxScore);
 	}
 

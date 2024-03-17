@@ -16,6 +16,7 @@ public class MultiplayerUI : MonoBehaviour
 
     [Header("Other")] 
     public Text middleText;
+    public GameObject loadingIcon;
 
     public Action<string> OnHostStarted;
     public Action OnClientStarted;
@@ -106,6 +107,7 @@ public class MultiplayerUI : MonoBehaviour
         clientPanel.SetActive(false);
         hostButton.enabled = false;
         joinButton.enabled = false;
+        loadingIcon.SetActive(true);
         
         middleText.text = displayText;
     }
@@ -116,6 +118,7 @@ public class MultiplayerUI : MonoBehaviour
         clientPanel.SetActive(true);
         hostButton.enabled = true;
         joinButton.enabled = true;
+        loadingIcon.SetActive(false);
         
         middleText.text = "Or...";
     }

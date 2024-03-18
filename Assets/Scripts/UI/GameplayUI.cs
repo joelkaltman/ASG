@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -400,10 +401,11 @@ public class GameplayUI : MonoBehaviour {
 
 	void ShowWave(int previousWave, int newWave)
 	{
-		textWave.text = "Wave " + newWave;
+		// newWave = value of index, which is one less than wave number 
+		textWave.text = $"Wave {newWave + 1}";
 		objetiveFade = 1;
 
-		Invoke ("HideWave", 3);
+		HideWave(3);
 	}
 
 	void RefreshWaveTime()
@@ -425,8 +427,9 @@ public class GameplayUI : MonoBehaviour {
 		this.textTime.text = strMin + ":" + strSec;
 	}
 
-	void HideWave()
+	private async void HideWave(int seconds)
 	{
+		await Task.Delay(seconds * 1000);
 		objetiveFade = 0;
 	}
 

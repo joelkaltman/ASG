@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3219461978
+  GlobalObjectIdHash: 3705338395
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -66,8 +66,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Wave:
-    m_InternalValue: 0
+    m_InternalValue: -1
   WaveDuration:
+    m_InternalValue: 0
+  Seconds:
+    m_InternalValue: 0
+  Minutes:
     m_InternalValue: 0
   waves:
   - {fileID: 11400000, guid: a01aac1a345946148b6753b2962eaafc, type: 2}
@@ -79,5 +83,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1b1af8f3e97c2a14bbaac169e5db6b96, type: 2}
   SpawnTime: 0
   ElapsedTimeWave: 0
-  remainSeconds: 0
-  remainMinutes: 0

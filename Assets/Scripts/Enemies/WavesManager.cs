@@ -7,18 +7,18 @@ using UnityEngine;
 
 public class WavesManager : NetworkBehaviour
 {
-    public NetworkVariable<int> Wave = new(-1);
-    public NetworkVariable<int> WaveDuration = new();
+    [HideInInspector] public NetworkVariable<int> Wave = new(-1);
+    [HideInInspector] public NetworkVariable<int> WaveDuration = new();
     
-    public NetworkVariable<int> Seconds = new();
-    public NetworkVariable<int> Minutes = new();
+    [HideInInspector] public NetworkVariable<int> Seconds = new();
+    [HideInInspector] public NetworkVariable<int> Minutes = new();
 
     [SerializeField] private List<Wave> waves;
 
     private Wave additionalWave;
     
-    public float SpawnTime;
-    public float ElapsedTimeWave;
+    [HideInInspector] public float SpawnTime;
+    [HideInInspector] public float ElapsedTimeWave;
 
     private float elapsedTime;
     

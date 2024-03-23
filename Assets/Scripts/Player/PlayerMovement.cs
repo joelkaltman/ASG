@@ -10,9 +10,6 @@ public class PlayerMovement : NetworkBehaviour
 {
 	public Vector3 hostSpawnPosition;
 	public Vector3 clientSpawnPosition;
-	
-	[HideInInspector] public Joystick joystickMovement;
-	[HideInInspector] public GameObject joystickMovementHolder;
 
 	public bool IsMoving { get; private set; }
 	
@@ -31,7 +28,7 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     // Use this for initialization
-	public void Initialize () 
+	public void Initialize() 
 	{
 		if(!IsOwner)
 			return;
@@ -43,22 +40,22 @@ public class PlayerMovement : NetworkBehaviour
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-
+	void FixedUpdate() 
+	{
 		if(!IsOwner)
 			return;
 		
-		if (!joystickMovement)
+		if (!UIJoystickManager.Instance)
 			return;
 		
-		FallAndMove ();
+		FallAndMove();
 
 		if (playerStats.Life.Value == 0)
 			return;
 
 		animator.SetBool("Run", IsMoving);
 
-		Rotation ();
+		Rotation();
 	}
 
 	void FallAndMove()
@@ -66,7 +63,7 @@ public class PlayerMovement : NetworkBehaviour
 		Vector3 direction = new Vector3 ();
 		if (playerStats.Life.Value > 0) {
 
-			Vector2 joystickVal = joystickMovement.CurrentValues();
+			Vector2 joystickVal = UIJoystickManager.Instance.MovementJoystick.CurrentValues();
 			direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
 
 			float posY = Vector3.Dot (transform.forward, direction); 
@@ -93,12 +90,11 @@ public class PlayerMovement : NetworkBehaviour
 	void Rotation()
 	{
 		// Rotate by stick
-		var joystick = UIJoystickManager.Instance.CurrentJoystick;
+		var joystick = UIJoystickManager.Instance.RotationJoystick;
 		var playerPos = transform.position;
 
 		if (UserManager.Instance.AimingAutomatic)
 		{
-			joystickMovementHolder.gameObject.SetActive(false);
 			ShouldAutoShoot = false;
 			
 			var minmax = UIJoystickManager.Instance.CurrentType == UIJoystickManager.JoystickType.SHOOTER ? (0, 10) :
@@ -111,7 +107,6 @@ public class PlayerMovement : NetworkBehaviour
 		}
 		else
 		{
-			joystickMovementHolder.gameObject.SetActive(true);
 			ShouldAutoShoot = false;
 			
 			Vector2 joystickVal = joystick.CurrentValues();
@@ -138,7 +133,7 @@ public class PlayerMovement : NetworkBehaviour
 	{
 		rotation = Quaternion.identity;
 		
-		if (joystick.x != 0 && joystick.y != 0)
+		if (joystick.x + joystick.y == 0)
 			return false;
 		
 		Vector3 dir = new Vector3 (joystick.x, 0, joystick.y) * 10;
@@ -150,19 +145,13 @@ public class PlayerMovement : NetworkBehaviour
 	{
 		rotation = Quaternion.identity;
 		
-		if (!EnemiesManager.Instance.ClosestEnemyTo(playerPos, out var enemy))
+		if (!EnemiesManager.Instance.ClosestEnemyTo(playerPos, out var enemy, minDistance, maxDistance))
 			return false;
 
 		var enemyPos = enemy.transform.position;
-		var distance = Vector3.Distance(enemyPos, playerPos);
-		if (distance > minDistance && distance < maxDistance)
-		{
-			var dir = enemyPos - playerPos;
-			dir.y = 0;
-			rotation = Quaternion.LookRotation(dir);
-			return true;
-		}
-
-		return false;
+		var dir = enemyPos - playerPos;
+		dir.y = 0;
+		rotation = Quaternion.LookRotation(dir);
+		return true;
 	}
 }

@@ -155,6 +155,12 @@ Transform:
   m_Father: {fileID: 755518915}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &63226879 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6181747244823005259, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &84840150 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5983988043497366057, guid: bfbb619b98bd654489e25b644ce0460d,
@@ -656,6 +662,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4041146676765852, guid: ba4eeeb2450f6b0459b48e31bfdeb502,
     type: 3}
   m_PrefabInstance: {fileID: 412864350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &418295676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5983988044215584380, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &427685346
 PrefabInstance:
@@ -1554,6 +1566,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4137883987334170, guid: 0feceaf8fbb18564e972ab3083d05e47,
     type: 3}
   m_PrefabInstance: {fileID: 678023948}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &684972745 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7715474993257035337, guid: bfbb619b98bd654489e25b644ce0460d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5983988043581156607}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &695706218
 GameObject:
@@ -2993,6 +3011,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -88.712006
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987633084543765285, guid: 7f837989935dd384d805f1d7f4c8e92b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00061035156
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f837989935dd384d805f1d7f4c8e92b, type: 3}
@@ -6436,6 +6459,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cbb51dc456cc3e4abddb2b49641a978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystickMovement: {fileID: 816476958}
+  joystickRotation: {fileID: 912101636}
+  joystickMovementAutoAimOn: {fileID: 684972745}
+  joystickMovementAutoAimOff: {fileID: 418295676}
+  joystickMovementBackground: {fileID: 63226879}
   joystickRotationShooter: {fileID: 84840150}
   joystickRotationGranade: {fileID: 464589370}
   joystickRotationBoomerang: {fileID: 1520686373}

@@ -154,9 +154,6 @@ public class GameplayUI : MonoBehaviour {
 		playerMovement = player.GetComponent<PlayerMovement>();
 		playerStats = player.GetComponent<PlayerStats>();
 		playerGuns = player.GetComponent<PlayerGuns>();
-		
-		playerMovement.joystickMovement = joystickMovement.GetComponentInChildren<Joystick>();
-		playerMovement.joystickMovementHolder = joystickMovement;
 
 		playerStats.Life.OnValueChanged += RefreshLife;
 		playerStats.Score.OnValueChanged += RefreshScore;

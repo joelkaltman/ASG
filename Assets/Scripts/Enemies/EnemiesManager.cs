@@ -95,7 +95,7 @@ public class EnemiesManager : MonoBehaviour {
 		Destroy (enemyInstance);
 	}
 
-	public bool ClosestEnemyTo(Vector3 point, out GameObject enemy)
+	public bool ClosestEnemyTo(Vector3 point, out GameObject enemy, int minDistance = -1, int maxDistance = -1)
 	{
 		enemy = null;
 		float closest = float.MaxValue;
@@ -106,6 +106,13 @@ public class EnemiesManager : MonoBehaviour {
 				continue;
 			
 			float distance = Vector3.Distance (instance.transform.position, point);
+			
+			if(minDistance >= 0 && distance < minDistance)
+				continue;
+			
+			if(maxDistance >= 0 && distance > maxDistance)
+				continue;
+			
 			EnemyStats stats = instance.GetComponent<EnemyStats>();
 			if(distance < closest && stats.life > 0){
 				closest = distance;

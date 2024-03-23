@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
+﻿using System;
 using UnityEngine;
 
 public class UIJoystickManager : MonoBehaviour {
@@ -14,14 +12,26 @@ public class UIJoystickManager : MonoBehaviour {
 
 	public static UIJoystickManager Instance;
 
+	public GameObject joystickMovement;
+	public GameObject joystickRotation;
+	
+	public GameObject joystickMovementAutoAimOn;
+	public GameObject joystickMovementAutoAimOff;
+	public GameObject joystickMovementBackground;
+
 	public GameObject joystickRotationShooter;
 	public GameObject joystickRotationGranade;
 	public GameObject joystickRotationBoomerang;
-
-	private GameObject current;
+	
+	public Joystick RotationJoystick =>  currentRotation.GetComponentInChildren<Joystick>();
+	public Joystick MovementJoystick =>  currentMovement.GetComponentInChildren<Joystick>();
+	
+	private GameObject currentMovement;
+	private GameObject currentRotation;
 	public JoystickType CurrentType { get; private set; }
 
 	private PlayerGuns localPlayerGuns;
+	private bool wasAutoaim;
 
 	private void Awake()
 	{
@@ -35,46 +45,79 @@ public class UIJoystickManager : MonoBehaviour {
 		localPlayerGuns = player.GetComponent<PlayerGuns>();
 		localPlayerGuns.onGunChange -= RefreshRotationJoystick;
 		localPlayerGuns.onGunChange += RefreshRotationJoystick;
+		UpdateAutoAim();
 	}
 
 	void RefreshRotationJoystick()
 	{
-		switch (localPlayerGuns.GetCurrentGun ().GetGunType ()) {
+		switch (localPlayerGuns.GetCurrentGun().GetGunType())
+		{
 			case GunData.GunType.SHOTGUN:
-				this.changeJoystick (UIJoystickManager.JoystickType.SHOOTER);
+				ChangeJoystick(JoystickType.SHOOTER);
 				break;
 			case GunData.GunType.GRANADE:
-				this.changeJoystick (UIJoystickManager.JoystickType.GRANADE);
+				ChangeJoystick(JoystickType.GRANADE);
 				break;
 			case GunData.GunType.BOOMERANG:
-				this.changeJoystick (UIJoystickManager.JoystickType.BOOMERANG);
+				ChangeJoystick(JoystickType.BOOMERANG);
 				break;
 		}
 	}
 
-	public void changeJoystick(JoystickType type){
+	private void ChangeJoystick(JoystickType type)
+	{
 		CurrentType = type;
 		switch (type) {
 		case JoystickType.SHOOTER:
 			joystickRotationShooter.SetActive (true);
 			joystickRotationGranade.SetActive (false);
 			joystickRotationBoomerang.SetActive (false);
-			current = joystickRotationShooter;
+			currentRotation = joystickRotationShooter;
 			break;
 		case JoystickType.GRANADE:
 			joystickRotationShooter.SetActive (false);
 			joystickRotationGranade.SetActive (true);
 			joystickRotationBoomerang.SetActive (false);
-			current = joystickRotationGranade;
+			currentRotation = joystickRotationGranade;
 			break;
 		case JoystickType.BOOMERANG:
 			joystickRotationShooter.SetActive (false);
 			joystickRotationGranade.SetActive (false);
 			joystickRotationBoomerang.SetActive (true);
-			current = joystickRotationBoomerang;
+			currentRotation = joystickRotationBoomerang;
 			break;
 		}
 	}
 
-	public Joystick CurrentJoystick =>  current.GetComponentInChildren<Joystick>();
+	public void Update()
+	{
+		if (wasAutoaim == UserManager.Instance.AimingAutomatic)
+			return;
+
+		UpdateAutoAim();
+	}
+
+	private void UpdateAutoAim()
+	{
+		wasAutoaim = UserManager.Instance.AimingAutomatic;
+		
+		if (UserManager.Instance.AimingAutomatic)
+		{
+			joystickRotation.SetActive(false);
+			joystickMovementAutoAimOff.SetActive(false);
+			joystickMovementAutoAimOn.SetActive(true);
+			currentMovement = joystickMovementAutoAimOn;
+		}
+		else
+		{
+			joystickRotation.SetActive(true);
+			joystickMovementAutoAimOff.SetActive(true);
+			joystickMovementAutoAimOn.SetActive(false);
+			currentMovement = joystickMovementAutoAimOff;
+		}
+
+		var currentPos = currentMovement.GetComponent<RectTransform>().position;
+		var backTransf = joystickMovementBackground.GetComponent<RectTransform>();
+		backTransf.position = currentPos;
+	}
 }

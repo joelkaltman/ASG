@@ -12,10 +12,16 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     public void Start()
     {
-		Initialize ();
+		Initialize();
     }
 
-	public virtual void Initialize(){
+    public void OnEnable()
+    {
+	    Initialize();
+    }
+
+    public virtual void Initialize()
+    {
 		m_StartPos = transform.position;
 	}
 

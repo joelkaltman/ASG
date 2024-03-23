@@ -53,7 +53,7 @@ public class PlayerGuns : NetworkBehaviour
 		var gun = GetCurrentGun();
 		gun.AddElapsedTime (Time.deltaTime);
 		
-		if (playerMovement.ShouldAutoShoot || UIJoystickManager.Instance.CurrentJoystick.CanShoot()) 
+		if (playerMovement.ShouldAutoShoot || UIJoystickManager.Instance.RotationJoystick.CanShoot()) 
 		{
 			if (gun.Shoot())
 			{

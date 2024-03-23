@@ -32,7 +32,7 @@ public class JoystickGranade : Joystick {
 		this.Reset ();
 	}
 
-	public override bool canShoot(){
+	public override bool CanShoot(){
 		float distX = Mathf.Abs (this.transform.position.x - this.m_StartPos.x);
 		float distY = Mathf.Abs (this.transform.position.y - this.m_StartPos.y);
 

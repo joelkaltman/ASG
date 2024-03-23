@@ -15,19 +15,15 @@ public class PlayerGuns : NetworkBehaviour
 	public event Action onShoot;
 
 	private PlayerStats playerStats;
+	private PlayerMovement playerMovement;
 	private int currentIndex;
 
 	public bool Initialized;
 
-	public void ResetEvents()
-	{
-		onGunChange = null;
-		onShoot = null;
-	}
-
 	private void Awake()
 	{
 		playerStats = gameObject.GetComponent<PlayerStats>();
+		playerMovement = gameObject.GetComponent<PlayerMovement>();
 	}
 
 	public void Initialize()
@@ -56,8 +52,8 @@ public class PlayerGuns : NetworkBehaviour
 
 		var gun = GetCurrentGun();
 		gun.AddElapsedTime (Time.deltaTime);
-
-		if (UIJoystickManager.Instance.getCurrentJoystick().canShoot()) 
+		
+		if (playerMovement.ShouldAutoShoot || UIJoystickManager.Instance.CurrentJoystick.CanShoot()) 
 		{
 			if (gun.Shoot())
 			{

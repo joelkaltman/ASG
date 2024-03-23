@@ -5,18 +5,20 @@ public class OptionsUI : MonoBehaviour
 {
     public TMP_Dropdown qualityDropdown;
     public TMP_Dropdown shadowsDropdown;
+    public TMP_Dropdown aimingDropdown;
 
     private void Awake()
 	{
 		qualityDropdown.onValueChanged.AddListener(OnChangeQuality);
 		shadowsDropdown.onValueChanged.AddListener(OnChangeShadows);
+		aimingDropdown.onValueChanged.AddListener(OnChangeAiming);
 	}
 
 	private void Start()
 	{
-		int indexShadows = LightsManager.Instance.Shadows ? 1 : 0;
-		shadowsDropdown.SetValueWithoutNotify(indexShadows);
+		shadowsDropdown.SetValueWithoutNotify(LightsManager.Instance.Shadows ? 1 : 0);
 		qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+		aimingDropdown.SetValueWithoutNotify(UserManager.Instance.AimingAutomatic ? 0 : 1);
 	}
 
 	private void OnChangeQuality(int index)
@@ -34,5 +36,10 @@ public class OptionsUI : MonoBehaviour
 		{
 			LightsManager.Instance.ShadowsOn();
 		}
+	}
+	
+	private void OnChangeAiming(int index)
+	{
+		UserManager.Instance.SaveAutoAimingPrefs(index == 0);
 	}
 }

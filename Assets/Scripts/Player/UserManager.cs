@@ -13,6 +13,7 @@ public class UserManager
 
     public int Kills { get; private set; }
     public bool Initialized { get; private set; }
+    public bool AimingAutomatic { get; private set; }
 
     public event Action OnInitialize;
     public event Action OnCapCountChange;
@@ -20,6 +21,7 @@ public class UserManager
     public async Task Initialize()
     {
         UserData = await AuthManager.GetUserData();
+        AimingAutomatic = GetAutoAimingPrefs();
         Initialized = true;
         OnInitialize?.Invoke();
     }
@@ -112,5 +114,16 @@ public class UserManager
     {
         PlayerPrefs.SetString("email", email);
         PlayerPrefs.SetString("password", password);
+    }
+
+    public bool GetAutoAimingPrefs()
+    {
+        return PlayerPrefs.GetInt("autoaim", 1) != 0;
+    }
+    
+    public void SaveAutoAimingPrefs(bool automatic)
+    {
+        AimingAutomatic = automatic;
+        PlayerPrefs.SetInt("autoaim", Convert.ToInt32(automatic));
     }
 }

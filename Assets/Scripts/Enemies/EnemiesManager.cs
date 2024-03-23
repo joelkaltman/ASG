@@ -88,25 +88,31 @@ public class EnemiesManager : MonoBehaviour {
 	{
 		if (!MultiplayerManager.Instance.IsHostReady)
 			return;
-		
-		GameObject enemyInstance = EnemiesInstances.Find (obj => GameObject.ReferenceEquals(obj, enemy));
+
+		var instanceId = enemy.GetInstanceID();
+		GameObject enemyInstance = EnemiesInstances.Find (e => e.GetInstanceID() == instanceId);
 		EnemiesInstances.Remove (enemy);
 		Destroy (enemyInstance);
 	}
 
-	public GameObject GetClosestEnemyTo(Vector3 point)
+	public bool ClosestEnemyTo(Vector3 point, out GameObject enemy)
 	{
-		GameObject selected = null;
-		float closest = 99999;
-		for (int i = 0; i < EnemiesInstances.Count; i++) {
-			float distance = Vector3.Distance (EnemiesInstances [i].transform.position, point);
-			EnemyStats stats = EnemiesInstances [i].GetComponent<EnemyStats> ();
+		enemy = null;
+		float closest = float.MaxValue;
+		for (int i = 0; i < EnemiesInstances.Count; i++)
+		{
+			var instance = EnemiesInstances[i];
+			if(!instance) 
+				continue;
+			
+			float distance = Vector3.Distance (instance.transform.position, point);
+			EnemyStats stats = instance.GetComponent<EnemyStats>();
 			if(distance < closest && stats.life > 0){
 				closest = distance;
-				selected = EnemiesInstances [i];
+				enemy = instance;
 			}
 		}
-		return selected;
+		return enemy != null;
 	}
 
 	void OnChangeWave(int previousWave, int currentWave)

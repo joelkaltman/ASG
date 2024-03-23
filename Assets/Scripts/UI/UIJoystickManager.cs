@@ -19,7 +19,7 @@ public class UIJoystickManager : MonoBehaviour {
 	public GameObject joystickRotationBoomerang;
 
 	private GameObject current;
-	private JoystickType currentType;
+	public JoystickType CurrentType { get; private set; }
 
 	private PlayerGuns localPlayerGuns;
 
@@ -53,7 +53,7 @@ public class UIJoystickManager : MonoBehaviour {
 	}
 
 	public void changeJoystick(JoystickType type){
-		currentType = type;
+		CurrentType = type;
 		switch (type) {
 		case JoystickType.SHOOTER:
 			joystickRotationShooter.SetActive (true);
@@ -76,11 +76,5 @@ public class UIJoystickManager : MonoBehaviour {
 		}
 	}
 
-	public Joystick getCurrentJoystick(){
-		return current.GetComponentInChildren<Joystick>();
-	}
-
-	public JoystickType getCurrentJoystickType(){
-		return currentType;
-	}
+	public Joystick CurrentJoystick =>  current.GetComponentInChildren<Joystick>();
 }

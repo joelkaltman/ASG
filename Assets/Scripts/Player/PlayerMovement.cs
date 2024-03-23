@@ -12,6 +12,7 @@ public class PlayerMovement : NetworkBehaviour
 	public Vector3 clientSpawnPosition;
 	
 	[HideInInspector] public Joystick joystickMovement;
+	[HideInInspector] public GameObject joystickMovementHolder;
 
 	public bool IsMoving { get; private set; }
 	
@@ -19,6 +20,8 @@ public class PlayerMovement : NetworkBehaviour
 	private Rigidbody rb;
 	private Animator animator;
     private PlayerStats playerStats;
+    
+    public bool ShouldAutoShoot { get; private set; }
 
     private void Awake()
     {
@@ -63,7 +66,7 @@ public class PlayerMovement : NetworkBehaviour
 		Vector3 direction = new Vector3 ();
 		if (playerStats.Life.Value > 0) {
 
-			Vector2 joystickVal = joystickMovement.getJoystickCurrentValues();
+			Vector2 joystickVal = joystickMovement.CurrentValues();
 			direction = new Vector3 (joystickVal.x, 0, joystickVal.y);
 
 			float posY = Vector3.Dot (transform.forward, direction); 
@@ -89,31 +92,77 @@ public class PlayerMovement : NetworkBehaviour
 
 	void Rotation()
 	{
-		if (Time.deltaTime > 0) 
-		{
-			// Rotate by stick
-			Vector2 joystickVal = UIJoystickManager.Instance.getCurrentJoystick().getJoystickCurrentValues ();
+		// Rotate by stick
+		var joystick = UIJoystickManager.Instance.CurrentJoystick;
+		var playerPos = transform.position;
 
-			UIJoystickManager.JoystickType type = UIJoystickManager.Instance.getCurrentJoystickType();
-			switch (type) {
-			case UIJoystickManager.JoystickType.SHOOTER:
-			case UIJoystickManager.JoystickType.GRANADE:
-				if (joystickVal.x != 0 && joystickVal.y != 0) {
-					Vector3 dir = new Vector3 (joystickVal.x, 0, joystickVal.y) * 10;
-					transform.rotation = Quaternion.LookRotation(dir);
-				}
-				break;
+		if (UserManager.Instance.AimingAutomatic)
+		{
+			joystickMovementHolder.gameObject.SetActive(false);
+			ShouldAutoShoot = false;
 			
-			case UIJoystickManager.JoystickType.BOOMERANG:
-				GameObject enemy = EnemiesManager.Instance.GetClosestEnemyTo (transform.position);
-				if (enemy != null && Vector3.Distance(enemy.transform.position, transform.position) > 2)
+			var minmax = UIJoystickManager.Instance.CurrentType == UIJoystickManager.JoystickType.SHOOTER ? (0, 10) :
+								UIJoystickManager.Instance.CurrentType == UIJoystickManager.JoystickType.GRANADE ? (2, 8) :
+								(0, 6);
+			
+			ShouldAutoShoot = ClosestEnemyRotation(playerPos, minmax.Item1, minmax.Item2, out var rotation);
+			if (ShouldAutoShoot)
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 10);
+		}
+		else
+		{
+			joystickMovementHolder.gameObject.SetActive(true);
+			ShouldAutoShoot = false;
+			
+			Vector2 joystickVal = joystick.CurrentValues();
+			switch (UIJoystickManager.Instance.CurrentType)
+			{
+				case UIJoystickManager.JoystickType.SHOOTER:
+				case UIJoystickManager.JoystickType.GRANADE:
 				{
-					var dir = enemy.transform.position - transform.position;
-					dir.y = 0;
-					transform.rotation = Quaternion.LookRotation(dir);
+					if (SimpleJoystickRotation(joystickVal, out var rotation))
+						transform.rotation = rotation;
+					break;
 				}
-				break;
+				case UIJoystickManager.JoystickType.BOOMERANG:
+				{
+					if (ClosestEnemyRotation(playerPos, 2, 100, out var rotation))
+						transform.rotation = rotation;
+					break;
+				}
 			}
 		}
+	}
+
+	private bool SimpleJoystickRotation(Vector2 joystick, out Quaternion rotation)
+	{
+		rotation = Quaternion.identity;
+		
+		if (joystick.x != 0 && joystick.y != 0)
+			return false;
+		
+		Vector3 dir = new Vector3 (joystick.x, 0, joystick.y) * 10;
+		rotation = Quaternion.LookRotation(dir);
+		return true;
+	}
+
+	private bool ClosestEnemyRotation(Vector3 playerPos, int minDistance, int maxDistance, out Quaternion rotation)
+	{
+		rotation = Quaternion.identity;
+		
+		if (!EnemiesManager.Instance.ClosestEnemyTo(playerPos, out var enemy))
+			return false;
+
+		var enemyPos = enemy.transform.position;
+		var distance = Vector3.Distance(enemyPos, playerPos);
+		if (distance > minDistance && distance < maxDistance)
+		{
+			var dir = enemyPos - playerPos;
+			dir.y = 0;
+			rotation = Quaternion.LookRotation(dir);
+			return true;
+		}
+
+		return false;
 	}
 }

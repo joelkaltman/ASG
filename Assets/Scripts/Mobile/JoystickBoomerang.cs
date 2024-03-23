@@ -25,11 +25,11 @@ public class JoystickBoomerang : Joystick {
 	{
 	}
 
-	public override Vector2 getJoystickCurrentValues(){
+	public override Vector2 CurrentValues(){
 		return new Vector2 (0, 0);
 	}
 
-	public override bool canShoot(){
+	public override bool CanShoot(){
 		return this.pressed;
 	}
 }

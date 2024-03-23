@@ -38,7 +38,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
 	public virtual void OnPointerDown(PointerEventData data) { }
 
-	public virtual Vector2 getJoystickCurrentValues(){
+	public virtual Vector2 CurrentValues(){
 		float valueX = (transform.position.x - m_StartPos.x) / MovementRange;
 		float valueY = (transform.position.y - m_StartPos.y) / MovementRange;
 		return new Vector2 (valueX, valueY);
@@ -48,7 +48,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 		transform.position = m_StartPos;
 	}
 
-	public virtual bool canShoot(){
+	public virtual bool CanShoot(){
 		if (transform.position.x != m_StartPos.x && transform.position.y != m_StartPos.y) {
 			return true;
 		}

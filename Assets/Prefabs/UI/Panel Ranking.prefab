@@ -291,7 +291,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6723927930975515373}
   m_HandleRect: {fileID: 7431004877975547477}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -330,7 +330,7 @@ RectTransform:
   m_Children:
   - {fileID: 457444191529907625}
   m_Father: {fileID: 3796055429276528080}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -424,8 +424,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3796055429488930565}
-  - {fileID: 7753597984685624394}
   - {fileID: 3796055429411626195}
+  - {fileID: 7753597984685624394}
   - {fileID: 980842705318832869}
   - {fileID: 2397573677683127209}
   - {fileID: 7126629785815813278}
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 3796055429411626196}
   - component: {fileID: 8689184806333398134}
   m_Layer: 0
-  m_Name: MainMenu
+  m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,7 +510,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3796055429276528080}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}

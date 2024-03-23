@@ -9,6 +9,7 @@ public class LightsManager : MonoBehaviour
     public static LightsManager Instance;
     
     public Light directionalLight;
+    public bool Shadows { get; private set; }
     
     void Start()
     {
@@ -24,6 +25,7 @@ public class LightsManager : MonoBehaviour
 
     public void ShadowsOn()
     {
+        Shadows = true;
         directionalLight.enabled = true;
         RenderSettings.ambientLight = Color.black;
         PlayerPrefs.SetInt("shadows", 1);
@@ -31,6 +33,7 @@ public class LightsManager : MonoBehaviour
 
     public void ShadowsOff()
     {
+        Shadows = false;
         directionalLight.enabled = false;
         RenderSettings.ambientLight = Color.white;
         PlayerPrefs.SetInt("shadows", 0);

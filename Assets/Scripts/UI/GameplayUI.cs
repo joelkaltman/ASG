@@ -298,7 +298,7 @@ public class GameplayUI : MonoBehaviour {
 		playerStats.Revive ();
 		joystickMovement.GetComponentInChildren<Joystick> ().Reset ();
 		joystickRotation.GetComponentInChildren<Joystick> ().Reset ();
-		showCanvas (PanelType.GAME);
+		ShowCanvas (PanelType.GAME);
 		#endif
 	}
 

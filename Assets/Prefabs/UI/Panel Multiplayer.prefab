@@ -683,7 +683,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Host
+  m_Text: Host Game
 --- !u!114 &1354475491633518444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Connect To Game
+  m_Text: CONNECT
 --- !u!114 &4236994425124342055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1509,7 +1509,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create Game
+  m_Text: CREATE
 --- !u!114 &7338507977059596801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,6 +1634,7 @@ MonoBehaviour:
   hostPanel: {fileID: 3347401203961524984}
   hostButton: {fileID: 7338507976595690723}
   clientPanel: {fileID: 1731945542708310948}
+  inputJoinCodeIn: {fileID: 5848370220157010385}
   textJoinCodeIn: {fileID: 3179091487719965141}
   joinButton: {fileID: 2660152838985756730}
   middleText: {fileID: 8167403404540813239}
@@ -1826,7 +1827,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join
+  m_Text: Join Game
 --- !u!114 &4312786729632703508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1987,7 +1988,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 20
+  m_CharacterLimit: 6
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []

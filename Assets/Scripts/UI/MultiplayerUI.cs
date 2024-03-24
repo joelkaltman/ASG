@@ -11,6 +11,7 @@ public class MultiplayerUI : MonoBehaviour
     
     [Header("Client")] 
     public GameObject clientPanel;
+    public InputField inputJoinCodeIn;
     public Text textJoinCodeIn;
     public Button joinButton;
 
@@ -26,6 +27,11 @@ public class MultiplayerUI : MonoBehaviour
         DisableUI("Booting services...");
         hostButton.enabled = false;
         joinButton.enabled = false;
+        
+        inputJoinCodeIn.onValueChanged.AddListener((text) =>
+        {
+            inputJoinCodeIn.text = text.ToUpper(); 
+        });
 
         MultiplayerManager.Instance.InitializeMultiplayer();
 

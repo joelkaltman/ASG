@@ -99,9 +99,13 @@ public class EnemiesManager : MonoBehaviour {
 	{
 		enemy = null;
 		float closest = float.MaxValue;
-		for (int i = 0; i < EnemiesInstances.Count; i++)
+		
+		// Have to do
+		var enemies = NetworkManager.Singleton.SpawnManager.SpawnedObjectsList.Where(x => x.CompareTag("Enemy")).ToList();
+		
+		for (int i = 0; i < enemies.Count(); i++)
 		{
-			var instance = EnemiesInstances[i];
+			var instance = enemies[i];
 			if(!instance) 
 				continue;
 			
@@ -113,11 +117,16 @@ public class EnemiesManager : MonoBehaviour {
 			if(maxDistance >= 0 && distance > maxDistance)
 				continue;
 			
+			if(distance >= closest)
+				continue;
+			
+			/* life is not replicated currently
 			EnemyStats stats = instance.GetComponent<EnemyStats>();
-			if(distance < closest && stats.life > 0){
-				closest = distance;
-				enemy = instance;
-			}
+			if(stats.life <= 0)
+				continue;*/
+			
+			closest = distance;
+			enemy = instance.gameObject;
 		}
 		return enemy != null;
 	}

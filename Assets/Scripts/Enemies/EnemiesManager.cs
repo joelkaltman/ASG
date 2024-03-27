@@ -101,7 +101,7 @@ public class EnemiesManager : MonoBehaviour {
 		float closest = float.MaxValue;
 		
 		// Have to do
-		var enemies = NetworkManager.Singleton.SpawnManager.SpawnedObjectsList.Where(x => x.CompareTag("Enemy")).ToList();
+		var enemies = MultiplayerManager.Instance.IsHostReady ? EnemiesInstances.ToArray() : GameObject.FindGameObjectsWithTag("Enemy");
 		
 		for (int i = 0; i < enemies.Count(); i++)
 		{
